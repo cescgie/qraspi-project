@@ -14,6 +14,23 @@ public:
 
     QSize minimumSizeHint() const;
     QSize sizeHint() const;
+
+public slots:
+    void updateGL();
+
+protected:
+    void initializeGL();
+    void resizeGL(int width, int height);
+    void paintGL();
+
+private:
+    QColor clearColor;
+
+    GLuint textures[1];
+    GLuint makeBoard();
+    GLuint boardLayout;
+
+    void loadTextures();
 };
 
 #endif // GLVIEW_H
