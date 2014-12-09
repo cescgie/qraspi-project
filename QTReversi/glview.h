@@ -2,35 +2,78 @@
 #define GLVIEW_H
 
 #include <QGLWidget>
-#include "glu.h"
+#include "game.h"
+#include "GL/glu.h"
 
 class QTimer;
+class Board;
 
 class glView : public QGLWidget
 {
-public:
-    glView(QWidget *parent=0);
-    ~glView();
+    Q_OBJECT
 
-    QSize minimumSizeHint() const;
-    QSize sizeHint() const;
+    public:
+        //Constructor
+        glView(QWidget *parent=0);
+        ~glView();
 
-public slots:
-    void updateGL();
+        QSize minimumSizeHint() const;
+        QSize sizeHint() const;
 
-protected:
-    void initializeGL();
-    void resizeGL(int width, int height);
-    void paintGL();
 
-private:
-    QColor clearColor;
+        void setAnimationSetting( bool );
+        bool getAnimationSetting();
 
-    GLuint textures[1];
-    GLuint makeBoard();
-    GLuint boardLayout;
+        void connecting( game* );
 
-    void loadTextures();
+        void setMoveAsked(bool);
+
+    public slots:
+        void updateGL();
+        void updateScene();
+
+        void askingMoveReceived();
+
+
+    protected:
+        void initializeGL();
+        void resizeGL(int width, int height);
+        void paintGL();
+        void pawnDrawing(GLUquadricObj *);
+        void drawPawnsLayout();
+
+        void mousePressEvent(QMouseEvent *);
+        void mouseReleaseEvent(QMouseEvent *);
+
+    private:
+        Board *board;
+
+        GLuint makeBoard();
+        void loadTextures();
+
+        GLuint textures[1];
+        GLuint boardLayout;
+        QColor clearColor;
+
+        bool animationSetting;
+
+        bool animated;
+        void setAnimated( bool );
+        bool getAnimated();
+
+        int angle;
+
+        QTimer *timer;
+
+        bool moveAsked;
+        bool getMoveAsked();
+
+        void setBoard(Board*);
+
+    signals:
+        void boardHasClicked(int,int);
+        void animationDone();
+
 };
 
-#endif // GLVIEW_H
+#endif

@@ -4,23 +4,35 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
 QT       += opengl
 QT       += widgets
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
 TARGET = QTReversi
 TEMPLATE = app
+DEPENDPATH += .
+INCLUDEPATH += .
 
 
 SOURCES += main.cpp \
     graphics.cpp \
     game.cpp \
-    glview.cpp
+    glview.cpp \
+    square.cpp \
+    player.cpp \
+    move.cpp \
+    infosmoves.cpp \
+    board.cpp
 
 HEADERS  += \
     define.h \
     graphics.h \
     game.h \
-    glview.h
+    glview.h \
+    square.h \
+    player.h \
+    move.h \
+    infosmoves.h \
+    board.h
+
+FORMS +=
+

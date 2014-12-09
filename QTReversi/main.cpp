@@ -1,4 +1,5 @@
 #include "graphics.h"
+#include "game.h"
 #include <QApplication>
 #include <QtWidgets>
 
@@ -13,8 +14,11 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
-    graphics w;
-    w.show();
+    game *ge = new game();
+    graphics *grap= new graphics();
+
+    grap->initialization( ge );
+    grap->show();
 
     return a.exec();
 }

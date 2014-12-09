@@ -1,10 +1,13 @@
 #include "graphics.h"
-#include "define.h"
+#include "game.h"
+#include "player.h"
 #include "QMessageBox"
-#include "QtWidgets"
+#include <QToolBar>
+#include <QMenuBar>
+#include <QStatusBar>
+#include <QtGui>
 
-graphics::graphics(QWidget *parent)
-    : QMainWindow(parent)
+graphics::graphics()
 {
     centralWindow = new QWidget(this);
     scene = new glView(this);
@@ -25,8 +28,28 @@ graphics::graphics(QWidget *parent)
 
 graphics::~graphics()
 {
+    delete centralWindow;
+    delete scene;
 
 }
+void graphics::initialization( game *ge )
+{
+    connecting( ge );
+    ge->initializationDisplay();
+}
+
+void graphics::connecting( game *ge )
+{
+    if( ge != NULL )
+    {
+        connect( this, SIGNAL( startNewGame() ), ge, SLOT( initialization() ) );
+        connect( ge, SIGNAL( playerWins(Player*) ), this, SLOT( displayWinner(Player*) ) );
+
+        scene->connecting( ge );
+
+    }
+}
+
 
 void graphics::createMenus()
 {
@@ -34,6 +57,9 @@ void graphics::createMenus()
     fileMenu->addAction(newAction);
     fileMenu->addSeparator();
     fileMenu->addAction(exitAction);
+
+    viewMenu = menuBar()->addMenu(tr("&View"));
+    viewMenu->addAction(animationAction);
 }
 
 void graphics::createActions()
@@ -50,12 +76,19 @@ void graphics::createActions()
     exitAction->setStatusTip(tr("Exit the application"));
     connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 
+    animationAction = new QAction(tr("Animations"), this);
+    animationAction->setCheckable(true);
+    animationAction->setChecked(true);
+    animationAction->setStatusTip(tr("Show or hide animations"));
+    connect(animationAction, SIGNAL(triggered()), this, SLOT(updateSettingAnimation()));
+
 }
 
 void graphics::newGame()
 {
     QMessageBox::information(this, QtVersion, tr("New Game!"),
             QMessageBox::Ok | QMessageBox::Default);
+    emit startNewGame();
 }
 
 void graphics::closeEvent(QCloseEvent *event)
@@ -72,7 +105,29 @@ void graphics::closeEvent(QCloseEvent *event)
 void graphics::createStatusBar()
 {
         statusBarLabel = new QLabel("");
-        statusBarLabel->setAlignment(Qt::AlignHCenter);
         statusBar()->addWidget(statusBarLabel,1);
+}
+
+\
+void graphics::displayWinner(Player *p)
+{
+    if( p != NULL )
+    {
+        QString str = p->getName() + " wins the game !";
+        QMessageBox::information(this,QtVersion,str,
+                QMessageBox::Ok | QMessageBox::Default);
+    }
+    else
+    {
+        QMessageBox::information(this,QtVersion,tr("Deuce !"),
+                QMessageBox::Ok | QMessageBox::Default);
+    }
+
+    emit startNewGame();
+}
+
+void graphics::updateSettingAnimation()
+{
+    scene->setAnimationSetting( animationAction->isChecked() );
 }
 

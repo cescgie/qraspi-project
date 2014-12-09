@@ -3,10 +3,18 @@
 
 #include <QMainWindow>
 #include "glview.h"
+#include <QtWidgets>
 
+class game;
+class Player;
 class QAction;
 class QLabel;
 class QWidget;
+class QVBoxLayout;
+class QHBoxLayout;
+class QGridLayout;
+class QTextEdit;
+class QSizePolicy;
 
 #include <iostream>
 #include <cstring>
@@ -17,29 +25,41 @@ class graphics : public QMainWindow
     Q_OBJECT
 
 public:
-    graphics(QWidget *parent = 0);
+    graphics();
     ~graphics();
+    void initialization( game * );
+
 
 protected:
         void closeEvent(QCloseEvent *event);
 
 private slots:
     void newGame();
+    void displayWinner(Player*);
+    void updateSettingAnimation();
 
 private:
      void createActions();
      void createMenus();
      void createStatusBar();
 
+     void connecting( game * );
+
      QWidget *centralWindow;
      glView *scene;
 
+      QLabel *statusBarLabel;
+
      QMenu *fileMenu;
+     QMenu *viewMenu;
 
      QAction *newAction;
      QAction *exitAction;
 
-     QLabel *statusBarLabel;
+     QAction *animationAction;
+
+signals:
+    void startNewGame();
 
 };
 
