@@ -39,7 +39,8 @@ private:
             *nameP1, *nameP2,
             *typeP1, *typeP2,
             *line, *line2,
-            *pawnBlack, *pawnWhite;
+            *pawnBlack, *pawnWhite,
+            *infosGame;
 
     QPainter *painterBlack,*painterWhite;
 
@@ -51,6 +52,8 @@ public slots:
 
     void updatingName(Player*);
     void updatingType(Player*);
+    void setInfosGame(IdMsgInfos);
+
 
 };
 

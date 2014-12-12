@@ -46,8 +46,18 @@ InfoView::InfoView(QWidget *parent)
     nameP2->setAlignment(Qt::AlignCenter);
     typeP1->setAlignment(Qt::AlignCenter);
     typeP2->setAlignment(Qt::AlignCenter);
-
     QFont f( "Verdana", 50, QFont::Bold);
+
+    infosGame = new QLabel( "" );
+    infosGame->setAlignment(Qt::AlignCenter);
+    infosGame->setFrameStyle(QFrame::Box|QFrame::Raised);
+    infosGame->setFixedSize(350,50);
+    infosGame->setLineWidth(3);
+    infosGame->setAutoFillBackground(true);
+    infosGame->setText("Good Luck!");
+    QPalette palette=infosGame->palette();
+    palette.setColor(QPalette::Window,QColor(Qt::green));
+    infosGame->setPalette(palette);
 
     topLayout = new QGridLayout;
     topLayout->addWidget(namepar1,1,0);
@@ -72,6 +82,7 @@ InfoView::InfoView(QWidget *parent)
     mainLayout->addStretch();
     mainLayout->addWidget(line2);
     mainLayout->addStretch();
+    mainLayout->addWidget(infosGame);
 
     this->setLayout(mainLayout);
 
@@ -152,6 +163,8 @@ void InfoView::connecting( game* ge )
     connect( ge, SIGNAL( playerNameModified(Player*) ), this, SLOT( updatingName(Player*) ) );
     connect( ge, SIGNAL( playerColorModified(Player*) ), this, SLOT( updatingColor(Player*) ) );
     connect( ge, SIGNAL( playerTypeModified(Player*) ), this, SLOT( updatingType(Player*) ) );
+    connect( ge, SIGNAL( sendInfosGameDisplay(IdMsgInfos) ), this, SLOT( setInfosGame(IdMsgInfos) ) );
+
 }
 
 void InfoView::updatingType( Player *p )
@@ -200,4 +213,42 @@ void InfoView::readSettings()
 Player* InfoView::getPlayer( int id )
 {
 return playerTable[id];
+}
+
+void InfoView::setInfosGame(IdMsgInfos idMsg)
+{
+        QString msg;
+        switch( idMsg )
+        {
+                case P1_Playing:
+                        msg = playerTable[p1]->getName() + " ( ";
+                        if( playerTable[p1]->getColor() == Black )
+                        {
+                                msg += "black";
+                        }
+                        else
+                        {
+                                msg += "white";
+                        }
+                        msg += " pawns ) is playing ...";
+                        break;
+
+                case P2_Playing:
+                        msg = playerTable[p2]->getName() + " ( ";
+                        if( playerTable[p2]->getColor() == Black )
+                        {
+                                msg += "black";
+                        }
+                        else
+                        {
+                                msg += "white";
+                        }
+                        msg += " pawns ) is playing ...";
+                        break;
+
+                default:
+                        break;
+        }
+
+        infosGame->setText(msg);
 }
