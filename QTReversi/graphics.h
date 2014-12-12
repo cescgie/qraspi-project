@@ -3,18 +3,15 @@
 
 #include <QMainWindow>
 #include "glview.h"
+#include "infoview.h"
 #include <QtWidgets>
+#include "preferencesdialog.h"
 
 class game;
 class Player;
 class QAction;
 class QLabel;
 class QWidget;
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QTextEdit;
-class QSizePolicy;
 
 #include <iostream>
 #include <cstring>
@@ -35,6 +32,7 @@ protected:
 
 private slots:
     void newGame();
+    void preferences();
     void displayWinner(Player*);
     void updateSettingAnimation();
 
@@ -42,21 +40,28 @@ private:
      void createActions();
      void createMenus();
      void createStatusBar();
+     void createToolBars();
 
      void connecting( game * );
 
      QWidget *centralWindow;
      glView *scene;
+     InfoView *infos;
 
       QLabel *statusBarLabel;
 
      QMenu *fileMenu;
      QMenu *viewMenu;
 
+     QToolBar *fileToolBar;
+     QToolBar *toolsToolBar;
+
      QAction *newAction;
      QAction *exitAction;
 
      QAction *animationAction;
+     QAction *preferencesAction;
+
 
 signals:
     void startNewGame();

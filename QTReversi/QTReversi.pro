@@ -21,7 +21,9 @@ SOURCES += main.cpp \
     player.cpp \
     move.cpp \
     infosmoves.cpp \
-    board.cpp
+    board.cpp \
+    infoview.cpp \
+    preferencesdialog.cpp
 
 HEADERS  += \
     define.h \
@@ -32,7 +34,10 @@ HEADERS  += \
     player.h \
     move.h \
     infosmoves.h \
-    board.h
+    board.h \
+    infoview.h \
+    preferencesdialog.h
 
-FORMS +=
+FORMS += \
+    preferencesdialog.ui
 

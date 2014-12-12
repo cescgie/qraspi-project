@@ -1,10 +1,58 @@
 #ifndef INFOVIEW_H
 #define INFOVIEW_H
 
-class InfoView
+#include <QtWidgets>
+#include <define.h>
+
+class game;
+class Player;
+class QLabel;
+class QVBoxLayout;
+class QHBoxLayout;
+class QGridLayout;
+class QTextEdit;
+class QSizePolicy;
+
+class InfoView : public QWidget
 {
+    Q_OBJECT
 public:
-    InfoView();
+    InfoView(QWidget *parent=0);
+    ~InfoView();
+
+    void connecting( game* );
+    void writeSettings();
+    void readSettings();
+    Player* getPlayer(int);
+
+    void setNameP1( QString name );
+    void setNameP2( QString name );
+    void setTypeP1( TypePlayer );
+    void setTypeP2( TypePlayer );
+
+private:
+
+    Player **playerTable;
+
+    QLabel  *namepar1, *namepar2,
+            *levelpar1, *levelpar2,
+            *nameP1, *nameP2,
+            *typeP1, *typeP2,
+            *line, *line2,
+            *pawnBlack, *pawnWhite;
+
+    QPainter *painterBlack,*painterWhite;
+
+    QVBoxLayout *mainLayout;
+    QGridLayout *topLayout;
+    QHBoxLayout *toptopLayout, *centerLayout;
+
+public slots:
+
+    void updatingName(Player*);
+    void updatingType(Player*);
+
 };
 
 #endif // INFOVIEW_H
+
