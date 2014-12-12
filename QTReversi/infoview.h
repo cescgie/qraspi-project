@@ -29,7 +29,8 @@ public:
     void setNameP2( QString name );
     void setTypeP1( TypePlayer );
     void setTypeP2( TypePlayer );
-
+    void setScoreP1( int score );
+    void setScoreP2( int score );
 private:
 
     Player **playerTable;
@@ -40,7 +41,9 @@ private:
             *typeP1, *typeP2,
             *line, *line2,
             *pawnBlack, *pawnWhite,
-            *infosGame;
+            *infosGame,
+            *scoreP1Label, *scoreP2Label,
+            *scoreP1, *scoreP2;
 
     QPainter *painterBlack,*painterWhite;
 
@@ -53,6 +56,7 @@ public slots:
     void updatingName(Player*);
     void updatingType(Player*);
     void setInfosGame(IdMsgInfos);
+    void updatingScore();
 
 
 };
