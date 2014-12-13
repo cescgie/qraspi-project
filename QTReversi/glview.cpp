@@ -14,6 +14,7 @@ glView::glView(QWidget *parent)
     board = NULL;
     animationSetting = true;
     regularMovesSetting = true;
+    lastMoveSetting = true;
 
     timer = new QTimer(this);
     connect(timer, SIGNAL( timeout() ), this, SLOT( updateScene() ) );
@@ -136,10 +137,16 @@ void glView::drawPawnsLayout()
                         }
                         if( board->getAnimatedSquare(x, y) )
                         {
-                            glRotatef(angle,0.0f,1.0f,0.0f);  //Rotation du pion pour l'animation
+                            glRotatef(angle,0.0f,1.0f,0.0f);  //Drehung des Steines durch Animation
                         }
                         pawnDrawing(quadric);
-
+                        if( getLastMoveSetting() && board->getLastMoveSquare(x,y) )
+                        {  //Wenn das Kontrollkästchen der zuletzt gespielten
+                                //Letzten Zug anzeigen
+                                glPushMatrix();
+                                glTranslatef(WidthBorderText + x*WidthSquareText + WidthRadiusPawn, WidthBorderText + y*WidthSquareText + WidthRadiusPawn, 5.0f);
+                                lastMoveDrawing(quadric);
+                        }
                         break;
                     case RegularMove:
                         if( getRegularMovesSetting() )
@@ -165,6 +172,15 @@ void glView::regularMoveDrawing(GLUquadricObj *quadric)
         gluDisk(quadric,0,1.0,20,20);
         glPopMatrix();
 }
+
+void glView::lastMoveDrawing(GLUquadricObj *quadric)
+{
+        glTranslatef(0.0,0.0,2.0);
+        qglColor(Qt::red);
+        gluDisk(quadric,0,1.0,20,20);
+        glPopMatrix();
+}
+
 
 void glView::mousePressEvent(QMouseEvent *event)
 {
@@ -256,6 +272,17 @@ void glView::setRegularMovesSetting( bool b)
 bool glView::getRegularMovesSetting()
 {
         return regularMovesSetting;
+}
+
+void glView::setLastMoveSetting( bool b)
+{
+        lastMoveSetting = b;
+        updateScene();
+}
+
+bool glView::getLastMoveSetting()
+{
+        return lastMoveSetting;
 }
 
 void glView::setAnimationSetting( bool b)
