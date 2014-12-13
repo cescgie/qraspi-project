@@ -35,6 +35,7 @@ private slots:
     void preferences();
     void displayWinner(Player*);
     void updateSettingAnimation();
+    void updateSettingRegularMoves();
 
 private:
      void createActions();
@@ -61,6 +62,8 @@ private:
 
      QAction *animationAction;
      QAction *preferencesAction;
+     QAction *regularMovesAction;
+
 
 
 signals:

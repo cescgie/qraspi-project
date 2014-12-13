@@ -66,6 +66,7 @@ void graphics::createMenus()
 
     viewMenu = menuBar()->addMenu(tr("&View"));
     viewMenu->addAction(animationAction);
+    viewMenu->addAction(regularMovesAction);
 }
 
 void graphics::createActions()
@@ -94,6 +95,11 @@ void graphics::createActions()
     preferencesAction->setStatusTip(tr("Configure the options game"));
     connect(preferencesAction, SIGNAL(triggered()), this, SLOT(preferences()));
 
+    regularMovesAction = new QAction(tr("Regular Moves"), this);
+    regularMovesAction->setCheckable(true);
+    regularMovesAction->setChecked(true);
+    regularMovesAction->setStatusTip(tr("Show or hide regular moves"));
+    connect(regularMovesAction, SIGNAL(triggered()), this, SLOT(updateSettingRegularMoves()));
 }
 
 void graphics::createToolBars()
@@ -240,3 +246,7 @@ void graphics::updateSettingAnimation()
     scene->setAnimationSetting( animationAction->isChecked() );
 }
 
+void graphics::updateSettingRegularMoves()
+{
+    scene->setRegularMovesSetting( regularMovesAction->isChecked() );
+}
