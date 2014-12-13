@@ -23,6 +23,8 @@ class glView : public QGLWidget
 
         void setAnimationSetting( bool );
         bool getAnimationSetting();
+        void setRegularMovesSetting( bool );
+        bool getRegularMovesSetting();
 
         void connecting( game* );
 
@@ -41,6 +43,8 @@ class glView : public QGLWidget
         void paintGL();
         void pawnDrawing(GLUquadricObj *);
         void drawPawnsLayout();
+        void regularMoveDrawing(GLUquadricObj *);
+
 
         void mousePressEvent(QMouseEvent *);
         void mouseReleaseEvent(QMouseEvent *);
@@ -56,6 +60,7 @@ class glView : public QGLWidget
         QColor clearColor;
 
         bool animationSetting;
+        bool regularMovesSetting;
 
         bool animated;
         void setAnimated( bool );

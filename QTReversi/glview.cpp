@@ -13,6 +13,7 @@ glView::glView(QWidget *parent)
     angle = 180;
     board = NULL;
     animationSetting = true;
+    regularMovesSetting = true;
 
     timer = new QTimer(this);
     connect(timer, SIGNAL( timeout() ), this, SLOT( updateScene() ) );
@@ -141,15 +142,28 @@ void glView::drawPawnsLayout()
 
                         break;
                     case RegularMove:
-                        break;
-                                    case Empty:
-                                        break;
-                                    default:
-                                        break;
+                        if( getRegularMovesSetting() )
+                        {
+                            glPushMatrix();
+                            glTranslatef(WidthBorderText + x*WidthSquareText + WidthRadiusPawn, WidthBorderText + y*WidthSquareText + WidthRadiusPawn, 5.0f);
+                            regularMoveDrawing(quadric);
+                         }
+                          break;
+                     case Empty:
+                          break;
+                     default:
+                          break;
                                 }
                             }
                         }
           gluDeleteQuadric(quadric);
+}
+
+void glView::regularMoveDrawing(GLUquadricObj *quadric)
+{
+        qglColor(Qt::darkGreen);
+        gluDisk(quadric,0,1.0,20,20);
+        glPopMatrix();
 }
 
 void glView::mousePressEvent(QMouseEvent *event)
@@ -232,6 +246,16 @@ GLuint glView::makeBoard()
         glEndList();
 
         return list;
+}
+void glView::setRegularMovesSetting( bool b)
+{
+        regularMovesSetting = b;
+        updateScene();
+}
+
+bool glView::getRegularMovesSetting()
+{
+        return regularMovesSetting;
 }
 
 void glView::setAnimationSetting( bool b)
