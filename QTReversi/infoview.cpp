@@ -18,10 +18,12 @@ InfoView::InfoView(QWidget *parent)
     levelpar2 = new QLabel("level ");
     line = new QLabel("----------------------------------------------");
     line2 = new QLabel("----------------------------------------------");
-    scoreP1Label = new QLabel( tr("Score") );
-    scoreP2Label = new QLabel( tr("Score") );
+    scoreLabel = new QLabel( tr("Score") );
     scoreP1 = new QLabel( "0" );
     scoreP2 = new QLabel( "0" );
+    movesLabel = new QLabel( tr("Moves") );
+    movesP1 = new QLabel( "0" );
+    movesP2 = new QLabel( "0" );
 
     QPixmap pix(60,60);
     pix.fill(Qt::transparent);
@@ -51,6 +53,8 @@ InfoView::InfoView(QWidget *parent)
     typeP2->setAlignment(Qt::AlignCenter);
     scoreP1->setAlignment(Qt::AlignCenter);
     scoreP2->setAlignment(Qt::AlignCenter);
+    movesP1->setAlignment(Qt::AlignCenter);
+    movesP2->setAlignment(Qt::AlignCenter);
     QFont f( "Verdana", 50, QFont::Bold);
 
     infosGame = new QLabel( "" );
@@ -67,17 +71,20 @@ InfoView::InfoView(QWidget *parent)
     topLayout = new QGridLayout;
     topLayout->addWidget(namepar1,1,0);
     topLayout->addWidget(levelpar1,2,0);
-    topLayout->addWidget(scoreP1Label,4,0);
+    topLayout->addWidget(scoreLabel,4,0);
+    topLayout->addWidget(movesLabel,3,0);
 
     topLayout->addWidget(pawnBlack,0,2);
     topLayout->addWidget(nameP1,1,2);
     topLayout->addWidget(typeP1,2,2);
     topLayout->addWidget(scoreP1,4,2);
+    topLayout->addWidget(movesP1,3,2);
 
     topLayout->addWidget(pawnWhite,0,4);
     topLayout->addWidget(nameP2,1,4);
     topLayout->addWidget(typeP2,2,4);
     topLayout->addWidget(scoreP2,4,4);
+    topLayout->addWidget(movesP2,3,4);
 
     toptopLayout = new QHBoxLayout;
     toptopLayout->addLayout(topLayout);
@@ -174,6 +181,16 @@ void InfoView::setScoreP2( int score )
         scoreP2->setNum( score );
 }
 
+void InfoView::setMovesP1( int moves )
+{
+        movesP1->setNum( moves );
+}
+
+void InfoView::setMovesP2( int moves )
+{
+        movesP2->setNum( moves);
+}
+
 void InfoView::connecting( game* ge )
 {
     playerTable = ge->getPlayer();
@@ -182,6 +199,7 @@ void InfoView::connecting( game* ge )
     connect( ge, SIGNAL( playerTypeModified(Player*) ), this, SLOT( updatingType(Player*) ) );
     connect( ge, SIGNAL( sendInfosGameDisplay(IdMsgInfos) ), this, SLOT( setInfosGame(IdMsgInfos) ) );
     connect( ge, SIGNAL( playerScoreModified() ), this, SLOT( updatingScore() ) );
+    connect( ge, SIGNAL( playerNumMovesModified() ), this, SLOT( updatingMoves() ) );
 
 }
 
@@ -212,10 +230,17 @@ void InfoView::updatingName( Player *p )
             setNameP2( p->getName() );
     }
 }
+
 void InfoView::updatingScore()
 {
         setScoreP1( playerTable[p1]->getScore() );
         setScoreP2( playerTable[p2]->getScore() );
+}
+
+void InfoView::updatingMoves()
+{
+        setMovesP1( playerTable[p1]->getNumMoves() );
+        setMovesP2( playerTable[p2]->getNumMoves() );
 }
 
 void InfoView::writeSettings()

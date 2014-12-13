@@ -31,6 +31,9 @@ public:
     void setTypeP2( TypePlayer );
     void setScoreP1( int score );
     void setScoreP2( int score );
+    void setMovesP1( int num );
+    void setMovesP2( int num );
+
 private:
 
     Player **playerTable;
@@ -42,8 +45,10 @@ private:
             *line, *line2,
             *pawnBlack, *pawnWhite,
             *infosGame,
-            *scoreP1Label, *scoreP2Label,
-            *scoreP1, *scoreP2;
+            *scoreLabel,
+            *scoreP1, *scoreP2,
+            *movesLabel,
+            *movesP1, *movesP2;
 
     QPainter *painterBlack,*painterWhite;
 
@@ -57,6 +62,7 @@ public slots:
     void updatingType(Player*);
     void setInfosGame(IdMsgInfos);
     void updatingScore();
+    void updatingMoves();
 
 
 };
