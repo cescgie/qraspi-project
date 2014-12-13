@@ -67,6 +67,7 @@ void graphics::createMenus()
     viewMenu = menuBar()->addMenu(tr("&View"));
     viewMenu->addAction(animationAction);
     viewMenu->addAction(regularMovesAction);
+    viewMenu->addAction(lastMoveAction);
 }
 
 void graphics::createActions()
@@ -100,6 +101,12 @@ void graphics::createActions()
     regularMovesAction->setChecked(true);
     regularMovesAction->setStatusTip(tr("Show or hide regular moves"));
     connect(regularMovesAction, SIGNAL(triggered()), this, SLOT(updateSettingRegularMoves()));
+
+    lastMoveAction = new QAction(tr("Last Move"), this);
+    lastMoveAction->setCheckable(true);
+    lastMoveAction->setChecked(true);
+    lastMoveAction->setStatusTip(tr("Show or hide last move"));
+    connect(lastMoveAction, SIGNAL(triggered()), this, SLOT(updateSettingLastMove()));
 }
 
 void graphics::createToolBars()
@@ -249,4 +256,9 @@ void graphics::updateSettingAnimation()
 void graphics::updateSettingRegularMoves()
 {
     scene->setRegularMovesSetting( regularMovesAction->isChecked() );
+}
+
+void graphics::updateSettingLastMove()
+{
+    scene->setLastMoveSetting( lastMoveAction->isChecked() );
 }

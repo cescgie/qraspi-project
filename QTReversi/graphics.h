@@ -36,6 +36,7 @@ private slots:
     void displayWinner(Player*);
     void updateSettingAnimation();
     void updateSettingRegularMoves();
+    void updateSettingLastMove();
 
 private:
      void createActions();
@@ -63,8 +64,7 @@ private:
      QAction *animationAction;
      QAction *preferencesAction;
      QAction *regularMovesAction;
-
-
+     QAction *lastMoveAction;
 
 signals:
     void startNewGame();
