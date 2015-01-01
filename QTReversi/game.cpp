@@ -23,6 +23,8 @@ game::game()
     regularMovesListTemp.push_back( move(2,4,White) );
     regularMovesListTemp.push_back( move(3,5,White) );
 
+    redoAllowed = false;
+    undoAllowed = false;
 }
 
 game::~game()
@@ -107,6 +109,8 @@ void game::initialization()
 
 void game::recupMove(int x,int y)
 {
+    emit enableUndoMoveAction(false);
+    emit enableRedoMoveAction(false);
     playMove( move(x,y) );
 }
 
@@ -187,6 +191,7 @@ bool game::playMove(move m)
         affichageSavedList();
 
         boardHasModified();
+        undoAllowed = true;
     }
     else
     {
@@ -658,6 +663,8 @@ void game::askMove()
     switch( playerTable[currentPlayer]->getType() )
     {
         case Local:
+            emit enableRedoMoveAction(redoAllowed);
+            emit enableUndoMoveAction(undoAllowed);
             emit askingLocalMove();
             break;
         case AI_1:
@@ -819,4 +826,241 @@ void game::affichageMovesList()
         cout << "Move " << i << " : ";
         movesList[i].affichage();
     }
+}
+
+void game::undoLastMove()
+{
+        if( numCurrentMove > 0 )
+        {
+                move moveTmp;
+        //wird auf der vorherigen Spielzug neu ausgerichtet
+                numCurrentMove--;
+        //Holen den aktiven/aktuellen Player
+                if( numCurrentMove == 0 ) //Konfigurieren des Starts
+                {
+                        //Der Spieler, der beginnt, ist der Spieler mit dem schwarzen Spielfiguren
+                        if( playerTable[p1]->getColor() == Black )
+                        {
+                                currentPlayer = p1;
+                        }
+                        else
+                        {
+                                currentPlayer = p2;
+                        }
+                }
+                else
+                {
+                        currentPlayer = movesSavedList[numCurrentMove-1].getCurrentPlayer();
+                }
+        //-->sende 'aktiver Spieler' an Schnittstelle
+        //Entfernen des letzen platzierten Spielers
+                board->emptySquare(movesList[numCurrentMove].getX(),movesList[numCurrentMove].getY());
+                playerTable[currentPlayer]->decreaseScore();  //Update der Spielstaende
+        //Update des letzten Spielszugs auf dem Spielbrett, wenn er existiert
+                if(numCurrentMove > 0)
+                {
+                        board->enableLastMoveSquare(movesList[numCurrentMove-1].getX(),movesList[numCurrentMove-1].getY());
+                }
+        //Wiederbringen der Spielfiguren
+                for( int i=0 ; i<movesSavedList[numCurrentMove].getSizePawnsTurnedDownList() ; i++ )
+                {
+                        moveTmp = movesSavedList[numCurrentMove].getPawnsTurnedDownList(i);
+                        board->turnDownPawn(moveTmp.getX(),moveTmp.getY());
+                        //Update der Spielstaende
+                        if( currentPlayer == p1 )
+                        {
+                                playerTable[p1]->decreaseScore();
+                                playerTable[p2]->increaseScore();
+                        }
+                        else
+                        {
+                                playerTable[p1]->increaseScore();
+                                playerTable[p2]->decreaseScore();
+                        }
+                }
+                board->clearAnimation();  //Keine Animation
+        //Update der gueltigen SpielZuege
+                board->clearRegularMove();
+                regularMovesListTemp.clear();
+                int numMovesCurPlayer = 0;
+             //regelmaeﬂiges Abrufen/Rueckgewinnen der SpielZuege in 'regularMovesListTemp'
+                if( numCurrentMove == 0 ) //Konfiguration des Starts
+                {
+                        regularMovesListTemp.push_back( move(2,3,Black) );
+                        regularMovesListTemp.push_back( move(3,2,Black) );
+                        regularMovesListTemp.push_back( move(4,5,Black) );
+                        regularMovesListTemp.push_back( move(5,4,Black) );
+                        regularMovesListTemp.push_back( move(5,3,White) );
+                        regularMovesListTemp.push_back( move(4,2,White) );
+                        regularMovesListTemp.push_back( move(2,4,White) );
+                        regularMovesListTemp.push_back( move(3,5,White) );
+                }
+                else
+                {
+                        regularMovesListTemp = movesSavedList[numCurrentMove-1].getRegularMovesList();
+                }
+                //regelmaeﬂiges Update der Zuege aud dem Brett
+                for( int i=0 ; i<regularMovesListTemp.size() ; i++ )
+                {
+                        if( regularMovesListTemp[i].getColor() == playerTable[currentPlayer]->getColor() )
+                        {
+                                board->addRegularMove( regularMovesListTemp[i].getX(), regularMovesListTemp[i].getY() );
+                                numMovesCurPlayer++;
+                        }
+                }
+                if( currentPlayer == p1 )
+                {
+                        playerTable[p1]->setNumMoves(numMovesCurPlayer);
+                        playerTable[p2]->setNumMoves(regularMovesListTemp.size()-numMovesCurPlayer);
+                }
+                else
+                {
+                        playerTable[p1]->setNumMoves(regularMovesListTemp.size()-numMovesCurPlayer);
+                        playerTable[p2]->setNumMoves(numMovesCurPlayer);
+                }
+        //Anzeige aktualisieren
+        //Anzeige aktualisieren 'undoAction' and 'redoAction'
+                redoAllowed = true;
+                if( numCurrentMove == 0 )
+                {
+                        undoAllowed = false;
+                }
+        }
+}
+
+
+void game::redoLastMove()
+{
+        if( numCurrentMove < (movesList.size()) )  //Wenn ein Zug noch einmal gespielt wird
+        {
+                move moveTmp;
+        //Hinzufuegen der zuletzt platzierten Spielfigur
+                board->addPawn(movesList[numCurrentMove].getX(), movesList[numCurrentMove].getY(),playerTable[currentPlayer]->getColor() );
+                playerTable[currentPlayer]->increaseScore();  //Update der Spielstaende
+        //Wiederbringen der Spielfiguren
+                for( int i=0 ; i<movesSavedList[numCurrentMove].getSizePawnsTurnedDownList() ; i++ )
+                {
+                        moveTmp = movesSavedList[numCurrentMove].getPawnsTurnedDownList(i);
+                        board->turnDownPawn(moveTmp.getX(),moveTmp.getY());
+                        //Update der Spielstaende
+                        if( currentPlayer == p1 )
+                        {
+                                playerTable[p1]->increaseScore();
+                                playerTable[p2]->decreaseScore();
+                        }
+                        else
+                        {
+                                playerTable[p1]->decreaseScore();
+                                playerTable[p2]->increaseScore();
+                        }
+                }
+                board->clearAnimation();  //keine Animation
+        //Holen/Wiederbringen des aktuellen Spielers
+                currentPlayer = movesSavedList[numCurrentMove].getCurrentPlayer();
+        //Speichern der gueltigen SpielZuege
+                board->clearRegularMove();
+                regularMovesListTemp.clear();
+                //regelmaeﬂiges Kopieren der SpielZuege in 'regularMovesListTemp'
+                regularMovesListTemp = movesSavedList[numCurrentMove].getRegularMovesList();
+                int numMovesCurPlayer = 0;
+                cout << "!!!! getSizeRegularMoveList()= " << movesSavedList[numCurrentMove].getSizeRegularMovesList() << endl;
+//              int CPT = 0;
+                //regelmaeﬂiges Anzeigen der SpielZuege auf dem board
+                for( int i=0 ; i<regularMovesListTemp.size() ; i++ )
+                {
+                        if( regularMovesListTemp[i].getColor() == playerTable[currentPlayer]->getColor() )
+                        {
+                                board->addRegularMove( regularMovesListTemp[i].getX(), regularMovesListTemp[i].getY() );
+                                numMovesCurPlayer++;
+                        }
+                }
+                //Update 'numMoves' der Spieler
+                if( currentPlayer == p1 )
+                {
+                        playerTable[p1]->setNumMoves(numMovesCurPlayer);
+                        playerTable[p2]->setNumMoves(regularMovesListTemp.size()-numMovesCurPlayer);
+                }
+                else
+                {
+                        playerTable[p1]->setNumMoves(regularMovesListTemp.size()-numMovesCurPlayer);
+                        playerTable[p2]->setNumMoves(numMovesCurPlayer);
+                }
+        //bringen den naechsten Zug
+                numCurrentMove++;
+        //Update Anzeige 'undoAction' and 'redoAction'
+                undoAllowed = true;
+                if( numCurrentMove == (movesList.size()) )
+                {
+                        redoAllowed = false;
+                }
+        }
+}
+
+void game::undoMoveGlobal()
+{
+        //Ermitteln des Falls & Annulieren/stonieren der Zuege entsprechend
+        int idTmp = p1;
+        if( currentPlayer == p1 ) //Ruft die ID des langfristigen Spielers
+        {
+                idTmp = p2;
+        }
+        switch( playerTable[idTmp]->getType() )
+        {
+                case AI_1:
+                case AI_2:
+                case AI_3:
+                        do
+                        {
+                                undoLastMove();
+                        }
+                        while( currentPlayer == idTmp && numCurrentMove != 0 ); //Tant que le joueur courant est l'IA ou ke l on revienne au premier coup
+                        break;
+                case Local:
+                        undoLastMove();
+                        break;
+                default:
+                        break;
+        }
+        //Update Anzeige
+        updatingScoreDisplay();
+        updatingNumMovesDisplay();
+        updatingMovesListDisplay();
+        boardHasModified();
+        //Starten Sie das Spiel-Engine bekommen eine Chance auf eine angemessene Motor (Relancer le moteur de jeu en demandant un coup au moteur adÈquate)
+        askMove();
+}
+
+void game::redoMoveGlobal()
+{
+        //Ermitteln des Falls & Annulieren/stonieren der Zuege entsprechend
+        int idTmp = p1;
+        if( currentPlayer == p1 ) //Ruft die ID des langfristigen Spielers
+        {
+                idTmp = p2;
+        }
+        switch( playerTable[idTmp]->getType() )
+        {
+                case AI_1:
+                case AI_2:
+                case AI_3:
+                        do
+                        {
+                                redoLastMove();
+                        }
+                        while( currentPlayer == idTmp && numCurrentMove != movesList.size() ); //Tant que le joueur courant est l'IA ou ke l on revienne au premier coup
+                        break;
+                case Local:
+                        redoLastMove();
+                        break;
+                default:
+                        break;
+        }
+        //Update Anzeige
+        updatingScoreDisplay();
+        updatingNumMovesDisplay();
+        updatingMovesListDisplay();
+        boardHasModified();
+        //Starten Sie das Spiel-Engine bekommen eine Chance auf eine angemessene Motor (Relancer le moteur de jeu en demandant un coup au moteur adÈquate)
+        askMove();
+
 }

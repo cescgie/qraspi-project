@@ -34,6 +34,9 @@ private:
 
     vector<InfosMoves> movesSavedList;
 
+    bool redoAllowed;
+    bool undoAllowed;
+
 public:
     game();
     ~game();
@@ -61,6 +64,9 @@ public slots:
     void recupMove(int,int);
 
     void nextTurn();
+
+    void undoMoveGlobal();
+    void redoMoveGlobal();
 
 private:
 
@@ -104,6 +110,9 @@ private:
     void saveRegularMoves();
     void saveCurrentPlayer();
 
+    void undoLastMove();
+    void redoLastMove();
+
     void affichageSavedList();
     void affichageMovesList();
 
@@ -124,6 +133,9 @@ signals:
     void askingAIMove(game*);
 
     void playerWins( Player* );
+
+    void enableUndoMoveAction(bool);
+    void enableRedoMoveAction(bool);
 };
 
 #endif // GAME_H

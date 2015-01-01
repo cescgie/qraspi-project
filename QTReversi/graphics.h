@@ -37,6 +37,10 @@ private slots:
     void updateSettingAnimation();
     void updateSettingRegularMoves();
     void updateSettingLastMove();
+    void undoMove();
+    void redoMove();
+    void setDisplayUndoMoveAction(bool);
+    void setDisplayRedoMoveAction(bool);
 
 private:
      void createActions();
@@ -65,10 +69,13 @@ private:
      QAction *preferencesAction;
      QAction *regularMovesAction;
      QAction *lastMoveAction;
+     QAction *undoMoveAction;
+     QAction *redoMoveAction;
 
 signals:
     void startNewGame();
-
+    void undoMoveAsked();
+    void redoMoveAsked();
 };
 
 #endif // GRAPHICS_H

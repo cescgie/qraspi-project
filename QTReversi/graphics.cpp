@@ -48,6 +48,10 @@ void graphics::connecting( game *ge )
     {
         connect( this, SIGNAL( startNewGame() ), ge, SLOT( initialization() ) );
         connect( ge, SIGNAL( playerWins(Player*) ), this, SLOT( displayWinner(Player*) ) );
+        connect( this, SIGNAL( undoMoveAsked() ), ge, SLOT( undoMoveGlobal() ) );
+        connect( this, SIGNAL( redoMoveAsked() ), ge, SLOT( redoMoveGlobal() ) );
+        connect( ge, SIGNAL( enableUndoMoveAction(bool) ), this, SLOT( setDisplayUndoMoveAction(bool) ) );
+        connect( ge, SIGNAL( enableRedoMoveAction(bool) ), this, SLOT( setDisplayRedoMoveAction(bool) ) );
 
         scene->connecting( ge );
         infos->connecting( ge );
@@ -107,6 +111,20 @@ void graphics::createActions()
     lastMoveAction->setChecked(true);
     lastMoveAction->setStatusTip(tr("Show or hide last move"));
     connect(lastMoveAction, SIGNAL(triggered()), this, SLOT(updateSettingLastMove()));
+
+    undoMoveAction = new QAction(tr("&Undo Move"), this);
+    undoMoveAction->setIcon(QIcon("UndoMove.png"));
+    undoMoveAction->setShortcut(tr("Ctrl+U"));
+    undoMoveAction->setStatusTip(tr("Undo the last move"));
+    connect(undoMoveAction, SIGNAL(triggered()), this, SLOT(undoMove()));
+    undoMoveAction->setEnabled(false);
+
+    redoMoveAction = new QAction(tr("&Redo Move"), this);
+    redoMoveAction->setIcon(QIcon("RedoMove.png"));
+    redoMoveAction->setShortcut(tr("Ctrl+R"));
+    redoMoveAction->setStatusTip(tr("Redo the last move canceled"));
+    connect(redoMoveAction, SIGNAL(triggered()), this, SLOT(redoMove()));
+    redoMoveAction->setEnabled(false);
 }
 
 void graphics::createToolBars()
@@ -115,6 +133,8 @@ void graphics::createToolBars()
     fileToolBar->addAction(newAction);
 
     toolsToolBar = addToolBar(tr("&Tools"));
+    toolsToolBar->addAction(undoMoveAction);
+    toolsToolBar->addAction(redoMoveAction);
     toolsToolBar->addAction(preferencesAction);
     toolsToolBar->addAction(exitAction);
 }
@@ -261,4 +281,26 @@ void graphics::updateSettingRegularMoves()
 void graphics::updateSettingLastMove()
 {
     scene->setLastMoveSetting( lastMoveAction->isChecked() );
+}
+
+void graphics::undoMove()
+{
+    scene->setMoveAsked(false);
+    emit undoMoveAsked();
+}
+
+void graphics::redoMove()
+{
+    scene->setMoveAsked(false);
+    emit redoMoveAsked();
+}
+
+void graphics::setDisplayUndoMoveAction(bool b)
+{
+        undoMoveAction->setEnabled(b);
+}
+
+void graphics::setDisplayRedoMoveAction(bool b)
+{
+        redoMoveAction->setEnabled(b);
 }
