@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/NewGame.png</file>
+        <file>images/Preferences.png</file>
+        <file>images/Quit.png</file>
+        <file>images/RedoMove.png</file>
+        <file>images/Stone.bmp</file>
+        <file>images/UndoMove.png</file>
+    </qresource>
+</RCC>

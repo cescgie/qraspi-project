@@ -77,13 +77,13 @@ void graphics::createMenus()
 void graphics::createActions()
 {
     newAction = new QAction(tr("&New"), this);
-    newAction->setIcon(QIcon("NewGame.png"));
+    newAction->setIcon(QIcon(":/images/NewGame.png"));
     newAction->setShortcut(tr("Ctrl+N"));
     newAction->setStatusTip(tr("Play a new game"));
     connect(newAction, SIGNAL(triggered()), this, SLOT(newGame()));
 
     exitAction = new QAction(tr("&Exit"), this);
-    exitAction->setIcon(QIcon("Quit.png"));
+    exitAction->setIcon(QIcon(":/images/Quit.png"));
     exitAction->setShortcut(tr("Ctrl+X"));
     exitAction->setStatusTip(tr("Exit the application"));
     connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
@@ -95,7 +95,7 @@ void graphics::createActions()
     connect(animationAction, SIGNAL(triggered()), this, SLOT(updateSettingAnimation()));
 
     preferencesAction = new QAction(tr("&Preferences"), this);
-    preferencesAction->setIcon(QIcon("Preferences.png"));
+    preferencesAction->setIcon(QIcon(":/images/Preferences.png"));
     preferencesAction->setShortcut(tr("Ctrl+P"));
     preferencesAction->setStatusTip(tr("Configure the options game"));
     connect(preferencesAction, SIGNAL(triggered()), this, SLOT(preferences()));
@@ -113,14 +113,14 @@ void graphics::createActions()
     connect(lastMoveAction, SIGNAL(triggered()), this, SLOT(updateSettingLastMove()));
 
     undoMoveAction = new QAction(tr("&Undo Move"), this);
-    undoMoveAction->setIcon(QIcon("UndoMove.png"));
+    undoMoveAction->setIcon(QIcon(":/images/UndoMove.png"));
     undoMoveAction->setShortcut(tr("Ctrl+U"));
     undoMoveAction->setStatusTip(tr("Undo the last move"));
     connect(undoMoveAction, SIGNAL(triggered()), this, SLOT(undoMove()));
     undoMoveAction->setEnabled(false);
 
     redoMoveAction = new QAction(tr("&Redo Move"), this);
-    redoMoveAction->setIcon(QIcon("RedoMove.png"));
+    redoMoveAction->setIcon(QIcon(":/images/RedoMove.png"));
     redoMoveAction->setShortcut(tr("Ctrl+R"));
     redoMoveAction->setStatusTip(tr("Redo the last move canceled"));
     connect(redoMoveAction, SIGNAL(triggered()), this, SLOT(redoMove()));

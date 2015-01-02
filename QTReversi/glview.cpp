@@ -229,7 +229,7 @@ void glView::loadTextures()
 {
         QImage t, b;
         //batik.bmp||wood.bmp||sand.bmp||Board.bmp||Field.bmp
-        b.load( "Stone.bmp" );
+        b.load( ":/images/Stone.bmp" );
         t = QGLWidget::convertToGLFormat( b );
         glGenTextures( 1, &textures[0] );
         glBindTexture( GL_TEXTURE_2D, textures[0] );

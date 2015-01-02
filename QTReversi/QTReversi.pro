@@ -41,3 +41,6 @@ HEADERS  += \
 FORMS += \
     preferencesdialog.ui
 
+RESOURCES += \
+    Resources.qrc
+
