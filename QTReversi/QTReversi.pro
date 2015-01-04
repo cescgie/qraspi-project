@@ -23,7 +23,8 @@ SOURCES += main.cpp \
     infosmoves.cpp \
     board.cpp \
     infoview.cpp \
-    preferencesdialog.cpp
+    preferencesdialog.cpp \
+    ai.cpp
 
 HEADERS  += \
     define.h \
@@ -36,7 +37,8 @@ HEADERS  += \
     infosmoves.h \
     board.h \
     infoview.h \
-    preferencesdialog.h
+    preferencesdialog.h \
+    ai.h
 
 FORMS += \
     preferencesdialog.ui

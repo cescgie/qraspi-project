@@ -2,6 +2,7 @@
 #include "game.h"
 #include <QApplication>
 #include <QtWidgets>
+#include "ai.h"
 
 #include <ctime>
 #include <cstdlib>
@@ -16,8 +17,11 @@ int main(int argc, char *argv[])
 
     game *ge = new game();
     graphics *grap= new graphics();
+    ai *aipt = new ai();
 
     grap->initialization( ge );
+    aipt->connecting(ge);
+
     grap->show();
 
     return a.exec();
