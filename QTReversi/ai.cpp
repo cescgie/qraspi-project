@@ -19,12 +19,14 @@ ai::~ai()
     delete playerTable[p2];
 }
 
+//Anschluss Funktionsmodule
 void ai::connecting( game* ge )
 {
     connect( ge, SIGNAL( askingAIMove(game*) ), this, SLOT( chooseMove(game*) ) );
     connect( this, SIGNAL( sendingMove(int,int) ), ge, SLOT( recupMove(int,int) ) );
 }
 
+//Wählt den Wechsel zu spielen (globale Verarbeitung)
 void ai::chooseMove( game* ge )
 {
     initialization(ge);
@@ -32,6 +34,7 @@ void ai::chooseMove( game* ge )
     emit sendingMove( m.getX(), m.getY() );
 }
 
+//Eine Funktion, die die Suchmaschine von IA initialisiert
 void ai::initialization(game* ge)
 {
     *board = *( ge->getBoard() );
@@ -43,6 +46,7 @@ void ai::initialization(game* ge)
     currentPlayer = ge->getCurrentPlayer();
 }
 
+//Wählt zufällig einen Spielzug
 move ai::randomMove()
 {
     if( !regularMovesListTemp.empty() )
