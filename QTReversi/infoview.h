@@ -48,13 +48,16 @@ private:
             *scoreLabel,
             *scoreP1, *scoreP2,
             *movesLabel,
-            *movesP1, *movesP2;
+            *movesP1, *movesP2,
+            *movesListLabel;
 
     QPainter *painterBlack,*painterWhite;
 
     QVBoxLayout *mainLayout;
     QGridLayout *topLayout;
     QHBoxLayout *toptopLayout, *centerLayout;
+
+    QTextEdit *listMoves;
 
 public slots:
 
@@ -63,7 +66,7 @@ public slots:
     void setInfosGame(IdMsgInfos);
     void updatingScore();
     void updatingMoves();
-
+    void setListMoves( QString);
 
 };
 

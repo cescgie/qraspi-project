@@ -68,6 +68,9 @@ InfoView::InfoView(QWidget *parent)
     palette.setColor(QPalette::Window,QColor(Qt::green));
     infosGame->setPalette(palette);
 
+    listMoves = new QTextEdit( "Empty" );
+    listMoves->setReadOnly(true);
+
     topLayout = new QGridLayout;
     topLayout->addWidget(namepar1,1,0);
     topLayout->addWidget(levelpar1,2,0);
@@ -90,6 +93,11 @@ InfoView::InfoView(QWidget *parent)
     toptopLayout->addLayout(topLayout);
     toptopLayout->addStretch();
 
+    centerLayout = new QHBoxLayout;
+    centerLayout->addStretch();
+    centerLayout->addWidget(movesListLabel);
+    centerLayout->addStretch();
+
     mainLayout = new QVBoxLayout;
     mainLayout->addWidget(line);
     mainLayout->addStretch();
@@ -98,6 +106,9 @@ InfoView::InfoView(QWidget *parent)
     mainLayout->addWidget(line2);
     mainLayout->addStretch();
     mainLayout->addWidget(infosGame);
+    mainLayout->addStretch();
+    mainLayout->addLayout(centerLayout);
+    mainLayout->addWidget(listMoves);
 
     this->setLayout(mainLayout);
 
@@ -200,6 +211,7 @@ void InfoView::connecting( game* ge )
     connect( ge, SIGNAL( sendInfosGameDisplay(IdMsgInfos) ), this, SLOT( setInfosGame(IdMsgInfos) ) );
     connect( ge, SIGNAL( playerScoreModified() ), this, SLOT( updatingScore() ) );
     connect( ge, SIGNAL( playerNumMovesModified() ), this, SLOT( updatingMoves() ) );
+    connect( ge, SIGNAL( movesListModified(QString) ), this, SLOT( setListMoves(QString) ) );
 
 }
 
@@ -299,4 +311,9 @@ void InfoView::setInfosGame(IdMsgInfos idMsg)
         }
 
         infosGame->setText(msg);
+}
+
+void InfoView::setListMoves( QString list )
+{
+    listMoves->setText( list );
 }
