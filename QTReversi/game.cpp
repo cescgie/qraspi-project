@@ -27,10 +27,10 @@ game::game()
     undoAllowed = false;
 
     //sounds configuration
-    effectP2.setSource(QUrl::fromLocalFile(":/sounds/stein1.wav"));
+    effectP2.setSource(QUrl::fromLocalFile(":/sounds/stein2.wav"));
     effectP2.setLoopCount(1);
     effectP2.setVolume(1.0f);
-    effectP1.setSource(QUrl::fromLocalFile(":/sounds/stein2.wav"));
+    effectP1.setSource(QUrl::fromLocalFile(":/sounds/stein1.wav"));
     effectP1.setLoopCount(1);
     effectP1.setVolume(1.0f);
 }

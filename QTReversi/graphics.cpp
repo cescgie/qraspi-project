@@ -24,6 +24,23 @@ graphics::graphics()
     createToolBars();
     createStatusBar();
 
+    //sounds configuration
+    effectBounce.setSource(QUrl::fromLocalFile(":/sounds/bounce.wav"));
+    effectBounce.setLoopCount(1);
+    effectBounce.setVolume(1.0f);
+    effectStart.setSource(QUrl::fromLocalFile(":/sounds/start.wav"));
+    effectStart.setLoopCount(1);
+    effectStart.setVolume(1.0f);
+    effectEnd.setSource(QUrl::fromLocalFile(":/sounds/end.wav"));
+    effectEnd.setLoopCount(1);
+    effectEnd.setVolume(1.0f);
+    effectNext.setSource(QUrl::fromLocalFile(":/sounds/next.wav"));
+    effectNext.setLoopCount(1);
+    effectNext.setVolume(1.0f);
+    effectPrev.setSource(QUrl::fromLocalFile(":/sounds/prev.wav"));
+    effectPrev.setLoopCount(1);
+    effectPrev.setVolume(1.0f);
+
     setUnifiedTitleAndToolBarOnMac ( true );
 
     setWindowTitle(QtVersion);
@@ -141,13 +158,16 @@ void graphics::createToolBars()
 
 void graphics::newGame()
 {
+    effectBounce.play();
     QMessageBox::information(this, QtVersion, tr("New Game!"),
             QMessageBox::Ok | QMessageBox::Default);
+    effectStart.play();
     emit startNewGame();
 }
 
 void graphics::preferences()
 {
+    effectBounce.play();
     QString name_p1 = infos->getPlayer(p1)->getName(),
             name_p2 = infos->getPlayer(p2)->getName();
     int type_p1, type_p2;
@@ -228,6 +248,7 @@ void graphics::preferences()
         }
         if( modif_type )
         {
+            effectStart.play();
             emit startNewGame();
         }
     }
@@ -235,6 +256,7 @@ void graphics::preferences()
 
 void graphics::closeEvent(QCloseEvent *event)
 {
+        effectBounce.play();
         int r = QMessageBox::warning(this,QtVersion,tr("Do you really want to exit the game?"),
                                 QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
         if(r == QMessageBox::Yes){
@@ -253,6 +275,7 @@ void graphics::createStatusBar()
 \
 void graphics::displayWinner(Player *p)
 {
+    effectEnd.play();
     if( p != NULL )
     {
         QString str = p->getName() + " wins the game !";
@@ -264,7 +287,7 @@ void graphics::displayWinner(Player *p)
         QMessageBox::information(this,QtVersion,tr("Deuce !"),
                 QMessageBox::Ok | QMessageBox::Default);
     }
-
+    effectEnd.stop();
     emit startNewGame();
 }
 
@@ -285,12 +308,14 @@ void graphics::updateSettingLastMove()
 
 void graphics::undoMove()
 {
+    effectPrev.play();
     scene->setMoveAsked(false);
     emit undoMoveAsked();
 }
 
 void graphics::redoMove()
 {
+    effectNext.play();
     scene->setMoveAsked(false);
     emit redoMoveAsked();
 }

@@ -72,6 +72,13 @@ private:
      QAction *undoMoveAction;
      QAction *redoMoveAction;
 
+     //sound
+     QSoundEffect effectStart;
+     QSoundEffect effectEnd;
+     QSoundEffect effectBounce;
+     QSoundEffect effectPrev;
+     QSoundEffect effectNext;
+
 signals:
     void startNewGame();
     void undoMoveAsked();

@@ -8,5 +8,10 @@
         <file>images/Stone.bmp</file>
         <file>sounds/stein1.wav</file>
         <file>sounds/stein2.wav</file>
+        <file>sounds/bounce.wav</file>
+        <file>sounds/next.wav</file>
+        <file>sounds/prev.wav</file>
+        <file>sounds/start.wav</file>
+        <file>sounds/end.wav</file>
     </qresource>
 </RCC>
