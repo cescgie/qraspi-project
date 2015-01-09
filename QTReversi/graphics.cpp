@@ -159,10 +159,12 @@ void graphics::createToolBars()
 void graphics::newGame()
 {
     effectBounce.play();
-    QMessageBox::information(this, QtVersion, tr("New Game!"),
-            QMessageBox::Ok | QMessageBox::Default);
-    effectStart.play();
-    emit startNewGame();
+    int r = QMessageBox::information(this, QtVersion, tr("Play new game?"),
+            QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
+    if(r == QMessageBox::Yes){
+        effectStart.play();
+        emit startNewGame();
+    }
 }
 
 void graphics::preferences()
@@ -288,7 +290,7 @@ void graphics::displayWinner(Player *p)
                 QMessageBox::Ok | QMessageBox::Default);
     }
     effectEnd.stop();
-    emit startNewGame();
+    emit preferences();
 }
 
 void graphics::updateSettingAnimation()
