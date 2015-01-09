@@ -25,6 +25,14 @@ game::game()
 
     redoAllowed = false;
     undoAllowed = false;
+
+    //sounds configuration
+    effectP2.setSource(QUrl::fromLocalFile(":/sounds/stein1.wav"));
+    effectP2.setLoopCount(1);
+    effectP2.setVolume(1.0f);
+    effectP1.setSource(QUrl::fromLocalFile(":/sounds/stein2.wav"));
+    effectP1.setLoopCount(1);
+    effectP1.setVolume(1.0f);
 }
 
 game::~game()
@@ -379,11 +387,13 @@ void game::updateScore()
     {
         playerTable[p1]->increaseScore();
         playerTable[p2]->decreaseScore();
+        effectP1.play();         //sounds
     }
     else
     {
         playerTable[p1]->decreaseScore();
         playerTable[p2]->increaseScore();
+        effectP2.play();
     }
 }
 

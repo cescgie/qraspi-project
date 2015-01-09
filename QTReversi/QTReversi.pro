@@ -6,6 +6,7 @@
 
 QT       += opengl
 QT       += widgets
+QT       += core gui multimedia
 
 TARGET = QTReversi
 TEMPLATE = app

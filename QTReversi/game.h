@@ -10,7 +10,7 @@ using namespace std;
 #include "player.h"
 #include "move.h"
 #include "infosmoves.h"
-
+#include <QSoundEffect>
 
 class game : public QObject
     {
@@ -36,6 +36,10 @@ private:
 
     bool redoAllowed;
     bool undoAllowed;
+
+    //sounds. Setzt ( QT += core gui multimedia ) in pro-Datei ein.
+    QSoundEffect effectP1;
+    QSoundEffect effectP2;
 
 public:
     game();

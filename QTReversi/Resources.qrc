@@ -4,7 +4,9 @@
         <file>images/Preferences.png</file>
         <file>images/Quit.png</file>
         <file>images/RedoMove.png</file>
-        <file>images/Stone.bmp</file>
         <file>images/UndoMove.png</file>
+        <file>images/Stone.bmp</file>
+        <file>sounds/stein1.wav</file>
+        <file>sounds/stein2.wav</file>
     </qresource>
 </RCC>
