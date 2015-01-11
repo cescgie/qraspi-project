@@ -49,7 +49,8 @@ private:
             *scoreP1, *scoreP2,
             *movesLabel,
             *movesP1, *movesP2,
-            *movesListLabel;
+            *movesListLabel,
+            *dot1, *dot2, *dot3, *dot4, *dot5;
 
     QPainter *painterBlack,*painterWhite;
 

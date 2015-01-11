@@ -25,6 +25,12 @@ InfoView::InfoView(QWidget *parent)
     movesP1 = new QLabel( "0" );
     movesP2 = new QLabel( "0" );
 
+    dot1 = new QLabel(":");
+    dot2 = new QLabel(":");
+    dot3 = new QLabel(":");
+    dot4 = new QLabel(":");
+    dot5 = new QLabel(":");
+
     QPixmap pix(60,60);
     pix.fill(Qt::transparent);
     painterBlack= new QPainter(&pix);
@@ -76,6 +82,10 @@ InfoView::InfoView(QWidget *parent)
     topLayout->addWidget(levelpar1,2,0);
     topLayout->addWidget(scoreLabel,4,0);
     topLayout->addWidget(movesLabel,3,0);
+    topLayout->addWidget(dot1,1,1);
+    topLayout->addWidget(dot2,2,1);
+    topLayout->addWidget(dot3,3,1);
+    topLayout->addWidget(dot4,4,1);
 
     topLayout->addWidget(pawnBlack,0,2);
     topLayout->addWidget(nameP1,1,2);
