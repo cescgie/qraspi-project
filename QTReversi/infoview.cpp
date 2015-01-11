@@ -62,6 +62,12 @@ InfoView::InfoView(QWidget *parent)
     movesP1->setAlignment(Qt::AlignCenter);
     movesP2->setAlignment(Qt::AlignCenter);
     QFont f( "Verdana", 50, QFont::Bold);
+    QFont f2( "Verdana", 20, QFont::Bold);
+
+    scoreP1->setFont(f);
+    scoreP2->setFont(f);
+    scoreLabel->setFont(f2);
+    dot5->setFont(f2);
 
     infosGame = new QLabel( "" );
     infosGame->setAlignment(Qt::AlignCenter);
@@ -93,6 +99,8 @@ InfoView::InfoView(QWidget *parent)
     topLayout->addWidget(scoreP1,4,2);
     topLayout->addWidget(movesP1,3,2);
 
+    topLayout->addWidget(dot5, 4,3);
+
     topLayout->addWidget(pawnWhite,0,4);
     topLayout->addWidget(nameP2,1,4);
     topLayout->addWidget(typeP2,2,4);
@@ -119,6 +127,7 @@ InfoView::InfoView(QWidget *parent)
     mainLayout->addStretch();
     mainLayout->addLayout(centerLayout);
     mainLayout->addWidget(listMoves);
+    mainLayout->setAlignment(Qt::AlignHCenter);
 
     this->setLayout(mainLayout);
 
