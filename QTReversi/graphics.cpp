@@ -6,6 +6,7 @@
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QtGui>
+#include <assert.h>
 
 graphics::graphics()
 {
@@ -142,6 +143,13 @@ void graphics::createActions()
     redoMoveAction->setStatusTip(tr("Redo the last move canceled"));
     connect(redoMoveAction, SIGNAL(triggered()), this, SLOT(redoMove()));
     redoMoveAction->setEnabled(false);
+
+    //fullscreen
+    fullScreenAction = new QAction(tr("&Fullscreen"), this);
+    fullScreenAction->setIcon(QIcon(":/images/Fullscreen.png"));
+    fullScreenAction->setShortcut(tr("Ctrl+L"));
+    fullScreenAction->setStatusTip(tr("Set Full Screen"));
+    connect(fullScreenAction, SIGNAL(triggered()), this, SLOT(fullScreen()));
 }
 
 void graphics::createToolBars()
@@ -153,6 +161,7 @@ void graphics::createToolBars()
     toolsToolBar->addAction(undoMoveAction);
     toolsToolBar->addAction(redoMoveAction);
     toolsToolBar->addAction(preferencesAction);
+    toolsToolBar->addAction(fullScreenAction);
     toolsToolBar->addAction(exitAction);
 }
 
@@ -330,4 +339,33 @@ void graphics::setDisplayUndoMoveAction(bool b)
 void graphics::setDisplayRedoMoveAction(bool b)
 {
         redoMoveAction->setEnabled(b);
+}
+
+//fullscreen
+void graphics::fullScreen()
+{
+    effectBounce.play(); //sound
+    QDialog *dlg = new QDialog(this);
+    QHBoxLayout *dlg_layout = new QHBoxLayout(dlg);
+        dlg_layout->setContentsMargins(0, 0, 0, 0);
+        dlg_layout->addWidget(scene);
+        dlg->setLayout(dlg_layout);
+        dlg->showFullScreen();
+
+        bool r = connect(dlg, SIGNAL(rejected()), this, SLOT(showGlNormal()));
+        assert(r);
+        r = connect(dlg, SIGNAL(accepted()), this, SLOT(showGlNormal()));
+        assert(r);
+
+}
+
+//Normalscreen
+void graphics::showGlNormal() {
+    centralWindow = new QWidget(this);
+
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->addWidget(scene);
+    layout->addWidget(infos);
+    centralWindow->setLayout(layout);
+    setCentralWidget(centralWindow);
 }

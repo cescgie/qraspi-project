@@ -13,5 +13,6 @@
         <file>sounds/prev.wav</file>
         <file>sounds/start.wav</file>
         <file>sounds/end.wav</file>
+        <file>images/Fullscreen.png</file>
     </qresource>
 </RCC>

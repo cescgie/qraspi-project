@@ -225,7 +225,7 @@ void InfoView::connecting( game* ge )
 {
     playerTable = ge->getPlayer();
     connect( ge, SIGNAL( playerNameModified(Player*) ), this, SLOT( updatingName(Player*) ) );
-    connect( ge, SIGNAL( playerColorModified(Player*) ), this, SLOT( updatingColor(Player*) ) );
+    //connect( ge, SIGNAL( playerColorModified(Player*) ), this, SLOT( updatingColor(Player*) ) );
     connect( ge, SIGNAL( playerTypeModified(Player*) ), this, SLOT( updatingType(Player*) ) );
     connect( ge, SIGNAL( sendInfosGameDisplay(IdMsgInfos) ), this, SLOT( setInfosGame(IdMsgInfos) ) );
     connect( ge, SIGNAL( playerScoreModified() ), this, SLOT( updatingScore() ) );

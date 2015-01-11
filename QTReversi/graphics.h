@@ -41,7 +41,8 @@ private slots:
     void redoMove();
     void setDisplayUndoMoveAction(bool);
     void setDisplayRedoMoveAction(bool);
-
+    void fullScreen();
+    void showGlNormal();
 private:
      void createActions();
      void createMenus();
@@ -78,6 +79,8 @@ private:
      QSoundEffect effectBounce;
      QSoundEffect effectPrev;
      QSoundEffect effectNext;
+
+     QAction *fullScreenAction;
 
 signals:
     void startNewGame();
