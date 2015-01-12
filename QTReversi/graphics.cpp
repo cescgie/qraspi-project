@@ -14,36 +14,14 @@ graphics::graphics()
     scene = new glView(this);
     infos = new InfoView(this);
 
-    QHBoxLayout *layout = new QHBoxLayout;
-    layout->addWidget(scene);
-    layout->addWidget(infos);
-    centralWindow->setLayout(layout);
-    setCentralWidget(centralWindow);
-
+    initComponent();
     createActions();
     createMenus();
     createToolBars();
     createStatusBar();
-
-    //sounds configuration
-    effectBounce.setSource(QUrl::fromLocalFile(":/sounds/bounce.wav"));
-    effectBounce.setLoopCount(1);
-    effectBounce.setVolume(1.0f);
-    effectStart.setSource(QUrl::fromLocalFile(":/sounds/start.wav"));
-    effectStart.setLoopCount(1);
-    effectStart.setVolume(1.0f);
-    effectEnd.setSource(QUrl::fromLocalFile(":/sounds/end.wav"));
-    effectEnd.setLoopCount(1);
-    effectEnd.setVolume(1.0f);
-    effectNext.setSource(QUrl::fromLocalFile(":/sounds/next.wav"));
-    effectNext.setLoopCount(1);
-    effectNext.setVolume(1.0f);
-    effectPrev.setSource(QUrl::fromLocalFile(":/sounds/prev.wav"));
-    effectPrev.setLoopCount(1);
-    effectPrev.setVolume(1.0f);
+    soundConfiguration();
 
     setUnifiedTitleAndToolBarOnMac ( true );
-
     setWindowTitle(QtVersion);
 }
 
@@ -368,4 +346,33 @@ void graphics::showGlNormal() {
     layout->addWidget(infos);
     centralWindow->setLayout(layout);
     setCentralWidget(centralWindow);
+}
+
+void graphics::initComponent()
+{
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->addWidget(scene);
+    layout->addWidget(infos);
+    centralWindow->setLayout(layout);
+    setCentralWidget(centralWindow);
+}
+
+//sounds configuration
+void graphics::soundConfiguration()
+{
+   effectBounce.setSource(QUrl::fromLocalFile(":/sounds/bounce.wav"));
+   effectBounce.setLoopCount(1);
+   effectBounce.setVolume(1.0f);
+   effectStart.setSource(QUrl::fromLocalFile(":/sounds/start.wav"));
+   effectStart.setLoopCount(1);
+   effectStart.setVolume(1.0f);
+   effectEnd.setSource(QUrl::fromLocalFile(":/sounds/end.wav"));
+   effectEnd.setLoopCount(1);
+   effectEnd.setVolume(1.0f);
+   effectNext.setSource(QUrl::fromLocalFile(":/sounds/next.wav"));
+   effectNext.setLoopCount(1);
+   effectNext.setVolume(1.0f);
+   effectPrev.setSource(QUrl::fromLocalFile(":/sounds/prev.wav"));
+   effectPrev.setLoopCount(1);
+   effectPrev.setVolume(1.0f);
 }

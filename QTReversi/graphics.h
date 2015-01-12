@@ -44,10 +44,12 @@ private slots:
     void fullScreen();
     void showGlNormal();
 private:
+     void initComponent();
      void createActions();
      void createMenus();
      void createStatusBar();
      void createToolBars();
+     void soundConfiguration();
 
      void connecting( game * );
 
