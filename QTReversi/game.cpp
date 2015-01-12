@@ -13,26 +13,12 @@ game::game()
     isFinished = false;
     movesSavedList.clear();
 
-    //Initialisiert SpielZuege regelmaeﬂig in regularMovesList, für die Sicherung/Speicherung des ersten Zugs ...
-    regularMovesListTemp.push_back( move(2,3,Black) );
-    regularMovesListTemp.push_back( move(3,2,Black) );
-    regularMovesListTemp.push_back( move(4,5,Black) );
-    regularMovesListTemp.push_back( move(5,4,Black) );
-    regularMovesListTemp.push_back( move(5,3,White) );
-    regularMovesListTemp.push_back( move(4,2,White) );
-    regularMovesListTemp.push_back( move(2,4,White) );
-    regularMovesListTemp.push_back( move(3,5,White) );
+    initStartBoard();
 
     redoAllowed = false;
     undoAllowed = false;
 
-    //sounds configuration
-    effectP2.setSource(QUrl::fromLocalFile(":/sounds/stein2.wav"));
-    effectP2.setLoopCount(1);
-    effectP2.setVolume(1.0f);
-    effectP1.setSource(QUrl::fromLocalFile(":/sounds/stein1.wav"));
-    effectP1.setLoopCount(1);
-    effectP1.setVolume(1.0f);
+    soundsConfiguration();
 }
 
 game::~game()
@@ -47,6 +33,18 @@ void game::startGame()
     askMove();
 }
 
+//Initialisiert SpielZuege regelmaeﬂig in regularMovesList, für die Sicherung/Speicherung des ersten Zugs ...
+void game::initStartBoard()
+{
+    regularMovesListTemp.push_back( move(2,3,Black) );
+    regularMovesListTemp.push_back( move(3,2,Black) );
+    regularMovesListTemp.push_back( move(4,5,Black) );
+    regularMovesListTemp.push_back( move(5,4,Black) );
+    regularMovesListTemp.push_back( move(5,3,White) );
+    regularMovesListTemp.push_back( move(4,2,White) );
+    regularMovesListTemp.push_back( move(2,4,White) );
+    regularMovesListTemp.push_back( move(3,5,White) );
+}
 
 Board* game::getBoard()
 {
@@ -1073,4 +1071,15 @@ void game::redoMoveGlobal()
         //Starten Sie das Spiel-Engine bekommen eine Chance auf eine angemessene Motor (Relancer le moteur de jeu en demandant un coup au moteur adÈquate)
         askMove();
 
+}
+
+//sounds configuration
+void game::soundsConfiguration()
+{
+    effectP2.setSource(QUrl::fromLocalFile(":/sounds/stein2.wav"));
+    effectP2.setLoopCount(1);
+    effectP2.setVolume(1.0f);
+    effectP1.setSource(QUrl::fromLocalFile(":/sounds/stein1.wav"));
+    effectP1.setLoopCount(1);
+    effectP1.setVolume(1.0f);
 }

@@ -60,6 +60,8 @@ private:
 
     QTextEdit *listMoves;
 
+    void initComponent();
+
 public slots:
 
     void updatingName(Player*);

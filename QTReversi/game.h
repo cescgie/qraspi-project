@@ -41,6 +41,9 @@ private:
     QSoundEffect effectP1;
     QSoundEffect effectP2;
 
+    void initStartBoard();
+    void soundsConfiguration();
+
 public:
     game();
     ~game();

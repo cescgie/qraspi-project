@@ -8,6 +8,17 @@
 InfoView::InfoView(QWidget *parent)
     : QWidget(parent)
 {
+    initComponent();
+    this->setLayout(mainLayout);
+    this->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Preferred);
+}
+
+InfoView::~InfoView()
+{
+}
+
+void InfoView::initComponent()
+{
     nameP1 = new QLabel( "" );
     nameP2 = new QLabel( "" );
     typeP1 = new QLabel("( )");
@@ -128,15 +139,6 @@ InfoView::InfoView(QWidget *parent)
     mainLayout->addLayout(centerLayout);
     mainLayout->addWidget(listMoves);
     mainLayout->setAlignment(Qt::AlignHCenter);
-
-    this->setLayout(mainLayout);
-
-    this->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Preferred);
-
-}
-
-InfoView::~InfoView()
-{
 }
 
 void InfoView::setNameP1( QString name )
@@ -236,8 +238,6 @@ void InfoView::connecting( game* ge )
 
 void InfoView::updatingType( Player *p )
 {
-    //      cout << " \"InfoView::updatingType(Player*)\"" << endl;
-
     if( p->getId() == p1 )
     {
             setTypeP1( p->getType() );
@@ -250,8 +250,6 @@ void InfoView::updatingType( Player *p )
 
 void InfoView::updatingName( Player *p )
 {
-    //      cout << " \"InfoView::updatingName(Player*)\"" << endl;
-
     if( p->getId() == p1 )
     {
             setNameP1( p->getName() );
