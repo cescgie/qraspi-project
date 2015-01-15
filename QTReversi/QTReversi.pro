@@ -24,9 +24,9 @@ SOURCES += main.cpp \
     infosmoves.cpp \
     board.cpp \
     infoview.cpp \
-    preferencesdialog.cpp \
     ai.cpp \
-    infoai.cpp
+    infoai.cpp \
+    playersetting.cpp
 
 HEADERS  += \
     define.h \
@@ -39,12 +39,12 @@ HEADERS  += \
     infosmoves.h \
     board.h \
     infoview.h \
-    preferencesdialog.h \
     ai.h \
-    infoai.h
+    infoai.h \
+    playersetting.h
 
 FORMS += \
-    preferencesdialog.ui
+    playersetting.ui
 
 RESOURCES += \
     Resources.qrc

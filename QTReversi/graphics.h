@@ -5,7 +5,7 @@
 #include "glview.h"
 #include "infoview.h"
 #include <QtWidgets>
-#include "preferencesdialog.h"
+#include "playersetting.h"
 
 class game;
 class Player;

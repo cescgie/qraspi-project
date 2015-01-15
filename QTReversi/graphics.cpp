@@ -193,7 +193,7 @@ void graphics::preferences()
             break;
     }
     //Erstellen des Dialogs
-   PreferencesDialog dialog(this);
+   PlayerSetting dialog(this);
 
     cout << "## Preferences ##"<< endl;
     cout << "	type_p1: " << type_p1 << "	type_p2: " << type_p2 << endl;
