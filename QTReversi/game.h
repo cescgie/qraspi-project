@@ -64,6 +64,9 @@ public:
 
     void initializationDisplay();
 
+    vector<InfosMoves> getMovesSavedList();
+    int getNumCurrentMove();
+
 public slots:
 
     void initialization();

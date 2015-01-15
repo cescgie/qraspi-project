@@ -1083,3 +1083,14 @@ void game::soundsConfiguration()
     effectP1.setLoopCount(1);
     effectP1.setVolume(1.0f);
 }
+
+vector<InfosMoves> game::getMovesSavedList()
+{
+        return movesSavedList;
+}
+
+int game::getNumCurrentMove()
+{
+        return numCurrentMove;
+}
+

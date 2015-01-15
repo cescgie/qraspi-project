@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>404</width>
-    <height>217</height>
+    <width>325</width>
+    <height>211</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -65,7 +65,17 @@
         </item>
         <item>
          <property name="text">
-          <string>Computer</string>
+          <string>Computer ( Basic )</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Computer ( Amateur )</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Computer ( Expert )</string>
          </property>
         </item>
        </widget>
@@ -157,7 +167,17 @@
         </item>
         <item>
          <property name="text">
-          <string>Computer</string>
+          <string>Computer ( Basic )</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Computer ( Amateur )</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Computer ( Expert )</string>
          </property>
         </item>
        </widget>

@@ -165,6 +165,12 @@ void graphics::preferences()
         case AI_1:
             type_p1 = 1;
             break;
+        case AI_2:
+            type_p1 = 2;
+            break;
+        case AI_3:
+            type_p1 = 3;
+            break;
         case Local:
         default:
             type_p1 = 0;
@@ -174,6 +180,12 @@ void graphics::preferences()
     {
         case AI_1:
             type_p2 = 1;
+            break;
+        case AI_2:
+            type_p2 = 2;
+            break;
+        case AI_3:
+            type_p2 = 3;
             break;
         case Local:
         default:
@@ -211,6 +223,14 @@ void graphics::preferences()
                     infos->getPlayer(p1)->setType( AI_1 );
                     infos->setTypeP1( AI_1 );
                     break;
+                case 2:
+                    infos->getPlayer(p1)->setType( AI_2 );
+                    infos->setTypeP1( AI_2 );
+                    break;
+                case 3:
+                    infos->getPlayer(p1)->setType( AI_3 );
+                    infos->setTypeP1( AI_3 );
+                    break;
                 case 0:
                 default:
                     infos->getPlayer(p1)->setType( Local );
@@ -226,6 +246,14 @@ void graphics::preferences()
                 case 1:
                     infos->getPlayer(p2)->setType( AI_1 );
                     infos->setTypeP2( AI_1 );
+                    break;
+                case 2:
+                    infos->getPlayer(p2)->setType( AI_2 );
+                    infos->setTypeP2( AI_2 );
+                    break;
+                case 3:
+                    infos->getPlayer(p2)->setType( AI_3 );
+                    infos->setTypeP2( AI_3 );
                     break;
                 case 0:
                 default:
