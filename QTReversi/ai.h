@@ -9,7 +9,7 @@
 #include "define.h"
 #include "game.h"
 #include "player.h"
-#include "move.h"
+#include "moves.h"
 #include "board.h"
 #include "infosmoves.h"
 #include "infoAI.h"
@@ -30,10 +30,10 @@ private:
         Player* playerTable[2];
 
         //Liste der Schübe des Brettes
-        vector<move> movesList;
+        vector<moves> movesList;
 
         //Temporäre Liste, um die "legale Züge" speichern
-        vector<move> regularMovesListTemp;
+        vector<moves> regularMovesListTemp;
 
         //Spieler, der gespielt hat
         int currentPlayer;
@@ -42,8 +42,8 @@ private:
         bool isFinished;
 
         //möglicher Zug
-        vector<move> movesPlay;
-        vector<move>* movesPlaySaved;
+        vector<moves> movesPlay;
+        vector<moves>* movesPlaySaved;
 
         int INFINITY;
 
@@ -81,7 +81,7 @@ private:
         void initialization(game*);
 
         //Wählt zufällig einen Zug
-        move randomMove();
+        moves randomMove();
 
         //MinMax Funktion
         infoAI miniMax(int);
@@ -96,22 +96,22 @@ private:
         infoAI getScore();
 
         //Spielt einen Zug in der Partie
-        bool playMove(move);
+        bool playMove(moves);
 
         //den letzten rueckgaengig machen
         void undoLastMove();
 
         //Update Spieldaten nach dem Spiel ein Schuss: othellier SHIFT, SHIFT Score
-        bool updateGame(move);
+        bool updateGame(moves);
 
         //Verschieben Sie die Stücke von der Linie der Schuss gespielt
-        void updateRow(move);
+        void updateRow(moves);
 
         //Verschieben Sie die Stücke aus der Spalte der Schuss gespielt
-        void updateColumn(move);
+        void updateColumn(moves);
 
         //SHIFT Bauern diagonal plötzlich spielte
-        void updateDiagonal(move);
+        void updateDiagonal(moves);
 
         //Gibt ein Token
         void turnDownPawn(int,int);
@@ -131,7 +131,7 @@ private:
         //Einen legalen Zug Überprüfung nach mehreren Parametern ...
         bool checkRegularMove( int, int, int, int);
         void initializationSavingMove();
-        void addMoveList(move m);
+        void addMoveList(moves m);
         void nextPlayer();
         void saveCurrentPlayer();
         void saveRegularMoves();

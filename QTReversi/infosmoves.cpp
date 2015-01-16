@@ -10,7 +10,7 @@ InfosMoves::InfosMoves()
 
 
 //Setzen eines Steines in die Liste des Wertes
-void InfosMoves::addPawnsTurnedDown(move m)
+void InfosMoves::addPawnsTurnedDown(moves m)
 {
         pawnsTurnedDownList.push_back(m);
 }
@@ -18,7 +18,7 @@ void InfosMoves::addPawnsTurnedDown(move m)
 
 
 //regelmaessiges sichern der Werte
-void InfosMoves::saveRegularMoves(vector<move> v)
+void InfosMoves::saveRegularMoves(vector<moves> v)
 {
         regularMovesList = v;
 }
@@ -42,7 +42,7 @@ int InfosMoves::getCurrentPlayer()
 
 
 //Zugriffsvariable 'pawnsTurnedDownList'
-vector<move> InfosMoves::getPawnsTurnedDownList()
+vector<moves> InfosMoves::getPawnsTurnedDownList()
 {
         return pawnsTurnedDownList;
 }
@@ -50,7 +50,7 @@ vector<move> InfosMoves::getPawnsTurnedDownList()
 
 
 //Zugriffsvariable 'regularMovesList'
-vector<move> InfosMoves::getRegularMovesList()
+vector<moves> InfosMoves::getRegularMovesList()
 {
         return regularMovesList;
 }
@@ -72,9 +72,9 @@ int InfosMoves::getSizeRegularMovesList()
 
 
 //Gibt die Anzahl der Zuege 'regularMovesList'
-move InfosMoves::getRegularMovesList(int i)
+moves InfosMoves::getRegularMovesList(int i)
 {
-        move m;
+        moves m;
         if( i>=0 && i<regularMovesList.size() )
         {
                 m = regularMovesList[i];
@@ -84,9 +84,9 @@ move InfosMoves::getRegularMovesList(int i)
 
 
 //Gibt die Anzahl der Zuege 'pawnsTurnedDownList'
-move InfosMoves::getPawnsTurnedDownList(int i)
+moves InfosMoves::getPawnsTurnedDownList(int i)
 {
-        move m;
+        moves m;
         if( i>=0 && i<pawnsTurnedDownList.size() )
         {
                 m = pawnsTurnedDownList[i];

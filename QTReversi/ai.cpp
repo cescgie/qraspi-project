@@ -37,7 +37,7 @@ void ai::chooseMove( game* ge )
         initialization(ge);
 
         int level = 0;
-        move m;
+        moves m;
 
         switch( playerTable[idEvaluationPlayer]->getType() )
         {
@@ -107,7 +107,7 @@ void ai::initialization(game* ge)
 
 
 //Wählt zufällig einen Spielzug
-move ai::randomMove()
+moves ai::randomMove()
 {
 //      cout << "currentPlayer = " << currentPlayer << endl;
 
@@ -138,7 +138,7 @@ move ai::randomMove()
         }
         else
         {
-                return move(-1,-1);
+                return moves(-1,-1);
         }
 }
 
@@ -567,7 +567,7 @@ void ai::updateScoreEvaluate( int square, ColorPawn color, int &scoreP1, int &sc
         }
 }
 
-bool ai::playMove(move m)
+bool ai::playMove(moves m)
 {
 //Setze den Zug auf l'othellier
 //Schiebe Inhalt von 'movesPlay'
@@ -633,7 +633,7 @@ void ai::undoLastMove()
         isFinished = false;
         if( numCurrentMove > 0 )
         {
-                move moveTmp;
+                moves moveTmp;
         //Neuausrichten des vorherigen Spielzugs
                 numCurrentMove--;
         //einen aktuellen Spieler wiederherstellen
@@ -688,14 +688,14 @@ void ai::undoLastMove()
                 if( numCurrentMove == 0 ) //Konfigurieren des Starts/Anfangs
                 {
                         regularMovesListTemp.clear();
-                        regularMovesListTemp.push_back( move(2,3,Black) );
-                        regularMovesListTemp.push_back( move(3,2,Black) );
-                        regularMovesListTemp.push_back( move(4,5,Black) );
-                        regularMovesListTemp.push_back( move(5,4,Black) );
-                        regularMovesListTemp.push_back( move(5,3,White) );
-                        regularMovesListTemp.push_back( move(4,2,White) );
-                        regularMovesListTemp.push_back( move(2,4,White) );
-                        regularMovesListTemp.push_back( move(3,5,White) );
+                        regularMovesListTemp.push_back( moves(2,3,Black) );
+                        regularMovesListTemp.push_back( moves(3,2,Black) );
+                        regularMovesListTemp.push_back( moves(4,5,Black) );
+                        regularMovesListTemp.push_back( moves(5,4,Black) );
+                        regularMovesListTemp.push_back( moves(5,3,White) );
+                        regularMovesListTemp.push_back( moves(4,2,White) );
+                        regularMovesListTemp.push_back( moves(2,4,White) );
+                        regularMovesListTemp.push_back( moves(3,5,White) );
                 }
                 else
                 {
@@ -737,7 +737,7 @@ void ai::undoLastMove()
 
 
 
-bool ai::updateGame(move m)
+bool ai::updateGame(moves m)
 {
     updateRow(m);
     updateColumn(m);
@@ -746,7 +746,7 @@ bool ai::updateGame(move m)
 
 
 //Update der Spielfiguren von der Reihe des gespielten Zugs
-void ai::updateRow(move m)
+void ai::updateRow(moves m)
 {
     //Rückgewinnung/Wiedererlangung coord Zug
     int xMove = m.getX(),
@@ -810,7 +810,7 @@ void ai::updateRow(move m)
 
 
 //Update der Spielfiguren in der Spalte des gespielten Zugs
-void ai::updateColumn(move m)
+void ai::updateColumn(moves m)
 {
     //Rückgewinnung/Wiedererlangung coord Zug
     int xMove = m.getX(),
@@ -874,7 +874,7 @@ void ai::updateColumn(move m)
 
 
 //Update der Spielfiguren auf den Diagonalen des gespielten Zugs
-void ai::updateDiagonal(move m)
+void ai::updateDiagonal(moves m)
 {
     //Rückgewinnung/Wiedererlangung coord Zug
     int xMove = m.getX(),
@@ -1076,7 +1076,7 @@ void ai::definingRegularMoves()
                                             BlackRegularMove = true;
                                             increaseRegularMove(Black);
                                             //Hinzugefügt eines legalen/gültigen Zugs in der temporären Liste
-                                            regularMovesListTemp.push_back( move(x,y,Black) );
+                                            regularMovesListTemp.push_back( moves(x,y,Black) );
                                         }
                                         //Wenn die gerahmten Spielfiguren schwarz sind und das Weiße immer noch kein legaler/gültiger Zug auf diesem Feld ist
                                         else if( colorTmp == Black && !WhiteRegularMove )
@@ -1085,7 +1085,7 @@ void ai::definingRegularMoves()
                                             WhiteRegularMove = true;
                                             increaseRegularMove(White);
                                             //Hinzugefügt eines legalen/gültigen Zugs in der temporären Liste
-                                            regularMovesListTemp.push_back( move(x,y,White) );
+                                            regularMovesListTemp.push_back( moves(x,y,White) );
                                         }
 
                                         //Prüft, ob die zwei Farben haben einen gültigen Zug für dieses Feld
@@ -1210,7 +1210,7 @@ void ai::initializationSavingMove()
         movesSavedList.push_back( InfosMoves() );
 }
 
-void ai::addMoveList(move m)
+void ai::addMoveList(moves m)
 {
         //Wenn numCurrentMove mit dem letzten Zug nicht übereinstimmt, werden die Bewegungen eliminiert
         if( numCurrentMove != movesList.size() )
@@ -1248,7 +1248,7 @@ void ai::saveRegularMoves()
 
 void ai::savePawnTurnedDown(int x, int y)
 {
-        movesSavedList[numCurrentMove].addPawnsTurnedDown( move(x,y) );
+        movesSavedList[numCurrentMove].addPawnsTurnedDown( moves(x,y) );
 }
 
 void ai::affiche_movesPlay()

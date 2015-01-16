@@ -15,12 +15,12 @@ int infoAI::getScore()
         return score;
 }
 
-void infoAI::setMove(move m)
+void infoAI::setMove(moves m)
 {
         _move = m;
 }
 
-move infoAI::getMove()
+moves infoAI::getMove()
 {
         return _move;
 }

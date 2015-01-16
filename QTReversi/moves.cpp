@@ -1,8 +1,8 @@
-#include "move.h"
+#include "moves.h"
 
 
 //Konstruktor
-move::move()
+moves::moves()
 {
     numMove = 1;
     x = -1;
@@ -13,7 +13,7 @@ move::move()
 
 
 //Konstruktor
-move::move(int x, int y)
+moves::moves(int x, int y)
 {
     numMove = 0;
     this->x = x;
@@ -24,7 +24,7 @@ move::move(int x, int y)
 
 
 //Konstruktor
-move::move(int x, int y, ColorPawn color)
+moves::moves(int x, int y, ColorPawn color)
 {
     numMove = 0;
     this->x = x;
@@ -35,7 +35,7 @@ move::move(int x, int y, ColorPawn color)
 
 
 //wechsel Variable 'numMove'
-void move::setNumMove(int num)
+void moves::setNumMove(int num)
 {
     if( num>0 && num<=60 )
     {
@@ -46,7 +46,7 @@ void move::setNumMove(int num)
 
 
 //wechsel Variable 'x'
-void move::setX(int x)
+void moves::setX(int x)
 {
     if( x>=0 && x<8 )
     {
@@ -57,7 +57,7 @@ void move::setX(int x)
 
 
 //wechsel Variable 'y'
-void move::setY(int y)
+void moves::setY(int y)
 {
     if( y>=0 && y<8 )
     {
@@ -68,7 +68,7 @@ void move::setY(int y)
 
 
 //wechsel Variable 'color'
-void move::setColor(ColorPawn color)
+void moves::setColor(ColorPawn color)
 {
     this->color = color;
 }
@@ -76,7 +76,7 @@ void move::setColor(ColorPawn color)
 
 
 //Zugriffsvariable 'numMove'
-int move::getNumMove()
+int moves::getNumMove()
 {
     return numMove;
 }
@@ -84,7 +84,7 @@ int move::getNumMove()
 
 
 //Zugriffsvariable 'x'
-int move::getX()
+int moves::getX()
 {
     return x;
 }
@@ -92,7 +92,7 @@ int move::getX()
 
 
 //Zugriffsvariable 'y'
-int move::getY()
+int moves::getY()
 {
     return y;
 }
@@ -100,14 +100,14 @@ int move::getY()
 
 
 //Zugriffsvariable 'color'
-ColorPawn move::getColor()
+ColorPawn moves::getColor()
 {
     return color;
 }
 
 
 //Anzeige in Konsole
-void move::affichage()
+void moves::affichage()
 {
         cout << "\t\tWechsel: X=" << getX() << "  Y= " << getY() << " Farbe= " ;
         if( getColor()==White )

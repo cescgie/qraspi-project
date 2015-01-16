@@ -1,12 +1,12 @@
-#ifndef _MOVE_H
-#define _MOVE_H
+#ifndef _MOVES_H
+#define _MOVES_H
 
 #include <iostream>
 using namespace std;
 
 #include "define.h"
 
-class move
+class moves
 {
     private:
 
@@ -25,9 +25,9 @@ class move
     public:
 
         //Konstruktor
-        move();
-        move(int,int);
-        move(int,int,ColorPawn);
+        moves();
+        moves(int,int);
+        moves(int,int,ColorPawn);
 
         //Wechsel Variable 'nummove'
         void setNumMove(int);

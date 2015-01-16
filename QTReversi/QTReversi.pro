@@ -7,6 +7,9 @@
 QT       += opengl
 QT       += widgets
 QT       += core gui multimedia
+unix:!macx{
+LIBS     += -lGLU
+}
 
 TARGET = QTReversi
 TEMPLATE = app
@@ -20,13 +23,13 @@ SOURCES += main.cpp \
     glview.cpp \
     square.cpp \
     player.cpp \
-    move.cpp \
     infosmoves.cpp \
     board.cpp \
     infoview.cpp \
     ai.cpp \
     infoai.cpp \
-    playersetting.cpp
+    playersetting.cpp \
+    moves.cpp
 
 HEADERS  += \
     define.h \
@@ -35,13 +38,13 @@ HEADERS  += \
     glview.h \
     square.h \
     player.h \
-    move.h \
     infosmoves.h \
     board.h \
     infoview.h \
     ai.h \
     infoai.h \
-    playersetting.h
+    playersetting.h \
+    moves.h
 
 FORMS += \
     playersetting.ui

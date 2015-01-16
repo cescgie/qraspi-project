@@ -8,7 +8,7 @@ using namespace std;
 #include <vector>
 #include "board.h"
 #include "player.h"
-#include "move.h"
+#include "moves.h"
 #include "infosmoves.h"
 #include <QSoundEffect>
 
@@ -22,9 +22,9 @@ private:
 
     Player* playerTable[2];
 
-    vector<move> movesList;
+    vector<moves> movesList;
 
-    vector<move> regularMovesListTemp;
+    vector<moves> regularMovesListTemp;
 
     int currentPlayer;
 
@@ -56,9 +56,9 @@ public:
 
     Player** getPlayer();
 
-    vector<move> getMovesList();
+    vector<moves> getMovesList();
 
-    vector<move> getRegularMovesListTemp();
+    vector<moves> getRegularMovesListTemp();
 
     int getCurrentPlayer();
 
@@ -85,7 +85,7 @@ private:
 
     void nextPlayer();
 
-    bool playMove(move);
+    bool playMove(moves);
 
     void definingRegularMoves();
     void updateRegularMove();
@@ -94,15 +94,15 @@ private:
 
     void turnDownPawn(int,int);
 
-    void addMoveList(move);
+    void addMoveList(moves);
     void clearMovesList();
 
     void updateScore();
 
-    bool updateGame(move);
-    void updateRow(move);
-    void updateColumn(move);
-    void updateDiagonal(move);
+    bool updateGame(moves);
+    void updateRow(moves);
+    void updateColumn(moves);
+    void updateDiagonal(moves);
 
     void askMove();
 

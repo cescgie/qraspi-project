@@ -1,20 +1,20 @@
 #ifndef _INFOAI_H
 #define _INFOAI_H
 
-#include "move.h"
+#include "moves.h"
 
-class move;
+class moves;
 class infoAI
 {
         public:
                 infoAI();
                 void setScore(int);
                 int getScore();
-                void setMove(move);
-                move getMove();
+                void setMove(moves);
+                moves getMove();
 
         private:
-                move _move;
+                moves _move;
                 int score;
 };
 

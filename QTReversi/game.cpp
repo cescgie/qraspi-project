@@ -36,14 +36,14 @@ void game::startGame()
 //Initialisiert SpielZuege regelmaeﬂig in regularMovesList, für die Sicherung/Speicherung des ersten Zugs ...
 void game::initStartBoard()
 {
-    regularMovesListTemp.push_back( move(2,3,Black) );
-    regularMovesListTemp.push_back( move(3,2,Black) );
-    regularMovesListTemp.push_back( move(4,5,Black) );
-    regularMovesListTemp.push_back( move(5,4,Black) );
-    regularMovesListTemp.push_back( move(5,3,White) );
-    regularMovesListTemp.push_back( move(4,2,White) );
-    regularMovesListTemp.push_back( move(2,4,White) );
-    regularMovesListTemp.push_back( move(3,5,White) );
+    regularMovesListTemp.push_back( moves(2,3,Black) );
+    regularMovesListTemp.push_back( moves(3,2,Black) );
+    regularMovesListTemp.push_back( moves(4,5,Black) );
+    regularMovesListTemp.push_back( moves(5,4,Black) );
+    regularMovesListTemp.push_back( moves(5,3,White) );
+    regularMovesListTemp.push_back( moves(4,2,White) );
+    regularMovesListTemp.push_back( moves(2,4,White) );
+    regularMovesListTemp.push_back( moves(3,5,White) );
 }
 
 Board* game::getBoard()
@@ -62,12 +62,12 @@ Player** game::getPlayer()
     return playerTable;
 }
 
-vector<move> game::getMovesList()
+vector<moves> game::getMovesList()
 {
     return movesList;
 }
 
-vector<move> game::getRegularMovesListTemp()
+vector<moves> game::getRegularMovesListTemp()
 {
     return regularMovesListTemp;
 }
@@ -96,14 +96,14 @@ void game::initialization()
     movesSavedList.clear();
 
     //Initialisiert die SpielZuege regelmaeﬂig in regularMovesList für die Speicherung des ersten Zugs...
-    regularMovesListTemp.push_back( move(2,3,Black) );
-    regularMovesListTemp.push_back( move(3,2,Black) );
-    regularMovesListTemp.push_back( move(4,5,Black) );
-    regularMovesListTemp.push_back( move(5,4,Black) );
-    regularMovesListTemp.push_back( move(5,3,White) );
-    regularMovesListTemp.push_back( move(4,2,White) );
-    regularMovesListTemp.push_back( move(2,4,White) );
-    regularMovesListTemp.push_back( move(3,5,White) );
+    regularMovesListTemp.push_back( moves(2,3,Black) );
+    regularMovesListTemp.push_back( moves(3,2,Black) );
+    regularMovesListTemp.push_back( moves(4,5,Black) );
+    regularMovesListTemp.push_back( moves(5,4,Black) );
+    regularMovesListTemp.push_back( moves(5,3,White) );
+    regularMovesListTemp.push_back( moves(4,2,White) );
+    regularMovesListTemp.push_back( moves(2,4,White) );
+    regularMovesListTemp.push_back( moves(3,5,White) );
 
     updatingScoreDisplay();
     updatingNumMovesDisplay();
@@ -117,7 +117,7 @@ void game::recupMove(int x,int y)
 {
     emit enableUndoMoveAction(false);
     emit enableRedoMoveAction(false);
-    playMove( move(x,y) );
+    playMove( moves(x,y) );
 }
 
 void game::nextTurn()
@@ -154,7 +154,7 @@ void game::nextPlayer()
     }
 }
 
-bool game::playMove(move m)
+bool game::playMove(moves m)
 {
     bool ret;   //value returned
 
@@ -265,7 +265,7 @@ void game::definingRegularMoves()
                                             BlackRegularMove = true;
                                             increaseRegularMove(Black);
                                             //Hinzufuegen eines gueltigen Zugs auf der temporaeren Liste
-                                            regularMovesListTemp.push_back( move(x,y,Black) );
+                                            regularMovesListTemp.push_back( moves(x,y,Black) );
                                         }
                                         //Wenn die Spielfiguren schwarz sind und die Weißen immer noch kein gültiger Zug dieses Feld sind
                                         else if( colorTmp == Black && !WhiteRegularMove )
@@ -274,7 +274,7 @@ void game::definingRegularMoves()
                                             WhiteRegularMove = true;
                                             increaseRegularMove(White);
                                             //Hinzufuegen eines gueltigen Zugs auf der temporaeren Liste
-                                            regularMovesListTemp.push_back( move(x,y,White) );
+                                            regularMovesListTemp.push_back( moves(x,y,White) );
                                         }
 
                                         //Prueft, ob zwei Farben einen gueltigen Zug auf dem Feld haben
@@ -362,7 +362,7 @@ void game::turnDownPawn(int x, int y)
     savePawnTurnedDown(x,y);
 }
 
-void game::addMoveList(move m)
+void game::addMoveList(moves m)
 {
     if( numCurrentMove != movesList.size() )
     {
@@ -395,7 +395,7 @@ void game::updateScore()
     }
 }
 
-bool game::updateGame(move m)
+bool game::updateGame(moves m)
 {
     updateRow(m);
     updateColumn(m);
@@ -403,7 +403,7 @@ bool game::updateGame(move m)
 }
 
 //Update der Spielfiguren von der Linie des Spielzugs
-void game::updateRow(move m)
+void game::updateRow(moves m)
 {
     //Rueckgewinnung/Wiedererlangung Spielzug (coord du coup)
     int xMove = m.getX(),
@@ -467,7 +467,7 @@ void game::updateRow(move m)
 
 
 //Aktualisiert die Spielsteine der Reihe des Spielzuges
-void game::updateColumn(move m)
+void game::updateColumn(moves m)
 {
     //Wiederherstellung des Zuges
         int xMove = m.getX(),
@@ -530,7 +530,7 @@ void game::updateColumn(move m)
     }
 
 //Update der Spielfiguren auf den Diagonalen des gespielten Zugs
-void game::updateDiagonal(move m)
+void game::updateDiagonal(moves m)
 {
     //Wiederherstellung des Zuges
         int xMove = m.getX(),
@@ -731,7 +731,7 @@ void game::updatingMovesListDisplay()
     else
     {
         QString str_temp;
-        vector<move>::iterator iv = movesList.begin();
+        vector<moves>::iterator iv = movesList.begin();
         int coord;
        int borne = numCurrentMove+1;
 
@@ -801,7 +801,7 @@ void game::initializationSavingMove()
 
 void game::savePawnTurnedDown(int x, int y)
 {
-    movesSavedList[numCurrentMove].addPawnsTurnedDown( move(x,y) );
+    movesSavedList[numCurrentMove].addPawnsTurnedDown( moves(x,y) );
 }
 
 void game::saveRegularMoves()
@@ -840,7 +840,7 @@ void game::undoLastMove()
 {
         if( numCurrentMove > 0 )
         {
-                move moveTmp;
+                moves moveTmp;
         //wird auf der vorherigen Spielzug neu ausgerichtet
                 numCurrentMove--;
         //Holen den aktiven/aktuellen Player
@@ -894,14 +894,14 @@ void game::undoLastMove()
              //regelmaeﬂiges Abrufen/Rueckgewinnen der SpielZuege in 'regularMovesListTemp'
                 if( numCurrentMove == 0 ) //Konfiguration des Starts
                 {
-                        regularMovesListTemp.push_back( move(2,3,Black) );
-                        regularMovesListTemp.push_back( move(3,2,Black) );
-                        regularMovesListTemp.push_back( move(4,5,Black) );
-                        regularMovesListTemp.push_back( move(5,4,Black) );
-                        regularMovesListTemp.push_back( move(5,3,White) );
-                        regularMovesListTemp.push_back( move(4,2,White) );
-                        regularMovesListTemp.push_back( move(2,4,White) );
-                        regularMovesListTemp.push_back( move(3,5,White) );
+                        regularMovesListTemp.push_back( moves(2,3,Black) );
+                        regularMovesListTemp.push_back( moves(3,2,Black) );
+                        regularMovesListTemp.push_back( moves(4,5,Black) );
+                        regularMovesListTemp.push_back( moves(5,4,Black) );
+                        regularMovesListTemp.push_back( moves(5,3,White) );
+                        regularMovesListTemp.push_back( moves(4,2,White) );
+                        regularMovesListTemp.push_back( moves(2,4,White) );
+                        regularMovesListTemp.push_back( moves(3,5,White) );
                 }
                 else
                 {
@@ -941,7 +941,7 @@ void game::redoLastMove()
 {
         if( numCurrentMove < (movesList.size()) )  //Wenn ein Zug noch einmal gespielt wird
         {
-                move moveTmp;
+                moves moveTmp;
         //Hinzufuegen der zuletzt platzierten Spielfigur
                 board->addPawn(movesList[numCurrentMove].getX(), movesList[numCurrentMove].getY(),playerTable[currentPlayer]->getColor() );
                 playerTable[currentPlayer]->increaseScore();  //Update der Spielstaende

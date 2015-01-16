@@ -2,7 +2,7 @@
 #define _INFOSMOVES_
 
 #include <vector>
-#include "move.h"
+#include "moves.h"
 
 class InfosMoves
 {
@@ -10,16 +10,16 @@ class InfosMoves
 
                 //Konstruktor
                 InfosMoves();
-//              infosMoves(int,vector<move>,vector<move>);
+//              infosMoves(int,vector<moves>,vector<moves>);
 
 
         private:
 
                 //Anzahl der Steine in Liste
-                vector<move> pawnsTurnedDownList;
+                vector<moves> pawnsTurnedDownList;
 
                 //Anzahl der gueltigen Bewegungen
-                vector<move> regularMovesList;
+                vector<moves> regularMovesList;
 
                 //aktuelle Spieler ID
                 int currentPlayer;
@@ -28,10 +28,10 @@ class InfosMoves
         public:
 
                 //Setzen Sie eines Steins in die Liste
-                void addPawnsTurnedDown(move);
+                void addPawnsTurnedDown(moves);
 
                 //sichern der gueltigen Bewegungen
-                void saveRegularMoves(vector<move>);
+                void saveRegularMoves(vector<moves>);
 
                 //sichern der aktuellen Spieler
                 void saveCurrentPlayer(int);
@@ -40,19 +40,19 @@ class InfosMoves
                 int getCurrentPlayer();
 
                 //Zugriffsvariable 'pawnsTurnedDownList'
-                vector<move> getPawnsTurnedDownList();
+                vector<moves> getPawnsTurnedDownList();
 
                 //Zugriffsvariable 'regularMovesList'
-                vector<move> getRegularMovesList();
+                vector<moves> getRegularMovesList();
 
                 //gibt die Anzahl von 'pawnsTurnedDownList'
                 int getSizePawnsTurnedDownList();
                 //gibt die Anzahl von 'regularMovesList'
                 int getSizeRegularMovesList();
                 //Gibt die Anzahl der Zuege 'regularMovesList'
-                move getRegularMovesList(int);
+                moves getRegularMovesList(int);
                 //Gibt die Anzahl der Zuege 'pawnsTurnedDownList'
-                move getPawnsTurnedDownList(int);
+                moves getPawnsTurnedDownList(int);
 
                 //Anzeige im Fenster
                 void affichage();
