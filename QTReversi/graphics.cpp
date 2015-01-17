@@ -73,6 +73,9 @@ void graphics::createMenus()
     viewMenu->addAction(animationAction);
     viewMenu->addAction(regularMovesAction);
     viewMenu->addAction(lastMoveAction);
+
+    toolsMenu = menuBar()->addMenu(tr("&Tools"));
+    toolsMenu->addAction(ClearHSAction);
 }
 
 void graphics::createActions()
@@ -136,6 +139,12 @@ void graphics::createActions()
 
     //buttonPrint Highscore
     connect(buttonPrint, SIGNAL(clicked()), this, SLOT(printHighScore()));
+
+    //clear Highscore
+    ClearHSAction = new QAction(tr("&Clear Highscore"), this);
+    ClearHSAction->setIcon(QIcon(":/images/NewGame.png"));
+    ClearHSAction->setStatusTip(tr("Clear Highscores"));
+    connect(ClearHSAction, SIGNAL(triggered()), this, SLOT(deleteHighscores()));
 }
 
 void graphics::createToolBars()
@@ -496,4 +505,18 @@ void graphics::printHighScore()
       document->setHtml(text);
       document->print(&printer);
     }
+}
+
+void graphics::deleteHighscores()
+{
+    int r = QMessageBox::warning(this,QtVersion,tr("Clear Highscore?"),
+                            QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
+    if(r == QMessageBox::Yes){
+       _highscore.clearHighscores();
+    }
+}
+
+void graphics::cleanHighScore()
+{
+    _highscore.clearHighscores();
 }

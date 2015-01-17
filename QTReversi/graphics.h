@@ -55,6 +55,8 @@ private slots:
 
     void refreshHighScore();
     void printHighScore();
+    void cleanHighScore();
+    void deleteHighscores();
 private:
      void initComponent();
      void createActions();
@@ -70,10 +72,11 @@ private:
      InfoView *infos;
      ListMoves *list_moves;
 
-      QLabel *statusBarLabel;
+     QLabel *statusBarLabel;
 
      QMenu *fileMenu;
      QMenu *viewMenu;
+     QMenu *toolsMenu;
 
      QToolBar *fileToolBar;
      QToolBar *toolsToolBar;
