@@ -133,6 +133,9 @@ void graphics::createActions()
     fullScreenAction->setShortcut(tr("Ctrl+L"));
     fullScreenAction->setStatusTip(tr("Set Full Screen"));
     connect(fullScreenAction, SIGNAL(triggered()), this, SLOT(fullScreen()));
+
+    //buttonPrint Highscore
+    connect(buttonPrint, SIGNAL(clicked()), this, SLOT(printHighScore()));
 }
 
 void graphics::createToolBars()
@@ -439,12 +442,58 @@ void graphics::HighscoreView()
     horizontalLayout->setAlignment(Qt::AlignHCenter);
     tableViewHighscores = new QTableView(groupBoxHighscores);
     horizontalLayout->addWidget(tableViewHighscores);
+    buttonPrint = new QPushButton("Print Highscore",this);
     highscoresLabel = new QLabel("Highscores");
     highscoresLabel->setAlignment(Qt::AlignHCenter);
+    buttonLayout = new QHBoxLayout();\
+    buttonLayout->addWidget(buttonPrint);
     verticalLayout = new QVBoxLayout();
     verticalLayout->addWidget(highscoresLabel);
     verticalLayout->addStretch();
     verticalLayout->addWidget(tableViewHighscores);
     verticalLayout->addStretch();
+    verticalLayout->addLayout(buttonLayout);
+    verticalLayout->addStretch();
     gridLayout->addLayout(verticalLayout,0, 0, 1, 1);
+}
+
+void graphics::printHighScore()
+{
+    QPrinter printer(QPrinter::HighResolution);
+    QPrintDialog *printDialog = new QPrintDialog(&printer);
+    QTextDocument *document = new QTextDocument();
+
+    printDialog->setWindowTitle(tr("Print Document"));
+
+    if (printDialog->exec() == QDialog::Accepted)
+    {
+      QString text = "<table border=10 align='center'>";
+
+      text.append("<h3 align='center'>Reversi Highscore</h3><hr><br>");
+      text.append("<tr>");
+      text.append("<th>Player</th>");
+      text.append("<th>Points/64</th>");
+      text.append("<th>Date</th>");
+      text.append("<th>Time</th>");
+      text.append("</tr>");
+
+      for (int i = 0; i < tableViewHighscores->model()->rowCount(); ++i)
+      {
+        text.append("<tr>");
+
+        for (int j = 0; j < tableViewHighscores->model()->columnCount(); ++j)
+        {
+          text.append("<td align='center'>");
+          text.append(tableViewHighscores->model()->index(i, j).data().toString());
+          text.append("</td>");
+        }
+
+        text.append("</tr>");
+      }
+
+      text.append("</table>");
+
+      document->setHtml(text);
+      document->print(&printer);
+    }
 }

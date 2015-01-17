@@ -13,6 +13,8 @@
 #include <QPixmap>
 #include <QTextDocument>
 #include <QSqlQueryModel>
+#include <QPrinter>
+#include <QPrintDialog>
 
 class game;
 class Player;
@@ -52,6 +54,7 @@ private slots:
     void showGlNormal();
 
     void refreshHighScore();
+    void printHighScore();
 private:
      void initComponent();
      void createActions();
@@ -106,6 +109,8 @@ private:
      QAction *RefreshHSAction;
      QAction *ClearHSAction;
      QAction *HSAction;
+     QPushButton *buttonPrint;
+     QHBoxLayout *buttonLayout;
 
      QGridLayout *gridLayout;
      QTableView *tableViewHighscores;

@@ -11,6 +11,7 @@ unix:!macx{
 LIBS     += -lGLU
 }
 QT       += sql xml
+QT       += printsupport
 
 TARGET = QTReversi
 TEMPLATE = app
