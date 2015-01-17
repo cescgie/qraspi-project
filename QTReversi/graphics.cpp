@@ -15,6 +15,7 @@ graphics::graphics()
     infos = new InfoView(this);
     list_moves = new ListMoves(this);
 
+    HighscoreView();
     initComponent();
     createActions();
     createMenus();
@@ -37,6 +38,7 @@ graphics::~graphics()
 void graphics::initialization( game *ge )
 {
     connecting( ge );
+    refreshHighScore();
     ge->initializationDisplay();
 }
 
@@ -298,6 +300,9 @@ void graphics::displayWinner(Player *p)
     effectEnd.play();
     if( p != NULL )
     {
+        QString namo = p->getName();
+        int punkte = p->getScore();
+        createHighscore(namo,punkte);
         QString str = p->getName() + " wins the game !";
         QMessageBox::information(this,QtVersion,str,
                 QMessageBox::Ok | QMessageBox::Default);
@@ -371,20 +376,19 @@ void graphics::fullScreen()
 //Normalscreen
 void graphics::showGlNormal() {
     centralWindow = new QWidget(this);
-
-    QHBoxLayout *layout = new QHBoxLayout;
-    layout->addWidget(scene);
-    layout->addWidget(infos);
-    centralWindow->setLayout(layout);
-    setCentralWidget(centralWindow);
+    HighscoreView();
+    initComponent();
 }
 
 void graphics::initComponent()
 {
     QHBoxLayout *layout = new QHBoxLayout;
+    QVBoxLayout *topverticalLayout = new QVBoxLayout;
+    topverticalLayout->addWidget(infos);
+    topverticalLayout->addLayout(gridLayout);
     layout->addWidget(list_moves);
     layout->addWidget(scene);
-    layout->addWidget(infos);
+    layout->addLayout(topverticalLayout);
     centralWindow->setLayout(layout);
     setCentralWidget(centralWindow);
 }
@@ -407,4 +411,40 @@ void graphics::soundConfiguration()
    effectPrev.setSource(QUrl::fromLocalFile(":/sounds/prev.wav"));
    effectPrev.setLoopCount(1);
    effectPrev.setVolume(1.0f);
+}
+
+QSqlQueryModel* graphics::getHighscores()
+{
+  return _highscore.getHighscore();
+}
+
+void graphics::createHighscore(QString nam, int punk)
+{
+    cout<<"punk :"<<punk<<endl;
+  _highscore.insertHighscore(nam, punk);
+}
+
+void graphics::refreshHighScore()
+{
+    tableViewHighscores->setModel(getHighscores());
+    tableViewHighscores->resizeColumnToContents(1);
+
+}
+
+void graphics::HighscoreView()
+{
+    gridLayout = new QGridLayout();
+    groupBoxHighscores = new QGroupBox();
+    horizontalLayout = new QHBoxLayout(groupBoxHighscores);
+    horizontalLayout->setAlignment(Qt::AlignHCenter);
+    tableViewHighscores = new QTableView(groupBoxHighscores);
+    horizontalLayout->addWidget(tableViewHighscores);
+    highscoresLabel = new QLabel("Highscores");
+    highscoresLabel->setAlignment(Qt::AlignHCenter);
+    verticalLayout = new QVBoxLayout();
+    verticalLayout->addWidget(highscoresLabel);
+    verticalLayout->addStretch();
+    verticalLayout->addWidget(tableViewHighscores);
+    verticalLayout->addStretch();
+    gridLayout->addLayout(verticalLayout,0, 0, 1, 1);
 }

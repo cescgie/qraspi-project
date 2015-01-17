@@ -7,6 +7,12 @@
 #include <QtWidgets>
 #include "playersetting.h"
 #include "listmoves.h"
+#include "highscore.h"
+#include <QtGui>
+#include <QTableView>
+#include <QPixmap>
+#include <QTextDocument>
+#include <QSqlQueryModel>
 
 class game;
 class Player;
@@ -27,7 +33,7 @@ public:
     ~graphics();
     void initialization( game * );
 
-
+    QSqlQueryModel* getHighscores();
 protected:
         void closeEvent(QCloseEvent *event);
 
@@ -44,6 +50,8 @@ private slots:
     void setDisplayRedoMoveAction(bool);
     void fullScreen();
     void showGlNormal();
+
+    void refreshHighScore();
 private:
      void initComponent();
      void createActions();
@@ -86,6 +94,24 @@ private:
 
      QAction *fullScreenAction;
 
+     void HighscoreView();
+
+     Highscore _highscore;
+     QVBoxLayout *verticalLayout;
+     QVBoxLayout *verticallayout2;
+     QVBoxLayout *topverticalLayout;
+     QHBoxLayout *horizontalLayout;
+     QLabel *highscoresLabel;
+     QAction *printAction;
+     QAction *RefreshHSAction;
+     QAction *ClearHSAction;
+     QAction *HSAction;
+
+     QGridLayout *gridLayout;
+     QTableView *tableViewHighscores;
+     QGroupBox *groupBoxHighscores;
+
+     void createHighscore(QString, int);
 signals:
     void startNewGame();
     void undoMoveAsked();

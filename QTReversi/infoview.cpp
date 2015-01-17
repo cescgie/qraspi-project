@@ -72,8 +72,8 @@ void InfoView::initComponent()
     scoreP2->setAlignment(Qt::AlignCenter);
     movesP1->setAlignment(Qt::AlignCenter);
     movesP2->setAlignment(Qt::AlignCenter);
-    QFont f( "Verdana", 50, QFont::Bold);
-    QFont f2( "Verdana", 20, QFont::Bold);
+    QFont f( "Verdana", 35, QFont::Bold);
+    QFont f2( "Verdana", 15, QFont::Bold);
 
     scoreP1->setFont(f);
     scoreP2->setFont(f);
@@ -90,9 +90,6 @@ void InfoView::initComponent()
     QPalette palette=infosGame->palette();
     palette.setColor(QPalette::Window,QColor(Qt::green));
     infosGame->setPalette(palette);
-
-    listMoves = new QTextEdit( "Empty" );
-    listMoves->setReadOnly(true);
 
     topLayout = new QGridLayout;
     topLayout->addWidget(namepar1,1,0);
@@ -136,8 +133,6 @@ void InfoView::initComponent()
     mainLayout->addStretch();
     mainLayout->addWidget(infosGame);
     mainLayout->addStretch();
-    mainLayout->addLayout(centerLayout);
-    mainLayout->addWidget(listMoves);
     mainLayout->setAlignment(Qt::AlignHCenter);
 }
 
@@ -232,8 +227,6 @@ void InfoView::connecting( game* ge )
     connect( ge, SIGNAL( sendInfosGameDisplay(IdMsgInfos) ), this, SLOT( setInfosGame(IdMsgInfos) ) );
     connect( ge, SIGNAL( playerScoreModified() ), this, SLOT( updatingScore() ) );
     connect( ge, SIGNAL( playerNumMovesModified() ), this, SLOT( updatingMoves() ) );
-    connect( ge, SIGNAL( movesListModified(QString) ), this, SLOT( setListMoves(QString) ) );
-
 }
 
 void InfoView::updatingType( Player *p )
@@ -330,7 +323,3 @@ void InfoView::setInfosGame(IdMsgInfos idMsg)
         infosGame->setText(msg);
 }
 
-void InfoView::setListMoves( QString list )
-{
-    listMoves->setText( list );
-}

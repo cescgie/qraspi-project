@@ -58,8 +58,6 @@ private:
     QGridLayout *topLayout;
     QHBoxLayout *toptopLayout, *centerLayout;
 
-    QTextEdit *listMoves;
-
     void initComponent();
 
 public slots:
@@ -69,7 +67,6 @@ public slots:
     void setInfosGame(IdMsgInfos);
     void updatingScore();
     void updatingMoves();
-    void setListMoves( QString);
 
 };
 

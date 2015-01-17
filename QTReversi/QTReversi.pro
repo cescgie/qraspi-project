@@ -10,6 +10,7 @@ QT       += core gui multimedia
 unix:!macx{
 LIBS     += -lGLU
 }
+QT       += sql xml
 
 TARGET = QTReversi
 TEMPLATE = app
@@ -30,7 +31,8 @@ SOURCES += main.cpp \
     infoai.cpp \
     playersetting.cpp \
     moves.cpp \
-    listmoves.cpp
+    listmoves.cpp \
+    highscore.cpp
 
 HEADERS  += \
     define.h \
@@ -46,7 +48,8 @@ HEADERS  += \
     infoai.h \
     playersetting.h \
     moves.h \
-    listmoves.h
+    listmoves.h \
+    highscore.h
 
 FORMS += \
     playersetting.ui
