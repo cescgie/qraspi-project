@@ -29,7 +29,8 @@ SOURCES += main.cpp \
     ai.cpp \
     infoai.cpp \
     playersetting.cpp \
-    moves.cpp
+    moves.cpp \
+    listmoves.cpp
 
 HEADERS  += \
     define.h \
@@ -44,7 +45,8 @@ HEADERS  += \
     ai.h \
     infoai.h \
     playersetting.h \
-    moves.h
+    moves.h \
+    listmoves.h
 
 FORMS += \
     playersetting.ui

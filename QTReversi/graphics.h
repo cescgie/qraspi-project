@@ -6,6 +6,7 @@
 #include "infoview.h"
 #include <QtWidgets>
 #include "playersetting.h"
+#include "listmoves.h"
 
 class game;
 class Player;
@@ -56,6 +57,7 @@ private:
      QWidget *centralWindow;
      glView *scene;
      InfoView *infos;
+     ListMoves *list_moves;
 
       QLabel *statusBarLabel;
 

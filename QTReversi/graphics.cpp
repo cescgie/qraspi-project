@@ -13,6 +13,7 @@ graphics::graphics()
     centralWindow = new QWidget(this);
     scene = new glView(this);
     infos = new InfoView(this);
+    list_moves = new ListMoves(this);
 
     initComponent();
     createActions();
@@ -30,6 +31,7 @@ graphics::~graphics()
     delete centralWindow;
     delete scene;
     delete infos;
+    delete list_moves;
 
 }
 void graphics::initialization( game *ge )
@@ -51,6 +53,7 @@ void graphics::connecting( game *ge )
 
         scene->connecting( ge );
         infos->connecting( ge );
+        list_moves->connecting(ge);
 
     }
 }
@@ -379,6 +382,7 @@ void graphics::showGlNormal() {
 void graphics::initComponent()
 {
     QHBoxLayout *layout = new QHBoxLayout;
+    layout->addWidget(list_moves);
     layout->addWidget(scene);
     layout->addWidget(infos);
     centralWindow->setLayout(layout);
