@@ -57,6 +57,8 @@ private slots:
     void printHighScore();
     void cleanHighScore();
     void deleteHighscores();
+
+    void onButtonHelpPressed();
 private:
      void initComponent();
      void createActions();
@@ -120,6 +122,9 @@ private:
      QGroupBox *groupBoxHighscores;
 
      void createHighscore(QString, int);
+
+     QDialog *helpDialog;
+     QAction *helpAction;
 signals:
     void startNewGame();
     void undoMoveAsked();

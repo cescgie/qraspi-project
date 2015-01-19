@@ -145,6 +145,12 @@ void graphics::createActions()
     ClearHSAction->setIcon(QIcon(":/images/NewGame.png"));
     ClearHSAction->setStatusTip(tr("Clear Highscores"));
     connect(ClearHSAction, SIGNAL(triggered()), this, SLOT(deleteHighscores()));
+
+    helpAction = new QAction(tr("&Help"), this);
+    helpAction->setIcon(QIcon(":/images/Help.png"));
+    helpAction->setShortcut(tr("Ctrl+H"));
+    helpAction->setStatusTip(tr("Help on line"));
+    connect(helpAction, SIGNAL(triggered()), this, SLOT(onButtonHelpPressed()));
 }
 
 void graphics::createToolBars()
@@ -157,6 +163,7 @@ void graphics::createToolBars()
     toolsToolBar->addAction(redoMoveAction);
     toolsToolBar->addAction(preferencesAction);
     toolsToolBar->addAction(fullScreenAction);
+    toolsToolBar->addAction(helpAction);
     toolsToolBar->addAction(exitAction);
 }
 
@@ -519,4 +526,73 @@ void graphics::deleteHighscores()
 void graphics::cleanHighScore()
 {
     _highscore.clearHighscores();
+}
+
+void graphics::onButtonHelpPressed()
+{
+    effectBounce.play();    //help
+    cout<<"Help"<<endl;
+    QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QGridLayout *gridLayoutHelpDialog_2;
+    QGridLayout *gridLayoutHelpDialog;
+    QLabel *labelHelpDialog;
+    QHBoxLayout *horizontalLayoutHelpDialog;
+    QSpacerItem *horizontalSpacerHelpDialog;
+    QPushButton *okButtonHelpDialog;
+
+    if (helpDialog->objectName().isEmpty())
+      helpDialog->setObjectName(QStringLiteral("helpDialog"));
+
+    helpDialog->resize(391, 262);
+    sizePolicy.setHorizontalStretch(0);
+    sizePolicy.setVerticalStretch(0);
+    sizePolicy.setHeightForWidth(helpDialog->sizePolicy().hasHeightForWidth());
+    helpDialog->setSizePolicy(sizePolicy);
+    helpDialog->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
+    gridLayoutHelpDialog_2 = new QGridLayout(helpDialog);
+    gridLayoutHelpDialog_2->setObjectName(QStringLiteral("gridLayout_2"));
+    gridLayoutHelpDialog_2->setSizeConstraint(QLayout::SetFixedSize);
+    gridLayoutHelpDialog = new QGridLayout();
+    gridLayoutHelpDialog->setObjectName(QStringLiteral("gridLayout"));
+    labelHelpDialog = new QLabel(helpDialog);
+    labelHelpDialog->setObjectName(QStringLiteral("label"));
+    labelHelpDialog->setWordWrap(true);
+
+    gridLayoutHelpDialog->addWidget(labelHelpDialog, 0, 0, 1, 1);
+
+    horizontalLayoutHelpDialog = new QHBoxLayout();
+    horizontalLayoutHelpDialog->setObjectName(QStringLiteral("horizontalLayout"));
+    horizontalSpacerHelpDialog = new QSpacerItem(288, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    horizontalLayoutHelpDialog->addItem(horizontalSpacerHelpDialog);
+
+    okButtonHelpDialog = new QPushButton(helpDialog);
+    okButtonHelpDialog->setObjectName(QStringLiteral("okButton"));
+
+    horizontalLayoutHelpDialog->addWidget(okButtonHelpDialog);
+
+    gridLayoutHelpDialog->addLayout(horizontalLayoutHelpDialog, 1, 0, 1, 1);
+
+    gridLayoutHelpDialog_2->addLayout(gridLayoutHelpDialog, 0, 0, 1, 1);
+
+    helpDialog->setWindowTitle(QApplication::translate("helpDialog", "Help", 0));
+    labelHelpDialog->setText(QApplication::translate("helpDialog", "<html><head/><body><p><span style=\" font-size:14pt;" \
+        "text-decoration: underline;\">Wie wird Reversi gespielt?</span></p><p align=\"justify\"><span style=\font-size:14pt;\">Bei Reversi wir auf " \
+        "seinem Spielbrett mit 8 mal 8 Spielfeldern gespielt. Die Farbe der Spielsteine " \
+        "sind auf einen Seite schwarz und auf der anderen Seite weiß.Beim Spielstart sieht die Anfangssituation immer gleich aus. " \
+        "Beide Spieler haben 2 Spielsteine die immer gleich in der Mitte des Spielbrettes positioniert sind. Je nach dem wie man " \
+        "sich in den Spieleinstellungen als Spieler eingetragen hat beginnt man entweder als erster oder als zweiter. Nun " \
+        "versucht man abwechselnd die gegnerischen Steine waagerecht, senkrecht oder diagonal einzuschließen. Es können beliebig " \
+        "viele Steine des Gegners auf einmal eingeschlossen werden. Kann ein Spieler Steine des Gegners einschließen so werden " \
+        "diese zu seinen eigenen verwandelt. Kann ein Spieler keine Steine setzen, so muss er aussetzen. Das Spiel ist dann beendet, " \
+        "wenn alle 64 Felder belegt sind oder keiner der Spieler mehr setzen kann. Der Gewinner ist, wer am Ende des Spiels am " \
+        "meisten Steine auf dem Spielbrett liegen hat.</span></p></body></html>", 0));
+    okButtonHelpDialog->setText(QApplication::translate("helpDialog", "OK", 0));
+
+    QMetaObject::connectSlotsByName(helpDialog);
+
+    connect(okButtonHelpDialog, SIGNAL(clicked()), helpDialog, SLOT(close()));
+
+    helpDialog->exec();
+
 }
