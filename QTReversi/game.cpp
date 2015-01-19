@@ -400,6 +400,7 @@ bool game::updateGame(moves m)
     updateRow(m);
     updateColumn(m);
     updateDiagonal(m);
+    return true;
 }
 
 //Update der Spielfiguren von der Linie des Spielzugs
