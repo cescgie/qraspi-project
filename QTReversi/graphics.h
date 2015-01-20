@@ -59,6 +59,7 @@ private slots:
     void deleteHighscores();
 
     void onButtonHelpPressed();
+    void onButtonAboutPressed();
 private:
      void initComponent();
      void createActions();
@@ -125,6 +126,8 @@ private:
 
      QDialog *helpDialog;
      QAction *helpAction;
+     QDialog *aboutDialog;
+     QAction *aboutAction;
 signals:
     void startNewGame();
     void undoMoveAsked();

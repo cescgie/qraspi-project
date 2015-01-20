@@ -15,5 +15,8 @@
         <file>sounds/end.wav</file>
         <file>images/Fullscreen.png</file>
         <file>images/Help.png</file>
+        <file>images/erase.png</file>
+        <file>images/Info.png</file>
+        <file>images/QtM.png</file>
     </qresource>
 </RCC>

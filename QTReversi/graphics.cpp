@@ -25,6 +25,7 @@ graphics::graphics()
 
     setUnifiedTitleAndToolBarOnMac ( true );
     setWindowTitle(QtVersion);
+    setWindowIcon(QIcon(":/images/QtM.png"));
 }
 
 graphics::~graphics()
@@ -64,6 +65,7 @@ void graphics::connecting( game *ge )
 void graphics::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
+    fileMenu->addAction(aboutAction);
     fileMenu->addAction(newAction);
     fileMenu->addAction(preferencesAction);
     fileMenu->addSeparator();
@@ -142,7 +144,7 @@ void graphics::createActions()
 
     //clear Highscore
     ClearHSAction = new QAction(tr("&Clear Highscore"), this);
-    ClearHSAction->setIcon(QIcon(":/images/NewGame.png"));
+    ClearHSAction->setIcon(QIcon(":/images/erase.png"));
     ClearHSAction->setStatusTip(tr("Clear Highscores"));
     connect(ClearHSAction, SIGNAL(triggered()), this, SLOT(deleteHighscores()));
 
@@ -151,6 +153,11 @@ void graphics::createActions()
     helpAction->setShortcut(tr("Ctrl+H"));
     helpAction->setStatusTip(tr("Help on line"));
     connect(helpAction, SIGNAL(triggered()), this, SLOT(onButtonHelpPressed()));
+
+    aboutAction = new QAction(tr("&About"), this);
+    aboutAction->setIcon(QIcon(":/images/Info.png"));
+    aboutAction->setStatusTip(tr("About..."));
+    connect(aboutAction, SIGNAL(triggered()), this, SLOT(onButtonAboutPressed()));
 }
 
 void graphics::createToolBars()
@@ -596,3 +603,63 @@ void graphics::onButtonHelpPressed()
     helpDialog->exec();
 
 }
+
+void graphics::onButtonAboutPressed()
+{
+    QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QGridLayout *gridLayoutAboutDialog_2;
+    QGridLayout *gridLayoutAboutDialog;
+    QLabel *labelAboutDialog;
+    QHBoxLayout *horizontalLayoutAboutDialog;
+    QSpacerItem *horizontalSpacerAboutDialog;
+    QPushButton *okButtonAboutDialog;
+
+    if (aboutDialog->objectName().isEmpty())
+      aboutDialog->setObjectName(QStringLiteral("aboutDialog"));
+
+    aboutDialog->resize(391, 262);
+    sizePolicy.setHorizontalStretch(0);
+    sizePolicy.setVerticalStretch(0);
+    sizePolicy.setHeightForWidth(aboutDialog->sizePolicy().hasHeightForWidth());
+    aboutDialog->setSizePolicy(sizePolicy);
+    aboutDialog->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
+    gridLayoutAboutDialog_2 = new QGridLayout(aboutDialog);
+    gridLayoutAboutDialog_2->setObjectName(QStringLiteral("gridLayout_2"));
+    gridLayoutAboutDialog_2->setSizeConstraint(QLayout::SetFixedSize);
+    gridLayoutAboutDialog = new QGridLayout();
+    gridLayoutAboutDialog->setObjectName(QStringLiteral("gridLayout"));
+    labelAboutDialog = new QLabel(aboutDialog);
+    labelAboutDialog->setObjectName(QStringLiteral("label"));
+    labelAboutDialog->setWordWrap(true);
+
+    gridLayoutAboutDialog->addWidget(labelAboutDialog, 0, 0, 1, 1);
+
+    horizontalLayoutAboutDialog = new QHBoxLayout();
+    horizontalLayoutAboutDialog->setObjectName(QStringLiteral("horizontalLayout"));
+    horizontalSpacerAboutDialog = new QSpacerItem(288, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    horizontalLayoutAboutDialog->addItem(horizontalSpacerAboutDialog);
+
+    okButtonAboutDialog = new QPushButton(aboutDialog);
+    okButtonAboutDialog->setObjectName(QStringLiteral("okButton"));
+
+    horizontalLayoutAboutDialog->addWidget(okButtonAboutDialog);
+
+    gridLayoutAboutDialog->addLayout(horizontalLayoutAboutDialog, 1, 0, 1, 1);
+
+    gridLayoutAboutDialog_2->addLayout(gridLayoutAboutDialog, 0, 0, 1, 1);
+
+    aboutDialog->setWindowTitle(QApplication::translate("aboutDialog", "About", 0));
+    labelAboutDialog->setText(QApplication::translate("aboutDialog", "<html><head/><body><center><img src=':/images/QtM.png' width='50' height='50'></img><p><span style=\" font-size:14pt;" \
+    "text-decoration: underline;\">QtReversi</span></p><p align=\"justify\"><span style=\font-size:14pt;\"><p>Created with QtCreator</p>" \
+    "<p>By Renaldo Weiser & Yoggi Firmanda</p></span></p><p>HTW Berlin 2015</p></center></body></html>", 0));
+    okButtonAboutDialog->setText(QApplication::translate("aboutDialog", "OK", 0));
+
+    QMetaObject::connectSlotsByName(aboutDialog);
+
+    connect(okButtonAboutDialog, SIGNAL(clicked()), aboutDialog, SLOT(close()));
+
+    aboutDialog->exec();
+
+}
+
