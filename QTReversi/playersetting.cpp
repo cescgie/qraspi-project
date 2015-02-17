@@ -1,4 +1,5 @@
 #include <QtGui>
+
 #include "playersetting.h"
 
 PlayerSetting::PlayerSetting(QWidget *parent)
