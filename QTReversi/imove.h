@@ -1,43 +1,36 @@
-#ifndef _MOVES_H
-#define _MOVES_H
+#ifndef _IMOVE_H
+#define _IMOVE_H
 
 #include <iostream>
 using namespace std;
 
 #include "define.h"
 
-class moves
+class imove
 {
     private:
-
-        //Anzahl der Zuege für diese Partie
+        //Anzahl der Zuege für diese Runde
         int numMove;
-
         //X-Koordinate des Zuges
         int x;
-
         //Y-Koordinate des Zuges
         int y;
-
-        //Farbaufnahme
+        //Farbe des Steines
         ColorPawn color;
 
     public:
-
         //Konstruktor
-        moves();
-        moves(int,int);
-        moves(int,int,ColorPawn);
-
-        //Wechsel Variable 'nummove'
+        imove();
+        imove(int,int);
+        imove(int,int,ColorPawn);
+        //Wechsel 'nummove'
         void setNumMove(int);
-        //Wechsel Variable 'x'
+        //Wechsel 'x'
         void setX(int);
-        //Wechsel Variable 'y'
+        //Wechsel 'y'
         void setY(int);
-        //Wechsel Variable 'color'
+        //Wechsel 'color'
         void setColor(ColorPawn);
-
         //Zugriffsvariable 'nummove'
         int getNumMove();
         //Zugriffsvariable 'x'
@@ -46,7 +39,6 @@ class moves
         int getY();
         //Zugriffsvariable 'color'
         ColorPawn getColor();
-
         void affichage();
 
 };
