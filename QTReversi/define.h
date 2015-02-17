@@ -1,10 +1,12 @@
-#ifndef DEFINE_H
-#define DEFINE_H
+#ifndef _DEFINE_H
+#define _DEFINE_H
 
 #include <QString>
 
+
 //Software Version
 const QString QtVersion = "QtReversi";
+
 
 //Boxen Typ
 enum TypeSquare
@@ -15,7 +17,7 @@ enum TypeSquare
 };
 
 
-//Farbe des Stein
+//Farbe des Steines
 enum ColorPawn
 {
     White,
@@ -26,7 +28,6 @@ enum ColorPawn
 //Spielertyp
 enum TypePlayer
 {
-
     Local,
     Distant,
     AI_1,
@@ -40,9 +41,11 @@ const int p1 = 0;
 const int p2 = 1;
 
 
-//Anzeige konstant
+//Anzeige
 const int AngleSpeedAnimation = 3;
+//const float WidthBorderText = 16.2;
 const float WidthBorderText = 7.029;
+//const float WidthSquareText = 10.;
 const float WidthSquareText = 10.743;
 const float WidthRadiusPawn = 5.3715;
 
@@ -55,4 +58,10 @@ enum IdMsgInfos
 };
 
 
-#endif // DEFINE_H
+//Pfad Symbole
+/*QString NewGameIco = "/images/NewGame.png";
+QString LoadGameIco = "/images/LoadGame.png";
+QString SaveGameIco = "/images/SaveGame.png";
+*/
+
+#endif
