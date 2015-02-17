@@ -11,7 +11,6 @@ ListMoves::ListMoves(QWidget *parent)
         initComponent();
         this->setLayout(mainLayout);
         this->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Preferred);
-
 }
 
 ListMoves::~ListMoves()
