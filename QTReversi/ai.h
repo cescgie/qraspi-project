@@ -9,10 +9,10 @@
 #include "define.h"
 #include "game.h"
 #include "player.h"
-#include "moves.h"
+#include "imove.h"
 #include "board.h"
 #include "infosmoves.h"
-#include "infoAI.h"
+#include "infoai.h"
 
 #include <iostream>
 using namespace std;
@@ -21,130 +21,92 @@ class ai : public QObject
 {
         Q_OBJECT
 
-private:
-
+    private:
         //Spielbrett
         Board* board;
-
-        //Tabelle 2 Spieler im Spiel
+        //2 Spieler im Spiel
         Player* playerTable[2];
-
-        //Liste der Schübe des Brettes
-        vector<moves> movesList;
-
-        //Temporäre Liste, um die "legale Züge" speichern
-        vector<moves> regularMovesListTemp;
-
+        //Liste der Bewegungen der Steine
+        vector<imove> movesList;
+        //Temporäre Liste, um die legalen Züge zu speichern
+        vector<imove> regularMovesListTemp;
         //Spieler, der gespielt hat
         int currentPlayer;
-
-        //Partie abgeschlossen?
+        //Spiel abgeschlossen?
         bool isFinished;
-
         //möglicher Zug
-        vector<moves> movesPlay;
-        vector<moves>* movesPlaySaved;
-
+        vector<imove> movesPlay;
+        vector<imove>* movesPlaySaved;
         int INFINITY;
-
         //Id des Spieler in Auswertung
         int idEvaluationPlayer;
-
-        vector<InfosMoves> movesSavedList;
+        vector<infosMoves> movesSavedList;
         int numCurrentMove;
-
         int scorePattern[8][8];
-
         int cptMiniMax;
         int cptAlphaBeta;
         int alphabreak, betabreak;
 
-public:
-
+    public:
         ai();
         ~ai();
-
-        //Anschluss Funktionsmodule
         void connecting( game* );
 
-        public slots:
-
-        //Wählt den Wechsel zu spielen (globale Verarbeitung)
+    public slots:
+        //Wählt den Wechsel zwischen Spieler
         void chooseMove( game* );
 
-private:
-
-        //Initialisiert das Gittermodell Punktzahl
+    private:
+        //Initialisiert das Modell Punktzahl
         void initializationScorePattern();
-
         //Funktion, die die KI-Engine initialisiert
         void initialization(game*);
-
         //Wählt zufällig einen Zug
-        moves randomMove();
-
+        imove randomMove();
         //MinMax Funktion
         infoAI miniMax(int);
-
         //AlphaBeta Funktion
         infoAI alphaBeta( int, infoAI, infoAI );
-
         //Bewertungsfunktion
         infoAI evaluateGame();
-
-        //Gibt die Punktzahl
+        //Gibt die Punktzahl aus
         infoAI getScore();
-
         //Spielt einen Zug in der Partie
-        bool playMove(moves);
-
+        bool playMove(imove);
         //den letzten rueckgaengig machen
         void undoLastMove();
-
-        //Update Spieldaten nach dem Spiel ein Schuss: othellier SHIFT, SHIFT Score
-        bool updateGame(moves);
-
-        //Verschieben Sie die Stücke von der Linie der Schuss gespielt
-        void updateRow(moves);
-
-        //Verschieben Sie die Stücke aus der Spalte der Schuss gespielt
-        void updateColumn(moves);
-
-        //SHIFT Bauern diagonal plötzlich spielte
-        void updateDiagonal(moves);
-
-        //Gibt ein Token
+        //Update Spieldaten nach dem Spiel eines Zuges: Reversi Stein, Reversi Punkte
+        bool updateGame(imove);
+        //Aktualisiert eine Reihe der Steine
+        void updateRow(imove);
+        //Aktualisiert eine Spalte der Steine
+        void updateColumn(imove);
+        //Aktualisiert Steine diagonal
+        void updateDiagonal(imove);
+        //dreht ein Stein um
         void turnDownPawn(int,int);
-
-        //Aktualisieren Sie die Noten der Spieler nach der Auflösung von einem Stift
+        //aktuallisiert die Punkte nach einem Zug
         void updateScore();
-
-        //Definition von regelgemäßen Zügen
+        //definiert gueltige Zuege
         void definingRegularMoves();
-
-        //SHIFT legalen Züge Inhalt des 'regularMovesList' auf der othellier
+        //aktuallisiert gueltige Zuege
         void updateRegularMove();
-
-        //Inkrementieren der Anzahl 'Coup Rechts' Spieler je nach Farbe
+        //Inkrementiert die Anzahl nach Farbe
         void increaseRegularMove(ColorPawn);
-
-        //Einen legalen Zug Überprüfung nach mehreren Parametern ...
+        //Einen legalen Zug pruefen nach mehreren Parametern...
         bool checkRegularMove( int, int, int, int);
         void initializationSavingMove();
-        void addMoveList(moves m);
+        void addMoveList(imove m);
         void nextPlayer();
         void saveCurrentPlayer();
         void saveRegularMoves();
         void savePawnTurnedDown(int x, int y);
-
         void affiche_movesPlay();
-
         void updateScoreEvaluate(int, ColorPawn, int &, int &);
         infoAI evaluateGameEvolutive();
 
-        signals:
-
-        //Fragt nach dem Zug des AI
+    signals:
+        //fragt nach dem Zug der AI
         void sendingMove( int, int );
 };
 
