@@ -31,7 +31,5 @@ public:
 signals:
 
 public slots:
-
 };
-
 #endif // HIGHSCORE_H
