@@ -59,3 +59,4 @@ bool Highscore::clearHighscores()
 
   return query.exec();
 }
+
