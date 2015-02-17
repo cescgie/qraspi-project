@@ -1,17 +1,20 @@
 #include "board.h"
 
+/* Konstruktor
+**
+** Initialisiert das Brett für ein neues Spiel.
+*/
 Board::Board()
 {
-    emptyBoard();
+        emptyBoard();
 }
 
-/* Initialisiert ein neues Spiel für othello
+
+
+/* Initialisiert ein neues Spiel für Reversi
 **
 ** Das Brett wird zuerst geleert und wird
-** und wird dann mit 4 Pins und 4 Start legalen
-** Züge des ersten Spielers vorbereitet.
-** Schließlich wird festgestellt, dass der
-** Vorstand wurde geändert.
+** dann mit 4 Pins vorbereitet.
 */
 void Board::initialization()
 {
@@ -20,75 +23,65 @@ void Board::initialization()
 
     //4 Pins werden positioniert
     boardTable[3][3].setSquare(Occupied,White);
+    boardTable[3][3].setAnimated(true);
     boardTable[4][4].setSquare(Occupied,White);
+    boardTable[4][4].setAnimated(true);
     boardTable[4][3].setSquare(Occupied,Black);
+    boardTable[4][3].setAnimated(true);
     boardTable[3][4].setSquare(Occupied,Black);
+    boardTable[3][4].setAnimated(true);
 
-    //Fügt 4 legalen Züge für den ersten Spieler hinzu
+    //Fügt 4 legale Züge für den ersten Spieler hinzu
     boardTable[3][2].setType(RegularMove);
     boardTable[2][3].setType(RegularMove);
     boardTable[5][4].setType(RegularMove);
     boardTable[4][5].setType(RegularMove);
+
+    setAnimated(true);
 }
 
-
-
-/* Fügen Sie ein Stück Farbe "Farbe" in der [x] [y] des Othello Bord.
-**
-** Ein Stück kann nur auf einem Feld einen legalen Zug enthält gemacht werden.
-** Der Stift wird auf dem letzten Schlag auf dem Othello Brett gelegt.
-** Die legale Züge werden vom Brett entfernt.
-** Ist mit dem [x] [y] Werte "Belegt" und "Farbe" zugeordnet.
-** Es wurde festgestellt, dass othellier geändert hat.
-**
-** Die Funktion gibt true zurück, wenn der Stift wurde
-** anderweitig an der Platte, 'false' aufgenommen.
-*/
 bool Board::addPawn(int x, int y, ColorPawn color)
 {
     //Rückgabewert
     bool ret = false;
 
-    //Überprüfung der Angaben nicht aus dem Bild
+    //Überprüfung der Daten
     if( x>=0 && y>=0 && x<8 && y<8 )
     {
-        //Testen Sie, ob die Box ist ein legaler Zug
+        //Testen, ob die Box ein legaler Zug ist
         if( boardTable[x][y].getType() == RegularMove )
         {
             //Löscht den letzten Zug
             clearLastMove();
-            //Löscht die legale Züge der Platte
+            //Löscht die legale Züge vom Brett
             clearRegularMove();
-            //Setzen Sie den Stift auf dem Brett
+            //Setzt ein Stein auf dem Brett
             boardTable[x][y].setSquare(Occupied,color);
-            //Aktivieren Sie das Kennzeichen 'LastMove'
+            //Aktiviert 'LastMove'
             boardTable[x][y].setLastMove(true);
-            //Rückgabewert Umschalttaste
+            //Rückgabewert
             ret = true;
         }
     }
+
+    boardTable[x][y].setAnimated(true);
+    setAnimated(true);
     return ret;
 }
 
-
-
-/* Gibt die in der [x] [y] enthaltenen Token der Platte.
-**
-** Die [x] [y] muss einen Bauern enthalten.
-** Die Farbe des Stücks umgekehrt und das Kennzeichen 'animiert' gesetzt.
-** Es wurde festgestellt, dass othellier geändert hat.
-*/
+/* Funktion dreht ein Stein um
+ */
 bool Board::turnDownPawn(int x, int y)
 {
         //Rückgabewert
         bool ret = false;
-    //Überprüfung der Angaben nicht aus dem Bild
+    //Überprüfung der Daten
     if( x>=0 && y>=0 && x<8 && y<8 )
     {
-        //Testen Sie, ob die Box enthält ein Stück
+        //Testen, ob die Box ein Stein enthält
         if( boardTable[x][y].getType() == Occupied )
         {
-            //Ändern Sie die Farbe der Spielball
+            //Ändert die Farbe des Steines
             if( boardTable[x][y].getColor() == White )
             {
                 boardTable[x][y].setColor(Black);
@@ -97,35 +90,30 @@ bool Board::turnDownPawn(int x, int y)
             {
                 boardTable[x][y].setColor(White);
             }
-            //Anreise Animation Box
+            //animiert die Box
             boardTable[x][y].setAnimated(true);
-            //Zeigt an, dass das Board-Boxen in der Animation
+            //Zeigt die Animation
             setAnimated(true);
-            //Rückgabewert Umschalttaste
+            //Rückgabewert
             ret = true;
         }
     }
     return ret;
 }
 
-
-
-/* Hinzufügen eines legalen Zug in der [x] [y] des Othello Bord.
-**
-** Um einen legalen Zug hinzuzufügen, muss der Kasten leer sein.
-** Ist mit dem [x] [y] Wert 'RegularMove zugeordnet.
-*/
+/* Funktion fuegt ein Stein hinzu
+ */
 bool Board::addRegularMove(int x, int y)
 {
         //Rückgabewert
         bool ret = false;
-    //Überprüfung der Angaben nicht aus dem Bild
+    //Überprüfung der Daten
     if( x>=0 && y>=0 && x<8 && y<8 )
     {
-        //Testen Sie, ob das Feld leer ist
+        //Testen, ob das Feld leer ist
         if( boardTable[x][y].getType() == Empty )
         {
-            //Hinzugefügt legalen Zug
+            //fuegt legalen Zug hinzu
             boardTable[x][y].setType(RegularMove);
             ret = true;
         }
@@ -133,11 +121,8 @@ bool Board::addRegularMove(int x, int y)
     return ret;
 }
 
-
-
-/* Entfernt Unterhaltungsfach
-** und Plätze der Platine
-*/
+/* Funktion löscht Inhalt aus der Box
+ */
 void Board::clearAnimation()
 {
         setAnimated( false );
@@ -152,31 +137,22 @@ void Board::clearAnimation()
 
 
 
-/* Schalter der Variable 'animiert'
+/* Wechsel 'animiert'
 */
 void Board::setAnimated(bool b)
 {
         animated = b;
 }
 
-
-
-/*
-Accessor variable 'animiert'
+/*Zugriffsvariable 'animiert'
 */
 bool Board::getAnimated()
 {
         return animated;
 }
 
-
-
-/*
-** Accessor, der den Typ des [x] [y] des Othello Bord zurück.
-** Die zu der Funktion und dem Wert von der Art der Kasten
-** mit seinem öffentliche Zugriffs zurückgegeben gebenen
-** Koordinaten geprüft.
-*/
+/* Funktion gibt Koordinaten des Typs zurueck
+ */
 TypeSquare Board::getTypeSquareBoard(int x, int y)
 {
     if( x>=0 && y>=0 && x<8 && y<8 )
@@ -185,14 +161,8 @@ TypeSquare Board::getTypeSquareBoard(int x, int y)
     }
 }
 
-
-
-/* Accessor, die die Farbe des Stückes in der [x] [y] enthalten kehrt
-** die Othello Bord.
-**
-** Die mit der Funktion und dem Wert der Farbe der Stift durch
-** seine öffentliche Zugriffs zurückgegeben gebenen Koordinaten geprüft.
-*/
+/* Funktion gibt Koordinaten der Farbe zurueck
+ */
 ColorPawn Board::getColorPawnBoard(int x, int y)
 {
     if( x>=0 && y>=0 && x<8 && y<8 )
@@ -201,10 +171,6 @@ ColorPawn Board::getColorPawnBoard(int x, int y)
     }
 }
 
-
-
-/*
-*/
 bool Board::getAnimatedSquare(int x, int y)
 {
     if( x>=0 && y>=0 && x<8 && y<8 )
@@ -213,10 +179,6 @@ bool Board::getAnimatedSquare(int x, int y)
     }
 }
 
-
-
-/*
-*/
 bool Board::getLastMoveSquare(int x, int y)
 {
     if( x>=0 && y>=0 && x<8 && y<8 )
@@ -225,13 +187,8 @@ bool Board::getLastMoveSquare(int x, int y)
     }
 }
 
-
-
-/* Leeren Sie die othellier alle Stücke die es enthält.
-**
-** Selbstverständlich sind alle Felder auf dem Brett und
-** initialisiert den "Typ" der Prüfwert "Empty".
-*/
+/* Funktion leert das Brett
+ */
 void Board::emptyBoard()
 {
     for( int x=0 ; x<8 ; x++ )
@@ -243,14 +200,8 @@ void Board::emptyBoard()
     }
 }
 
-
-
-/* Beseitigung der rechtlichen Schritte des Othello Bord.
-**
-** Wir reisen alle Kästen in der Othello Bord.
-** Wenn die aktuelle Zelle enthält eine Rechts Schuss,
-** ein leeres Feld durch Zuweisung des Wertes "Empty".
-*/
+/* Funktion loescht die moeglichen Zuege
+ */
 void Board::clearRegularMove()
 {
     for( int x=0 ; x<8 ; x++ )
@@ -265,14 +216,8 @@ void Board::clearRegularMove()
     }
 }
 
-
-
-/* Löschen des letzten Takt auf der Othello Bord.
-**
-** Natürlich alle Kästen in der Othello Bord.
-** Wenn die aktuelle Zelle enthält den letzten Zug,
-** Deaktivierung der Anzeige und Schleifenpfad unterbrochen.
-*/
+/* Funktion loescht die letzten Zuege
+ */
 void Board::clearLastMove()
 {
     for( int y=0 ; y<8 ; y++ )
@@ -282,7 +227,7 @@ void Board::clearLastMove()
                 if( boardTable[x][y].getLastMove() == true )
                 {
                 boardTable[x][y].setLastMove(false);
-                x=8;  y=8;  //Unterbrechung Schleifen natürlich
+                x=8;  y=8;
                 }
         }
     }
