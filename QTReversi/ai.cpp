@@ -10,7 +10,7 @@ ai::ai()
         currentPlayer = p1;
         isFinished = false;
         movesPlay.clear();
-        int INFINITY = 10000;
+        INFINITY = 10000;
         initializationScorePattern();
 }
 
@@ -31,21 +31,19 @@ void ai::connecting( game* ge )
 }
 
 
-//Wählt den Wechsel zu spielen (globale Verarbeitung)
+//Wählt den Wechsel zu spielen
 void ai::chooseMove( game* ge )
 {
         initialization(ge);
 
         int level = 0;
-        moves m;
+        imove m;
 
         switch( playerTable[idEvaluationPlayer]->getType() )
         {
                 case AI_1:
                 /************** Random Mode ******************/
                         m = randomMove();
-                        //emit sendingMove( m.getX(), m.getY() );
-                /*********************************************/
                         break;
 
                 case AI_2:
@@ -59,19 +57,14 @@ void ai::chooseMove( game* ge )
                         break;
         }
 
-
         if( level != 0 )
         {
 /************** AlphaBeta Mode *********************/
-//              cout << level << endl;
-//              cptAlphaBeta=0;
-//              alphabreak = betabreak = 0;
                 infoAI alpha, beta;
                 alpha.setScore( -INFINITY );
                 beta.setScore( INFINITY );
 //              cout << "##########################" << endl << "nb moves= " << movesPlay.size() << endl;
                 infoAI res = alphaBeta( level, alpha, beta );
-                //emit sendingMove( res.getMove().getX(), res.getMove().getY() );
                 m = res.getMove();
 /***************************************************/
         }
@@ -79,9 +72,11 @@ void ai::chooseMove( game* ge )
         emit sendingMove( m.getX(), m.getY() );
 }
 
-//Eine Funktion, die die Suchmaschine von IA initialisiert
+
+//Eine Funktion, die die Suche von IA initialisiert
 void ai::initialization(game* ge)
 {
+//      cout << "Enter ds ai::initialization()" << endl;
         *board = *( ge->getBoard() );
         *playerTable[p1] = *( ge->getPlayer(p1) );
         *playerTable[p2] = *( ge->getPlayer(p2) );
@@ -102,13 +97,12 @@ void ai::initialization(game* ge)
                         movesPlay.push_back(regularMovesListTemp[i]);
                 }
         }
-
 }
 
-
 //Wählt zufällig einen Spielzug
-moves ai::randomMove()
+imove ai::randomMove()
 {
+//      cout << "Enter ds ai::randomMove()" << endl;
 //      cout << "currentPlayer = " << currentPlayer << endl;
 
         if( !regularMovesListTemp.empty() )
@@ -125,23 +119,13 @@ moves ai::randomMove()
 
             //Generierung eines zufallsbedingten Ganzen
             int num = (int) (0 + ((float) rand() / RAND_MAX * (movesPlay.size()-1 - 0 + 1)));
-
-//          cout << "\tmovesPlay.size = " << movesPlay.size() << endl;
-//          cout << "\tnum aleatoire = " << num << endl;
-
-//          for( int i=0 ; i<movesPlay.size() ; i++ )
-//          {
-//              movesPlay[i].affichage();
-//          }
-
             return movesPlay[num];
         }
         else
         {
-                return moves(-1,-1);
+                return imove(-1,-1);
         }
 }
-
 
 infoAI ai::miniMax( int depth )
 {
@@ -163,14 +147,9 @@ infoAI ai::miniMax( int depth )
         {
                 bestResult.setScore(-INFINITY);
 //              cout << "       movesPlay size: " << movesPlay.size() << endl;
-//              affiche_movesPlay();
 
                 for( int i=0 ; i<movesPlay.size() ; i++ )
                 {
-//                      cout << "       movesPlay size 2: " << movesPlay.size() << endl;
-//                      affiche_movesPlay();
-//                      movesPlay[i].affichage();
-
                         playMove( movesPlay[i] );  //Spiele den Zug i
                         result = miniMax( depth-1 );
 //                      cout << "            Score= " << result.getScore() << endl;
@@ -179,54 +158,36 @@ infoAI ai::miniMax( int depth )
                         {
                                 bestResult.setScore( result.getScore() );
                                 bestResult.setMove( movesPlay[i] );
-//                              bestScore = score;
-//                              bestMove = movesPlay[i];
-//                              cout << "bestScore= " << bestResult.getScore() << endl;
-//                              cout << "bestMove= ";
-//                              bestResult.getMove().affichage();
                         }
-        //******** ??????????????????? ************ -> movesPlayes Wechsel der Größe in der letzten Runde
-/*                      if( i>=movesPlay.size() )
-                                i = 10000;
-*/      //*****************************************
+
                 }
         }
         else  // node MIN = opponent
         {
                 bestResult.setScore( INFINITY );
 //              cout << "       movesPlay size 3: " << movesPlay.size() << endl;
-//              affiche_movesPlay();
 
                 for( int i=0 ; i<movesPlay.size() ; i++ )
                 {
-//                      cout << "       movesPlay size 4: " << movesPlay.size() << endl;
-//                      affiche_movesPlay();
-//                      movesPlay[i].affichage();
-
                         playMove( movesPlay[i] );  //Spiele den Zug i
                         result = miniMax( depth-1 );
                         undoLastMove();  //Annulliere den letzten Zug
-//                      cout << Score= " << result.getScore() << endl;
+//                      cout << "            Score= " << result.getScore() << endl;
                         if( result.getScore() < bestResult.getScore() )
                         {
-//                              bestScore = score;
-//                              bestMove = movesPlay[i];
                                 bestResult.setScore( result.getScore() );
                                 bestResult.setMove( movesPlay[i] );
-//                              cout << "               bestScore= " << bestResult.getScore() << endl;
-//                              cout << "               bestMove= ";
-//                              bestResult.getMove().affichage();
                         }
                 }
         }
-
         return bestResult ;
 }
 
 
 infoAI ai::getScore()
 {
-//Gibt die Punktzahl des Spielers macht die Auswertung, nicht zwangsläufig der übliche Player (Retourne le score du joueur faisant l'évaluation, pas forcément le joueur courant)
+//Gibt die Punktzahl des Spielers
+//      cout << "entre ds getScore()" << endl;
         infoAI res;
         res.setScore(playerTable[idEvaluationPlayer]->getScore());
         return res;
@@ -234,7 +195,7 @@ infoAI ai::getScore()
 
 
 
-//Standardauswertung von der Tabelle 'scorePattern'
+//Auswertung der Tabelle 'scorePattern'
 infoAI ai::evaluateGame()
 {
         int scoreP1 = 0, scoreP2 = 0;
@@ -269,13 +230,14 @@ infoAI ai::evaluateGame()
         return res;
 }
 
-//Auswertung (entwickelnd) von der Tabelle 'scorePattern'
+
+
+//Auswertung von der Tabelle 'scorePattern'
 infoAI ai::evaluateGameEvolutive()
 {
         int y,x;
         int scoreP1 = 0, scoreP2 = 0;
 
-        /******** Bewertung der Basis im Vergleich zu dem Spielstand Muster **********/
         for( x=0 ; x<8 ; x++ )
         {
                 for( y=0 ; y<8 ; y++ )
@@ -293,10 +255,8 @@ infoAI ai::evaluateGameEvolutive()
                         }
                 }
         }
-        /**************************************************************************/
 
-
-        /****************** Analysiert die Struktur des Bords ************************/
+        //Analysiert die Struktur des Bords
         ColorPawn colorTmp;
         bool rowFull[4];
         for( x=0 ; x<4 ; x++ )
@@ -350,7 +310,7 @@ infoAI ai::evaluateGameEvolutive()
         {
                 colorTmp = board->getColorPawnBoard(7,0);
                 //Bord leiten/obere -> row 0
-                if( rowFull[0] == false )  //die Linie ändern sich nie, wenn es bereits mit einer Farbe gefüllt ist
+                if( rowFull[0] == false )  //die Linien ändern sich nie, wenn es bereits mit einer Farbe gefüllt ist
                 {
                         x = 6;
                         while( board->getTypeSquareBoard(x,0) == Occupied && x>0 )
@@ -392,7 +352,7 @@ infoAI ai::evaluateGameEvolutive()
         {
                 colorTmp = board->getColorPawnBoard(7,7);
                 //Bord rechtsbündig -> column 7
-                if( rowFull[1] == false )  //die Linie ändern sich nie, wenn es bereits mit einer Farbe gefüllt ist
+                if( rowFull[1] == false )  //die Linien ändern sich nie, wenn es bereits mit einer Farbe gefüllt ist
                 {
                         y = 6;
                         while( board->getTypeSquareBoard(7,y) == Occupied && y>0 )
@@ -522,7 +482,7 @@ infoAI ai::evaluateGameEvolutive()
         }
 
 
-        /************* Berechnung der Rückgabewert ********************/
+        //Berechnung der Rückgabewert
 //      cout << "ScoreP1=" << scoreP1 << endl << "ScoreP2= " << scoreP2 << endl;
         infoAI res;
         if( p1 == idEvaluationPlayer )
@@ -550,7 +510,7 @@ void ai::updateScoreEvaluate( int square, ColorPawn color, int &scoreP1, int &sc
                 case 3:
                 case 4:
                 case 5:
-                        value = 100; //Man fügt 100 zum Anfangswert hinzu
+                        value = 100; //fügt 100 zum Anfangswert hinzu
                         break;
                 default:
                         value = 0;
@@ -567,23 +527,22 @@ void ai::updateScoreEvaluate( int square, ColorPawn color, int &scoreP1, int &sc
         }
 }
 
-bool ai::playMove(moves m)
+
+
+bool ai::playMove(imove m)
 {
-//Setze den Zug auf l'othellier
-//Schiebe Inhalt von 'movesPlay'
-    bool ret;   //value returned
+    bool ret;   //Rückgabewert
 
-    //Rückgewinnung/Wiedererlangung und Update der Farbe des Spielzugs
+    //Wiedererlangung und Update der Farbe des Spielzugs
     m.setColor( playerTable[currentPlayer]->getColor() );
-
-    //Hinzufügen einer Spielfigur auf l'othellier
+    //Hinzufügen einer Spielfigur
     ret = board->addPawn( m.getX(), m.getY(), m.getColor() );
 
     if( ret )  //Wenn legaler Zug, dann...
     {
         initializationSavingMove();  //Initialisieren einer Liste mit den gespeicherten Spielzügen
 
-        playerTable[currentPlayer]->increaseScore();  //1 pt für die Spielfigur (platzieren)
+        playerTable[currentPlayer]->increaseScore();  //1 pt für die Spielfigur
         addMoveList(m);  //Hinzufügen eines Sielzugs auf die Liste
         updateGame(m);  //Update der Spieldaten
 
@@ -602,10 +561,7 @@ bool ai::playMove(moves m)
 
         if( !isFinished )
         {
-            updateRegularMove();    //Update der legalen Spielzüge der aktuellen Spieler auf dem l'othellier
-//                      saveCurrentPlayer();
-//                      saveRegularMoves();  //regelmäßiges Backup der Spielzüge
-//                      numCurrentMove ++;
+            updateRegularMove();    //Update der legalen Spielzüge der aktuellen Spieler
         }
                 saveCurrentPlayer();
                 saveRegularMoves();  //regelmäßiges Backup der Spielzüge
@@ -629,15 +585,15 @@ bool ai::playMove(moves m)
 
 void ai::undoLastMove()
 {
-        //Abbruch/Annulieren des Spielzugs der Partie, welche nicht unbedingt beendet wurde
+        //Abbruch des Spielzuges der Partie, welche nicht unbedingt beendet wurde
         isFinished = false;
         if( numCurrentMove > 0 )
         {
-                moves moveTmp;
+                imove moveTmp;
         //Neuausrichten des vorherigen Spielzugs
                 numCurrentMove--;
         //einen aktuellen Spieler wiederherstellen
-                if( numCurrentMove == 0 ) //Konfigurieren des Starts/Anfangs
+                if( numCurrentMove == 0 ) //Konfigurieren des Anfangs
                 {
                         //Der Spieler, der beginnt, ist die schwarze Spielfigur
                         if( playerTable[p1]->getColor() == Black )
@@ -653,16 +609,15 @@ void ai::undoLastMove()
                 {
                         currentPlayer = movesSavedList[numCurrentMove-1].getCurrentPlayer();
                 }
-//-->senden msg 'aktive Spieler "an die Schnittstelle
-        //Entfernen/Zurücknehmen der letzten (platzierten) Spielfigur
+                //Entfernt die letzten,platzierten Spielfiguren
                 board->emptySquare(movesList[numCurrentMove].getX(),movesList[numCurrentMove].getY());
-                playerTable[currentPlayer]->decreaseScore();  //Update der Spielstände/Ergebnisse
-        //Update letzter Spielzug auf dem Brett, wenn er existiert
+                playerTable[currentPlayer]->decreaseScore();  //Update der Spielstände
+                //Update letzter Spielzug auf dem Brett, wenn er existiert
                 if(numCurrentMove > 0)
                 {
                         board->enableLastMoveSquare(movesList[numCurrentMove-1].getX(),movesList[numCurrentMove-1].getY());
                 }
-        //Zurückkehren/Wiederbringen der Spielfiguren
+                //Zurückkehren der Spielfiguren
                 for( int i=0 ; i<movesSavedList[numCurrentMove].getSizePawnsTurnedDownList() ; i++ )
                 {
                         moveTmp = movesSavedList[numCurrentMove].getPawnsTurnedDownList(i);
@@ -680,28 +635,28 @@ void ai::undoLastMove()
                         }
                 }
                 board->clearAnimation();  //keine Animation
-        //Update der legalen Spielzüge
+                //Update der legalen Spielzüge
                 board->clearRegularMove();
                 regularMovesListTemp.clear();
                 int numMovesCurPlayer = 0;
-                //Abrufen/Rückgewinnung der regelmäßigen Spielzüge von 'regularMovesListTemp'
-                if( numCurrentMove == 0 ) //Konfigurieren des Starts/Anfangs
+                //Abrufen der gueltigen Spielzüge von 'regularMovesListTemp'
+                if( numCurrentMove == 0 ) //Konfigurieren des Anfangs
                 {
                         regularMovesListTemp.clear();
-                        regularMovesListTemp.push_back( moves(2,3,Black) );
-                        regularMovesListTemp.push_back( moves(3,2,Black) );
-                        regularMovesListTemp.push_back( moves(4,5,Black) );
-                        regularMovesListTemp.push_back( moves(5,4,Black) );
-                        regularMovesListTemp.push_back( moves(5,3,White) );
-                        regularMovesListTemp.push_back( moves(4,2,White) );
-                        regularMovesListTemp.push_back( moves(2,4,White) );
-                        regularMovesListTemp.push_back( moves(3,5,White) );
+                        regularMovesListTemp.push_back( imove(2,3,Black) );
+                        regularMovesListTemp.push_back( imove(3,2,Black) );
+                        regularMovesListTemp.push_back( imove(4,5,Black) );
+                        regularMovesListTemp.push_back( imove(5,4,Black) );
+                        regularMovesListTemp.push_back( imove(5,3,White) );
+                        regularMovesListTemp.push_back( imove(4,2,White) );
+                        regularMovesListTemp.push_back( imove(2,4,White) );
+                        regularMovesListTemp.push_back( imove(3,5,White) );
                 }
                 else
                 {
                         regularMovesListTemp = movesSavedList[numCurrentMove-1].getRegularMovesList();
                 }
-                //Update der regelmäßigen Spielzüge auf dem Brett
+                //Update der gueltigen Spielzüge auf dem Brett
                 for( int i=0 ; i<regularMovesListTemp.size() ; i++ )
                 {
                         if( regularMovesListTemp[i].getColor() == playerTable[currentPlayer]->getColor() )
@@ -735,20 +690,17 @@ void ai::undoLastMove()
         }
 }
 
-
-
-bool ai::updateGame(moves m)
+bool ai::updateGame(imove m)
 {
     updateRow(m);
     updateColumn(m);
     updateDiagonal(m);
 }
 
-
 //Update der Spielfiguren von der Reihe des gespielten Zugs
-void ai::updateRow(moves m)
+void ai::updateRow(imove m)
 {
-    //Rückgewinnung/Wiedererlangung coord Zug
+    //Rückgewinnungder Koordinaten des Zuges
     int xMove = m.getX(),
         yMove = m.getY();
     //Wiederherstellen der Farbe
@@ -767,14 +719,13 @@ void ai::updateRow(moves m)
     /*Überprüfen, ob man noch auf dem Brett ist*/
     if( i>=0 )
     {
-        /*Überprüfen, ob das Feld einen Token-Player/Spielfigur des Spielers enthält*/
+        /*Überprüfen, ob das Feld eine Spielfigur des Spielers enthält*/
         if ( board->getTypeSquareBoard(i,yMove)==Occupied && board->getColorPawnBoard(i,yMove)==colorMove )
         {
             /*Gegnerischen Figuren sind umrahmt, sie können die Spielfiguren im Feld zurückspielen*/
             i++;//Es ist auf das erste gegnerische Feld ausgerichtet (die zuerst nach rechts ...)
             while( i<xMove )
             {
-//                board->turnDownPawn(i,yMove);  //Umdrehen der Spielfigur
                                 turnDownPawn(i,yMove);  //Umdrehen der Spielfigur
                 this->updateScore();  //Anpassen der Spielstände
                 i++;  //Es geht in das nächste Feld rechts
@@ -792,14 +743,13 @@ void ai::updateRow(moves m)
     /*Überprüfen, ob man noch auf dem Brett ist*/
     if( i<8 )
     {
-        /*Überprüfen, ob das Feld einen Token-Player/Spielfigur des Spielers enthält*/
+        /*Überprüfen, ob das Feld eine Spielfigur des Spielers enthält*/
         if ( board->getTypeSquareBoard(i,yMove)==Occupied && board->getColorPawnBoard(i,yMove)==colorMove )
         {
             /*Gegnerischen Figuren sind umrahmt, sie können die Spielfiguren im Feld zurückspielen*/
             i--;//Neuausrichtung auf das erste gegnerische Feld (die erste nach links)
             while( i>xMove )
             {
-//                board->turnDownPawn(i,yMove);  //Umdrehen der Spielfigur
                                 turnDownPawn(i,yMove);
                 this->updateScore();  //Anpassen der Spielstände
                 i--;  //Es geht in das nächste Feld links
@@ -810,9 +760,9 @@ void ai::updateRow(moves m)
 
 
 //Update der Spielfiguren in der Spalte des gespielten Zugs
-void ai::updateColumn(moves m)
+void ai::updateColumn(imove m)
 {
-    //Rückgewinnung/Wiedererlangung coord Zug
+    //Rückgewinnung der Koordinaten des Zuges
     int xMove = m.getX(),
         yMove = m.getY();
     //Wiederherstellung der Farbe
@@ -831,14 +781,13 @@ void ai::updateColumn(moves m)
     /*Überprüfen, ob man noch auf dem Brett ist*/
     if( i>=0 )
     {
-        /*Überprüfen, ob das Feld einen Token-Player/Spielfigur des Spielers enthält*/
+        /*Überprüfen, ob das Feld eine Spielfigur des Spielers enthält*/
         if ( board->getTypeSquareBoard(xMove,i)==Occupied && board->getColorPawnBoard(xMove,i)==colorMove )
         {
             /*Gegnerischen Figuren sind umrahmt, sie können die Spielfiguren im Feld zurückspielen*/
             i++;//Neuausrichtung auf das erste gegnerische Feld (der erste unten ...)
             while( i<yMove )
             {
-//                board->turnDownPawn(xMove,i);  //Umdrehen der Spielfigur
                                 turnDownPawn(xMove,i);
                 this->updateScore();  //Anpassen der Spielstände
                 i++;  //Es geht in das nächste Feld nach unten
@@ -856,14 +805,13 @@ void ai::updateColumn(moves m)
     /*Überprüfen, ob man noch auf dem Brett ist*/
     if( i<8 )
     {
-        /*Überprüfen, ob das Feld einen Token-Player/Spielfigur des Spielers enthält*/
+        /*Überprüfen, ob das Feld eine Spielfigur des Spielers enthält*/
         if ( board->getTypeSquareBoard(xMove,i)==Occupied && board->getColorPawnBoard(xMove,i)==colorMove )
         {
             /*Gegnerischen Figuren sind umrahmt, sie können die Spielfiguren im Feld zurückspielen*/
             i--;//Neuausrichtung auf das erste gegnerische Feld (der erste oben ...)
             while( i>yMove )
             {
-//              board->turnDownPawn(xMove, i);  //Umdrehen der Spielfigur
                 turnDownPawn(xMove,i);
                 this->updateScore();  //Anpassen der Spielstände
                 i--;  //Es geht in das nächste Feld nach oben
@@ -874,9 +822,9 @@ void ai::updateColumn(moves m)
 
 
 //Update der Spielfiguren auf den Diagonalen des gespielten Zugs
-void ai::updateDiagonal(moves m)
+void ai::updateDiagonal(imove m)
 {
-    //Rückgewinnung/Wiedererlangung coord Zug
+    //Rückgewinnung Koordinaten des Zuges
     int xMove = m.getX(),
         yMove = m.getY();
     //Wiederherstellung der Farbe
@@ -904,8 +852,7 @@ void ai::updateDiagonal(moves m)
             i++; j++;//Neuausrichtung auf das erste gegnerische Feld (die erste unten rechts ...)
             while( i<xMove && j<yMove )
             {
-//              board->turnDownPawn(i,j);  //Umdrehen der Spielfigur
-                turnDownPawn(i,j);
+                                turnDownPawn(i,j);
                 this->updateScore();  //Anpassen der Spielstände
                 i++; j++; //Es geht in das nächste Feld nach unten rechts
             }
@@ -925,14 +872,13 @@ void ai::updateDiagonal(moves m)
     /*Überprüfen, ob man noch auf dem Brett ist*/
     if( i<8 && j<8 )
     {
-        /*Überprüfen, ob das Feld einen Token-Player/Spielfigur des Spielers enthält*/
+        /*Überprüfen, ob das Feld eine Spielfigur des Spielers enthält*/
         if ( board->getTypeSquareBoard(i,j)==Occupied && board->getColorPawnBoard(i,j)==colorMove )
         {
             /*Gegnerischen Figuren sind umrahmt, sie können die Spielfiguren im Feld zurückspielen*/
             i--;  j--;//Neuausrichtung auf das erste gegnerische Feld (die erste oben links ...)
             while( i>xMove && j>yMove )
             {
-//              board->turnDownPawn(i, j);  //Umdrehen der Spielfigur
                 turnDownPawn(i,j);
                 this->updateScore();  //Anpassen der Spielstände
                 i--;  j--;//Es geht in das nächste Feld nach oben links
@@ -952,14 +898,13 @@ void ai::updateDiagonal(moves m)
     /*Überprüfen, ob man noch auf dem Brett ist*/
     if( i<8 && j>=0 )
     {
-        /*Überprüfen, ob das Feld einen Token-Player/Spielfigur des Spielers enthält*/
+        /*Überprüfen, ob das Feld eine Spielfigur des Spielers enthält*/
         if ( board->getTypeSquareBoard(i,j)==Occupied && board->getColorPawnBoard(i,j)==colorMove )
         {
             /*Gegnerischen Figuren sind umrahmt, sie können die Spielfiguren im Feld zurückspielen*/
             i--; j++;//Neuausrichtung auf das erste gegnerische Feld (die erste unten links ...)
             while( i>xMove && j<yMove )
             {
-//              board->turnDownPawn(i,j);  //Umdrehen der Spielfigur
                 turnDownPawn(i,j);
                 this->updateScore();  //Anpassen der Spielstände
                 i--; j++; //Es geht in das nächste Feld nach unten links
@@ -980,14 +925,13 @@ void ai::updateDiagonal(moves m)
     /*Überprüfen, ob man noch auf dem Brett ist*/
     if( i>=0 && j<8 )
     {
-        /*Überprüfen, ob das Feld einen Token-Player/Spielfigur des Spielers enthält*/
+        /*Überprüfen, ob das Feld eine Spielfigur des Spielers enthält*/
         if ( board->getTypeSquareBoard(i,j)==Occupied && board->getColorPawnBoard(i,j)==colorMove )
         {
             /*Gegnerischen Figuren sind umrahmt, sie können die Spielfiguren im Feld zurückspielen*/
             i++;  j--;//Neuausrichtung auf das erste gegnerische Feld (die erste oben rechts ...)
             while( i<xMove && j>yMove )
             {
-//              board->turnDownPawn(i, j);  //Umdrehen der Spielfigur
                 turnDownPawn(i,j);
                 this->updateScore();  //Anpassen der Spielstände
                 i++;  j--;//Es geht in das nächste Feld nach oben rechts
@@ -1075,20 +1019,20 @@ void ai::definingRegularMoves()
                                             //gültiger Zug schwarz
                                             BlackRegularMove = true;
                                             increaseRegularMove(Black);
-                                            //Hinzugefügt eines legalen/gültigen Zugs in der temporären Liste
-                                            regularMovesListTemp.push_back( moves(x,y,Black) );
+                                            //Hinzugefügt eines gültigen Zugs in der temporären Liste
+                                            regularMovesListTemp.push_back( imove(x,y,Black) );
                                         }
-                                        //Wenn die gerahmten Spielfiguren schwarz sind und das Weiße immer noch kein legaler/gültiger Zug auf diesem Feld ist
+                                        //Wenn die gerahmten Spielfiguren schwarz sind und das Weiße immer noch kein gültiger Zug auf diesem Feld ist
                                         else if( colorTmp == Black && !WhiteRegularMove )
                                         {
                                             //gültiger Zug weiß
                                             WhiteRegularMove = true;
                                             increaseRegularMove(White);
-                                            //Hinzugefügt eines legalen/gültigen Zugs in der temporären Liste
-                                            regularMovesListTemp.push_back( moves(x,y,White) );
+                                            //Hinzugefügt eines gültigen Zuges in der temporären Liste
+                                            regularMovesListTemp.push_back( imove(x,y,White) );
                                         }
 
-                                        //Prüft, ob die zwei Farben haben einen gültigen Zug für dieses Feld
+                                        //Prüft, ob die zwei Farben einen gültigen Zug für dieses Feld haben
                                         //In diesem Fall ist es abgeschlossen für dieses Feld
                                         if( BlackRegularMove && WhiteRegularMove )
                                         {
@@ -1101,14 +1045,16 @@ void ai::definingRegularMoves()
                         }
                     }
 
-                }  //End Pfad/Strecke benachbarter Quadrate
+                }  //Ende Strecke benachbarter Quadrate
 
             }
         }
     }  //End Strecke des Brettes
 }
 
-//Update der gültigen Züge, welche in 'regularMovesList' enthalten sind, auf l'othellier
+
+
+//Update der gültigen Züge, welche in 'regularMovesList' enthalten sind
 void ai::updateRegularMove()
 {
     for( int i=0 ; i<regularMovesListTemp.size() ; i++ )
@@ -1119,6 +1065,7 @@ void ai::updateRegularMove()
         }
     }
 }
+
 
 void ai::increaseRegularMove(ColorPawn color)
 {
@@ -1132,9 +1079,12 @@ void ai::increaseRegularMove(ColorPawn color)
     }
 }
 
+
+
 /*Verifikation/Überprüfung eines legalen Zugs nach mehreren Parametern ...
-  Prüft, ob die Felder des Brettes (start von dem Feld [squareX,squareY]) gemäß/entlang der Vektorlinie
-  (i,j) eine Konfiguration für einen gültigen Zug darstellt/repräsentiert.*/
+  Prüft, ob die Felder des Brettes (start von dem Feld [squareX,squareY]) entlang der Linie
+  (i,j) eine Stellung für einen gültigen Zug darstellt.
+*/
 bool ai::checkRegularMove(int squareX, int squareY, int i, int j)
 {
     bool ret = false,  //Wert zurück
@@ -1172,6 +1122,7 @@ bool ai::checkRegularMove(int squareX, int squareY, int i, int j)
     return ret;
 }
 
+
 void ai::initializationScorePattern()
 {
         for( int x=0 ; x<8 ; x++ )
@@ -1200,6 +1151,7 @@ void ai::initializationScorePattern()
         scorePattern[2][2]=1;  scorePattern[2][5]=1;  scorePattern[5][2]=1;  scorePattern[5][5]=1;
 }
 
+
 void ai::initializationSavingMove()
 {
         if( movesSavedList.size() != numCurrentMove )  //Wenn der Vektor mehr als einmal, die Anzahl eines üblich Zugs
@@ -1207,10 +1159,11 @@ void ai::initializationSavingMove()
                 movesSavedList.erase(movesSavedList.begin()+numCurrentMove, movesSavedList.end() );
         }
         //Hinzufügen eines infosMoves am Ende
-        movesSavedList.push_back( InfosMoves() );
+        movesSavedList.push_back( infosMoves() );
 }
 
-void ai::addMoveList(moves m)
+
+void ai::addMoveList(imove m)
 {
         //Wenn numCurrentMove mit dem letzten Zug nicht übereinstimmt, werden die Bewegungen eliminiert
         if( numCurrentMove != movesList.size() )
@@ -1222,6 +1175,7 @@ void ai::addMoveList(moves m)
         //Hinzufügen des Zugs an das Ende der Liste
         movesList.push_back(m);
 }
+
 
 void ai::nextPlayer()
 {
@@ -1240,16 +1194,19 @@ void ai::saveCurrentPlayer()
         movesSavedList[numCurrentMove].saveCurrentPlayer(currentPlayer);
 }
 
+
 //regelmäßiges Speichern der Spielzüge des aktuellen Spielzugs
 void ai::saveRegularMoves()
 {
         movesSavedList[numCurrentMove].saveRegularMoves(regularMovesListTemp);
 }
 
+
 void ai::savePawnTurnedDown(int x, int y)
 {
-        movesSavedList[numCurrentMove].addPawnsTurnedDown( moves(x,y) );
+        movesSavedList[numCurrentMove].addPawnsTurnedDown( imove(x,y) );
 }
+
 
 void ai::affiche_movesPlay()
 {
@@ -1259,6 +1216,7 @@ void ai::affiche_movesPlay()
                 movesPlay[i].affichage();
         }
 }
+
 
 infoAI ai::alphaBeta(int depth, infoAI alpha, infoAI beta)
 {
@@ -1278,10 +1236,9 @@ infoAI ai::alphaBeta(int depth, infoAI alpha, infoAI beta)
         if( idEvaluationPlayer == playerTable[currentPlayer]->getId() )  // node MAX = Program
         {
 //              cout << "       movesPlay size: " << movesPlay.size() << endl;
-//              affiche_movesPlay();
                 for ( int i=0 ; i<movesPlay.size() ; i++ )
                 {
-//                      cout <<         "       !!!!";
+//                      cout <<         "       !!!! eval de";
 //                      movesPlay[i].affichage();
 
                         playMove( movesPlay[i] );  //Spiele des Zug i
@@ -1296,7 +1253,6 @@ infoAI ai::alphaBeta(int depth, infoAI alpha, infoAI beta)
                                 alpha.setMove( movesPlay[i] );
 //                              cout << "               AlphaScore= " << alpha.getScore() << endl;
 //                              cout << "               AlphaMove= ";
-//                              alpha.getMove().affichage();
 
                                 if( alpha.getScore() >= beta.getScore() )  // alpha break/Pause
                                 {
@@ -1312,13 +1268,9 @@ infoAI ai::alphaBeta(int depth, infoAI alpha, infoAI beta)
         else  // node MIN = opponent
         {
 //              cout << "       movesPlay size: " << movesPlay.size() << endl;
-//              affiche_movesPlay();
-
                 for ( int i=0 ; i<movesPlay.size() ; i++ )
                 {
 //                      cout <<         "       !!!! eval de";
-//                      movesPlay[i].affichage();
-
                         playMove( movesPlay[i] );  //Spiele den Zug i
                         result = alphaBeta( depth - 1, alpha, beta );
                         undoLastMove();  //Annuliere den letzten Zug
@@ -1331,7 +1283,6 @@ infoAI ai::alphaBeta(int depth, infoAI alpha, infoAI beta)
                                 beta.setMove( movesPlay[i] );
 //                              cout << "               BetaScore= " << beta.getScore() << endl;
 //                              cout << "               BetaMove= ";
-//                              beta.getMove().affichage();
 
                                 if( alpha.getScore() >= beta.getScore() )  // beta break/Pause
                                 {
