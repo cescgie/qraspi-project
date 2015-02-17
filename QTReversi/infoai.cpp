@@ -1,5 +1,4 @@
-#include "infoAI.h"
-
+#include "infoai.h"
 infoAI::infoAI()
 {
         score = 0;
@@ -15,13 +14,13 @@ int infoAI::getScore()
         return score;
 }
 
-void infoAI::setMove(moves m)
+void infoAI::setMove(imove m)
 {
-        _move = m;
+        move_i = m;
 }
 
-moves infoAI::getMove()
+imove infoAI::getMove()
 {
-        return _move;
+        return move_i;
 }
 
