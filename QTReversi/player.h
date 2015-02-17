@@ -8,42 +8,33 @@ class Player
 {
 
     private:
-
-                //Spielernummer
-                int id;
-
-                //Spielername
-                QString name;
-
-                //Spielertyp: 'Lokal', 'Global', 'IA_1', 'IA_2', 'IA_3'
-                TypePlayer type;
-
-                //Farbe des Spielersteines
+        //Spielernummer
+        int id;
+        //Spielername
+        QString name;
+        //Spielertyp: 'Lokal', 'Global', 'IA_1', 'IA_2', 'IA_3'
+        TypePlayer type;
+        //Farbe des Spielsteines
         ColorPawn color;
-
         //Spielerpunkte
         int score;
-
         //Anzahl der Wechsel
         int numMoves;
 
     public:
-
         //Konstruktor
         Player( int );
         Player( int, QString, TypePlayer, ColorPawn );
-
-        //Wechsel Variable 'name'
+        //Wechsel 'name'
         void setName(QString);
-        //Wechsel Variable 'type'
+        //Wechsel 'type'
         void setType(TypePlayer);
-        //Wechsel Variable 'color'
+        //Wechsel 'color'
         void setColor(ColorPawn);
-        //Wechsel Variable 'score'
+        //Wechsel 'score'
         void setScore(int);
-        //Wechsel Variable 'numMoves'
+        //Wechsel 'numMoves'
         void setNumMoves(int);
-
         //Zugriffsvariable 'ID'
         int getId();
         //Zugriffsvariable 'name'
@@ -56,21 +47,16 @@ class Player
         int getScore();
         //Zugriffsvariable 'numMoves'
         int getNumMoves();
-
         //ruecksetzen 'numMoves'
         void RazNumMoves();
-
         //Initialisierung von 'score', 'numMoves', 'timePlayed' der Spieler
         void initialization();
-
         //Erhoehen der Punkte
         void increaseScore();
         //Senken der Punkte
         void decreaseScore();
         //Erhoehen der legalen Züge
         void increaseRegularMove();
-
-
 };
 
 #endif
