@@ -25,7 +25,6 @@ class ListMoves : public QWidget
                 Player* getPlayer(int);
 
         private:
-
                 Player **playerTable;
                 QLabel  *movesListLabel;
                 QTextEdit *listMoves;
