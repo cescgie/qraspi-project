@@ -8,53 +8,52 @@ QT       += opengl
 QT       += widgets
 QT       += core gui multimedia
 unix:!macx{
-LIBS     += -lGLU
+    LIBS     += -lGLU
 }
 QT       += sql xml
 QT       += printsupport
+ICON = QtM.icns
 
-TARGET = QTReversi
 TEMPLATE = app
+TARGET = QTReversi
 DEPENDPATH += .
 INCLUDEPATH += .
+CONFIG += qt
 
-
-SOURCES += main.cpp \
-    graphics.cpp \
-    game.cpp \
-    glview.cpp \
-    square.cpp \
-    player.cpp \
-    infosmoves.cpp \
-    board.cpp \
-    infoview.cpp \
-    ai.cpp \
-    infoai.cpp \
-    playersetting.cpp \
-    moves.cpp \
-    listmoves.cpp \
-    highscore.cpp
-
-HEADERS  += \
-    define.h \
-    graphics.h \
-    game.h \
-    glview.h \
-    square.h \
+# Input
+HEADERS += \
     player.h \
-    infosmoves.h \
+    square.h \
     board.h \
-    infoview.h \
+    define.h \
     ai.h \
+    game.h \
+    graphics.h \
+    highscore.h \
+    imove.h \
+    glview.h \
+    infosmoves.h \
+    infoview.h \
     infoai.h \
     playersetting.h \
-    moves.h \
-    listmoves.h \
-    highscore.h
-
+    listmoves.h
 FORMS += \
     playersetting.ui
+SOURCES += \
+    main.cpp \
+    player.cpp \
+    square.cpp \
+    board.cpp \
+    ai.cpp \
+    game.cpp \
+    graphics.cpp \
+    highscore.cpp \
+    imove.cpp \
+    glview.cpp \
+    infosmoves.cpp \
+    infoai.cpp \
+    infoview.cpp \
+    playersetting.cpp \
+    listmoves.cpp
 
-RESOURCES += \
-    Resources.qrc
-
+RESOURCES += Resources.qrc
