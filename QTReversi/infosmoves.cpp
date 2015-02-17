@@ -1,80 +1,64 @@
 #include "infosmoves.h"
 
-InfosMoves::InfosMoves()
+infosMoves::infosMoves()
 {
         currentPlayer = -1;
         pawnsTurnedDownList.clear();
         regularMovesList.clear();
 }
 
-
-
-//Setzen eines Steines in die Liste des Wertes
-void InfosMoves::addPawnsTurnedDown(moves m)
+//Setzen eines Steines in die Liste
+void infosMoves::addPawnsTurnedDown(imove m)
 {
         pawnsTurnedDownList.push_back(m);
 }
 
-
-
 //regelmaessiges sichern der Werte
-void InfosMoves::saveRegularMoves(vector<moves> v)
+void infosMoves::saveRegularMoves(vector<imove> v)
 {
         regularMovesList = v;
 }
 
-
-
 //Speichern der aktuellen Spieler
-void InfosMoves::saveCurrentPlayer(int id)
+void infosMoves::saveCurrentPlayer(int id)
 {
         currentPlayer = id;
 }
 
-
-
 //Zugriffsvariable 'currentPlayer'
-int InfosMoves::getCurrentPlayer()
+int infosMoves::getCurrentPlayer()
 {
         return currentPlayer;
 }
 
-
-
 //Zugriffsvariable 'pawnsTurnedDownList'
-vector<moves> InfosMoves::getPawnsTurnedDownList()
+vector<imove> infosMoves::getPawnsTurnedDownList()
 {
         return pawnsTurnedDownList;
 }
 
-
-
 //Zugriffsvariable 'regularMovesList'
-vector<moves> InfosMoves::getRegularMovesList()
+vector<imove> infosMoves::getRegularMovesList()
 {
         return regularMovesList;
 }
 
-
-
 //Gibt die Anzahl von 'pawnsTurnedDownList'
-int InfosMoves::getSizePawnsTurnedDownList()
+int infosMoves::getSizePawnsTurnedDownList()
 {
         return pawnsTurnedDownList.size();
 }
 
-
 //Gibt die Anzahl von 'regularMovesList'
-int InfosMoves::getSizeRegularMovesList()
+int infosMoves::getSizeRegularMovesList()
 {
         return regularMovesList.size();
 }
 
-
 //Gibt die Anzahl der Zuege 'regularMovesList'
-moves InfosMoves::getRegularMovesList(int i)
+imove infosMoves::getRegularMovesList(int i)
 {
-        moves m;
+        imove m;
         if( i>=0 && i<regularMovesList.size() )
         {
                 m = regularMovesList[i];
@@ -82,11 +66,10 @@ moves InfosMoves::getRegularMovesList(int i)
         return m;
 }
 
-
 //Gibt die Anzahl der Zuege 'pawnsTurnedDownList'
-moves InfosMoves::getPawnsTurnedDownList(int i)
+imove infosMoves::getPawnsTurnedDownList(int i)
 {
-        moves m;
+        imove m;
         if( i>=0 && i<pawnsTurnedDownList.size() )
         {
                 m = pawnsTurnedDownList[i];
@@ -94,24 +77,19 @@ moves InfosMoves::getPawnsTurnedDownList(int i)
         return m;
 }
 
-
-
-
-//Anzeige im Konsole
-void InfosMoves::affichage()
+//Anzeige im Fenster
+void infosMoves::affichage()
 {
         cout << "\t aktueller Spieler: ";
         if( currentPlayer == p1 )
                 cout << "Schwarz" << endl;
         else
                 cout << "Weiß" << endl;
-
         cout << "\t Anzahl der Steine:" << endl;
         for( int i=0 ; i<pawnsTurnedDownList.size() ; i++ )
                 pawnsTurnedDownList[i].affichage();
-
         cout << "\t Anzahl der Bewegungen:" << endl;
         for( int i=0 ; i<regularMovesList.size() ; i++ )
                 regularMovesList[i].affichage();
-        cout << "## Ende InfosMoves ##" << endl;
+        cout << "## Ende infosMoves ##" << endl;
 }
