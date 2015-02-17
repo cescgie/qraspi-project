@@ -10,11 +10,8 @@ class PlayerSetting : public QDialog, public Ui::PlayerSetting
         Q_OBJECT
 
         public:
-
                 PlayerSetting(QWidget *parent = 0);
-
                 void setNames(QString,QString);
                 void setTypes(int, int);
-
 };
 #endif // PLAYERSETTING_H
