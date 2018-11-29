@@ -36,7 +36,8 @@ HEADERS += \
     infoview.h \
     infoai.h \
     playersetting.h \
-    listmoves.h
+    listmoves.h \
+    infoai.h
 FORMS += \
     playersetting.ui
 SOURCES += \
