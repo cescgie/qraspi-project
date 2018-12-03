@@ -8,7 +8,7 @@ QT       += opengl
 QT       += widgets
 QT       += core gui multimedia
 unix:!macx{
-    LIBS     += -lGLU
+    LIBS     += -lGLU -lGL
 }
 QT       += sql xml
 QT       += printsupport
