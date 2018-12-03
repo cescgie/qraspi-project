@@ -26,7 +26,7 @@
 
 
 /************************************************************************
- * 2002-Apr-22, José Fonseca:
+ * 2002-Apr-22, Josï¿½ Fonseca:
  *   Removed non Win32 system-specific stuff
  *
  * 2002-Apr-17, Marcus Geelnard:
@@ -1357,7 +1357,7 @@ GLAPI void APIENTRY glInterleavedArrays( GLenum format, GLsizei stride, const GL
 
 /* 1.2 functions */
 GLAPI void APIENTRY glDrawRangeElements( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const GLvoid *indices );
-GLAPI void APIENTRY glTexImage3D( GLenum target, GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *pixels );
+//GLAPI void APIENTRY glTexImage3D( GLenum target, GLint level, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *pixels );
 GLAPI void APIENTRY glTexSubImage3D( GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid *pixels);
 GLAPI void APIENTRY glCopyTexSubImage3D( GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height );
 
