@@ -1,6 +1,5 @@
-/* Application Benchmark Test Package Timer
- * Tyler Simon and Tom Oppe
- * 8/10/2006
+/* 
+ * Application Benchmark Test Package Timer
  * Get MPI startup times
  */
 

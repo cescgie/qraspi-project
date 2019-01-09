@@ -1,7 +1,7 @@
-#!/usr/bin/fish
-time ./monteCarloTreeSearch.out > playback/mcts-st-1.txt
-time ./monteCarloTreeSearch.out > playback/mcts-st-2.txt
-time ./monteCarloTreeSearch.out > playback/mcts-st-3.txt
-mpirun -n 4 ./monteCarloTreeSearch-parallel.out > playback/mcts-mt-1.txt
-mpirun -n 4 ./monteCarloTreeSearch-parallel.out > playback/mcts-mt-2.txt
-mpirun -n 4 ./monteCarloTreeSearch-parallel.out > playback/mcts-mt-3.txt
+#!/bin/bash
+time ./mcts-default.out > playback/mcts-default-1.txt
+time ./mcts-default.out > playback/mcts-default-2.txt
+time ./mcts-default.out > playback/mcts-default-3.txt
+mpirun -n 4 ./mcts-mpi.out > playback/mcts-mpi-1.txt
+mpirun -n 4 ./mcts-mpi.out > playback/mcts-mpi-2.txt
+mpirun -n 4 ./mcts-mpi.out > playback/mcts-mpi-3.txt
