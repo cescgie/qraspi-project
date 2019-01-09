@@ -19,10 +19,33 @@ askPrompt(){
     echo " "
     read -p "Start a new game? (y/n) " newGame </dev/tty
     case $newGame in  
-        y|Y|j|J) askNode ;; 
+        y|Y|j|J) checkHosts $1 ;; 
         n|N) infoPrompt "end" ;;
         *) askPrompt ;; 
     esac
+}
+
+checkHosts(){
+    #remove hosts file
+    rm ./files
+
+    #write new hosts file
+    while IFS='' read -r line || [[ -n "$line" ]]; do
+	ping -c1 -W1 $line  && 
+	echo " " && 
+	echo "	CONNECTED TO $line" && 
+	echo -e "$line" >> files || 
+	echo "	CANNOT REACH $line" && 
+	echo " "
+    done < "$1"
+
+    sleep 1
+
+    echo "AVAILABLE HOSTS: "
+    cat files
+    echo " "
+
+    askNode
 }
 
 askNode(){
@@ -61,4 +84,4 @@ startProcesses(){
 
 #run
 infoPrompt "run"
-askPrompt
+askPrompt $1
