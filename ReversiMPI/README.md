@@ -14,5 +14,5 @@ $ make main
 ## Run
 
 ```
-$ ./run-mpi.sh hosts
+$ ./run-mpi.sh
 ```

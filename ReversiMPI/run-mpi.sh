@@ -19,7 +19,7 @@ askPrompt(){
     echo " "
     read -p "Start a new game? (y/n) " newGame </dev/tty
     case $newGame in  
-        y|Y|j|J) checkHosts $1 ;; 
+        y|Y|j|J) checkHosts ;; 
         n|N) infoPrompt "end" ;;
         *) askPrompt ;; 
     esac
@@ -37,7 +37,7 @@ checkHosts(){
 	echo -e "$line" >> files || 
 	echo "	CANNOT REACH $line" && 
 	echo " "
-    done < "$1"
+    done < "hosts"
 
     sleep 1
 
@@ -78,10 +78,10 @@ askPromptReady(){
 }
 
 startProcesses(){
-    mpirun -f hostsfile -n $nodesNumber ./mcts-mpi.out
+    mpirun -f files -n $nodesNumber ./mcts-mpi.out
     askPrompt
 }
 
 #run
 infoPrompt "run"
-askPrompt $1
+askPrompt
