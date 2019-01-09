@@ -35,3 +35,6 @@
 # Mac folder thingy
 .DS_Store
 **/*.playback
+
+# Other debug files
+main

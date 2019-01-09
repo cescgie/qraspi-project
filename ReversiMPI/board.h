@@ -7,7 +7,7 @@
 
 struct board 
 {
-	int spaces[32][32];
+	int spaces[8][8];
 	int whoseMove;
 	int whiteScore;
 	int blackScore;

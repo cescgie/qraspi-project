@@ -10,3 +10,5 @@ test_work_assignment: test_work_assignment.c board.c mpitimer.o
 	mpicc -g -Wall mpitimer.o board.c test_work_assignment.c -o test_work_assignment.out
 mpitimer.o:
 	mpicc -g -c -Wall mpitimer.c -o mpitimer.o
+main:
+	mpicc -g -Wall main.cpp -o main -lm

@@ -9,12 +9,12 @@ void initBoard(struct board *gameBoard)
 {
 	int i, j;
 	// Fill spaces accordingly
-	for (i = 0; i < 32; i++)
+	for (i = 0; i < 8; i++)
 	{
-		for (j = 0; j < 32; j++)
+		for (j = 0; j < 8; j++)
 		{
 			// Place black & white pieces at board center
-			if ((i == 15 || i == 16) && (j == 15 || j == 16))
+			if ((i == 3 || i == 4) && (j == 3 || j == 4))
 			{
 				gameBoard->spaces[i][j] = i == j? 1 : 2;
 			}
@@ -37,9 +37,9 @@ void copyBoard(struct board *source, struct board *dest)
 {
 	int i,j;
 
-	for (i = 0; i < 32; i++)
+	for (i = 0; i < 8; i++)
 	{
-		for (j = 0; j < 32; j++)
+		for (j = 0; j < 8; j++)
 		{
 			dest->spaces[i][j] = source->spaces[i][j];
 		}
@@ -66,16 +66,16 @@ void copyBoard(struct board *source, struct board *dest)
  * @return 1 if a space was found, 0 otherwise.
  */
 int followPiecesToTarget(int rowDirection, int colDirection, int row, int col, int target, int followType,
-		int spaces[32][32], int *output)
+		int spaces[8][8], int *output)
 {
-	while (row >= 0 && row < 32 && col >= 0 && col < 32 && 
+	while (row >= 0 && row < 8 && col >= 0 && col < 8 && 
 			spaces[row][col] != target && spaces[row][col] == followType)
 	{
 		row += rowDirection;
 		col += colDirection;
 		
 		// Make sure I didn't go outside the boundaries
-		if (row < 0 || row >= 32 || col < 0 || col >= 32)
+		if (row < 0 || row >= 8 || col < 0 || col >= 8)
 		{
 			break;
 		}
@@ -107,9 +107,9 @@ void getMoves(struct board *gameBoard, int *outputArray)
 	int i, j, k, l, outputIndex = 0;
 
 	// Look for player's pieces
-	for (i = 0; i < 32; i++)
+	for (i = 0; i < 8; i++)
 	{
-		for (j = 0; j < 32; j++)
+		for (j = 0; j < 8; j++)
 		{
 			// If I find the player's piece, search outward in 8 directions to find a spot to play
 			if (gameBoard->spaces[i][j] == gameBoard->whoseMove)
@@ -220,9 +220,9 @@ void printBoard(struct board *board)
 
 	printf("\t| White score: %d\t| Black score: %d\n", board->whiteScore, board->blackScore);
 
-	for (i = 0; i < 32; i++)
+	for (i = 0; i < 8; i++)
 	{
-		for (j = 0; j < 32; j++)
+		for (j = 0; j < 8; j++)
 		{
 			switch(board->spaces[i][j])
 			{

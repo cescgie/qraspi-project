@@ -48,7 +48,7 @@ int main()
 
     MPI_Datatype boardType;
     MPI_Aint offsets[4];
-    int dataSizes[4] = {32*32, 1, 1, 1};
+    int dataSizes[4] = {8*8, 1, 1, 1};
     MPI_Datatype dataTypes[4] = {MPI_INT, MPI_INT, MPI_INT, MPI_INT};
 
 	MPI_Init(NULL, NULL);
