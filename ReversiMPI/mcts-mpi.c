@@ -15,6 +15,7 @@
 #include <stddef.h>
 #include "node.h"
 #include "board.h"
+#include <stdbool.h> 
 
 #define WORK 1
 #define DIE 2
@@ -36,9 +37,9 @@ void slave(int id, MPI_Datatype boardType);
 */
 int main()
 {
-	int gameContinues = 100;   	//loop value 
+	bool gameContinues = true;   	//loop value. The value will be changed to 0 if there is no more possible move from both sides 
 	int boardMove[2];			//the boardMove to be made
-	int nodeLimit = 16;  		//the node limit to be given to the function
+	int nodeLimit = 12;  		//the node limit to be given to the function
 	int timeLimit = 3;		//the time limit to be given to the function
 	int winner;					//holds the value for winner
 	int id, numProcesses;   // MPI specific stuff
@@ -65,7 +66,7 @@ int main()
     if (id == 0)
     {
         initBoard(&gameBoard);		//initialize the gameBoard
-        while (gameContinues > 0)
+        while (gameContinues==true)
         {
             //picks the move
             printf("Picking move...\n");
@@ -83,7 +84,7 @@ int main()
 
                 if (boardMove[0] == -1 && boardMove[1] == -1)
                 {
-                    gameContinues = -10;
+                    gameContinues = false;
                     winner = determineWinner(&gameBoard);
                     if (winner == 0)
                     {
@@ -113,9 +114,9 @@ int main()
         }
 
         // Kill worker processes when the game is complete
-        for (gameContinues = 1; gameContinues < numProcesses; gameContinues++)
+        for (int continueProcesses = 1; continueProcesses < numProcesses; continueProcesses++)
         {
-            MPI_Send(NULL, 0, MPI_INT, gameContinues, DIE, MPI_COMM_WORLD);
+            MPI_Send(NULL, 0, MPI_INT, continueProcesses, DIE, MPI_COMM_WORLD);
         }
     }
     else
@@ -334,8 +335,7 @@ void pickMove(struct board* gameBoard, int nodeLimit, int timeLimit, int* move, 
 
 	while(numNewNodes < nodeLimit)
 	{
-		//1. Select a node using UCT and the functions provided by #1. (See the js implementation of 
-		//selection and the js UCT implementation as a guide).
+		//1. Select a node using UCT.
 
 		selected = root;
 		while(selected->numChildren != 0)
@@ -345,11 +345,11 @@ void pickMove(struct board* gameBoard, int nodeLimit, int timeLimit, int* move, 
 
 		getMoves(&selected->board, allActions);
 
-		//2. Expand the selected node using the expand() function (see #1) after choosing a move. 
-		//It can be any unplayed move given by getMoves() (see #2).
+		//2. Expand the selected node using the expand() function after choosing a move. 
+		//It can be any unplayed move given by getMoves().
 
 		numNewNodes += expandAllChildren(selected, allActions);
-		printf("Num total expanded nodes: %d\n", numNewNodes);
+		// printf("Num total expanded nodes: %d\n", numNewNodes);
 
 		//3. Simulate the game board on the new node until the game is complete 
 
