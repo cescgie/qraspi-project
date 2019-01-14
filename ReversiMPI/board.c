@@ -57,8 +57,8 @@ void copyBoard(struct board *source, struct board *dest)
  *
  * @param rowDirection The row direction to follow (-1, 0, or 1)
  * @param colDirection The col direction to follow (-1, 0, or 1)
- * @param row The starting row (0-31)
- * @param col The starting column (0-31)
+ * @param row The starting row (0-(N-1))
+ * @param col The starting column (0-(N-1))
  * @param target The value of the space you're trying to find
  * @param followType The value of the space you want to follow (so if I wanted to follow black spaces I'd put 2 for this)
  * @param spaces The physical board part of a board struct
@@ -207,8 +207,7 @@ int determineWinner(struct board *gameBoard)
 
 void printBoard(struct board *board)
 {
-	int i, j;
-
+	printf("\n");
 	if (board->whoseMove == 1)
 	{
 		printf("White's turn");
@@ -220,24 +219,30 @@ void printBoard(struct board *board)
 
 	printf("\t| White score: %d\t| Black score: %d\n", board->whiteScore, board->blackScore);
 
-	for (i = 0; i < 8; i++)
-	{
-		for (j = 0; j < 8; j++)
-		{
-			switch(board->spaces[i][j])
-			{
-				case 0:
-					printf("_ ");
-					break;
-				case 1:
-					printf("● ");
-					break;
-				case 2:
-					printf("○ ");
-					break;
-			}
-		}
+	printf("\n");
 
+	printf("    A B C D E F G H\n");
+	int row = 0;
+	for (int i = 0; i < 8; i++) {
+		printf(" %d",row);
+		printf(" ");
+		printf("\033[48;5;34m\033[38;5;232m \033[0m");
+		row=row+1;
+
+		for (int j = 0; j < 8; j++) {
+
+			if (board->spaces[i][j] == 2) {
+				// Black disc followed by green space
+				printf("\033[48;5;34m\033[38;5;232m\u2022 \033[0m");
+			}else if(board->spaces[i][j] == 1){
+				// White disc followed by green space
+				printf("\033[48;5;34m\033[38;5;999m\u2022 \033[0m");
+			}else if(board->spaces[i][j] == 0){
+				// Dot followed by green space
+				printf("\033[48;5;34m\033[38;5;232m\u00B7 \033[0m");
+			}
+		
+		}
 		printf("\n");
 	}
 }

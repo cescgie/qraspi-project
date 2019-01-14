@@ -41,6 +41,7 @@ int main()
 
 	while(gameContinues > 0)
 	{
+		printf("\n");
 		//picks the move
 		printf("Picking move...\n");
 		pickMove(&gameBoard,nodeLimit,timeLimit, boardMove);
@@ -56,7 +57,8 @@ int main()
 			pickMove(&gameBoard,nodeLimit,timeLimit, boardMove);
 
 			if(boardMove[0] == -1 && boardMove[1] == -1)
-			{
+			{	
+				printf("\n");
 				gameContinues =-10;
 				winner = determineWinner(&gameBoard);
 				if(winner == 0)
@@ -78,11 +80,13 @@ int main()
 			else
 			{
 				placePiece(&gameBoard,boardMove);
+				printBoard(&gameBoard);
 			}
 		}
 		else
 		{
 			placePiece(&gameBoard, boardMove);
+			printBoard(&gameBoard);
 		}
 	}
 
@@ -270,7 +274,7 @@ void pickMove(struct board* gameBoard, int nodeLimit, int timeLimit, int* move)
 		//It can be any unplayed move given by getMoves() (see #2).
 
 		numNewNodes += expandAllChildren(selected, allActions);
-		printf("Num total expanded nodes: %d\n", numNewNodes);
+		//printf("Num total expanded nodes: %d\n", numNewNodes);
 
 		//3. Simulate the game board on the new node until the game is complete 
 
@@ -322,6 +326,7 @@ void pickMove(struct board* gameBoard, int nodeLimit, int timeLimit, int* move)
 			break;
 		}
   	}
+	printf("Num total expanded nodes: %d\n", numNewNodes);
 
     //check that there were moves to be made
     if(root->numChildren != 0)
@@ -338,6 +343,19 @@ void pickMove(struct board* gameBoard, int nodeLimit, int timeLimit, int* move)
 		move[1] = -1; 	
 	}
 
-	printf("Player: %d,    Move made is: (%d, %d)\n",gameBoard->whoseMove, move[0], move[1]);
-  	deconstructTree(root);
+  	char *player;
+	if(gameBoard->whoseMove==1){
+		player= "White";
+	}else{
+		player= "Black";
+	}
+
+	char *moves[8] = { "A", "B", "C", "D", "E", "F", "G", "H" };
+	if(move[0] == -1 || move[1]==-1){
+		printf("Player: %s,    No move\n", player);
+	}else{
+		printf("Player: %s,    Move made is: %s%d\n",player, moves[move[1]], move[0]);
+	}
+
+	deconstructTree(root);
 }
