@@ -4,8 +4,6 @@
 #include <string>
 #include "player.hpp"
 #include "board.hpp"
-#include <mpi.h>
-#include <omp.h>
 
 class othelloGame {
     public:

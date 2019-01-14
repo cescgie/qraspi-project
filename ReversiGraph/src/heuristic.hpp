@@ -4,8 +4,6 @@
 #include <numeric>
 #include <unordered_set>
 #include "board.hpp"
-#include <omp.h>
-#include <mpi.h>
 
 class othelloHeuristic {
     public:

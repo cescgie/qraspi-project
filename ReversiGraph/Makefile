@@ -1,7 +1,7 @@
 .PHONY: clean run
 
 SRC = src/
-EXECUTABLE = othelloAI
+EXECUTABLE = othello
 
 all:
 	cd $(SRC); make; mv $(EXECUTABLE) ..;

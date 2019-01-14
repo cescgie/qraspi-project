@@ -1,12 +1,12 @@
 .PHONY: clean debug run
 
-CXX = mpicxx
-CXXFLAGS = -fopenmp -std=c++11 -march=native -O3 
+CXX = g++
+CXXFLAGS = -std=c++11 -march=native -O3 
 LDFLAGS =
 
-SOURCES = othelloAI.cpp game.cpp board.cpp player.cpp heuristic.cpp database.cpp
+SOURCES = othello.cpp game.cpp board.cpp player.cpp heuristic.cpp database.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
-EXECUTABLE = othelloAI 
+EXECUTABLE = othello 
 
 all: $(SOURCES) $(EXECUTABLE)
 
