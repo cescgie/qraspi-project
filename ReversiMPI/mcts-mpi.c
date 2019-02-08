@@ -37,7 +37,7 @@ void slave(int id, MPI_Datatype boardType);
 */
 int main()
 {
-	bool gameContinues = true;   	//loop value. The value will be changed to 0 if there is no more possible move from both sides 
+	bool gameContinues = true;   	//loop value. The value will be changed to "false" if there is no more possible move from both sides 
 	int boardMove[2];			//the boardMove to be made
 	int nodeLimit = 12;  		//the node limit to be given to the function
 	int timeLimit = 3;		//the time limit to be given to the function
@@ -72,59 +72,39 @@ int main()
             //picks the move
             printf("Picking move...\n");
             pickMove(&gameBoard, nodeLimit, timeLimit, boardMove, boardType, numProcesses);
-
             //check that there is a move to be made
-            if (boardMove[0] == -1 && boardMove[1] == -1)
-            {
-
+            if (boardMove[0] == -1 && boardMove[1] == -1) {
                 //Check if other player can move
-                //flipMove(gameBoard->whoseMove);
                 gameBoard.whoseMove = (gameBoard.whoseMove == 1) ? 2 : 1;
-
                 pickMove(&gameBoard, nodeLimit, timeLimit, boardMove, boardType, numProcesses);
-
-                if (boardMove[0] == -1 && boardMove[1] == -1)
-                {
+                if (boardMove[0] == -1 && boardMove[1] == -1){
 					printf("\n");
                     gameContinues = false;
                     winner = determineWinner(&gameBoard);
-                    if (winner == 0)
-                    {
+                    if (winner == 0){
                         printf("This game was a tie");
-                    }
-                    else if (winner == 1)
-                    {
+                    } else if (winner == 1){
                         printf("This game was won by White");
-                    }
-                    else if (winner == 2)
-                    {
+                    } else if (winner == 2){
                         printf("This game was won by Black");
                     }
 
                     printBoard(&gameBoard);
-                }
-                //Continue the game
-                else
-                {
+                }//Continue the game
+                else {
                     placePiece(&gameBoard, boardMove);
 					printBoard(&gameBoard);
                 }
-            }
-            else
-            {
+            } else {
                 placePiece(&gameBoard, boardMove);
 				printBoard(&gameBoard);
             }
         }
-
         // Kill worker processes when the game is complete
-        for (int continueProcesses = 1; continueProcesses < numProcesses; continueProcesses++)
-        {
+        for (int continueProcesses = 1; continueProcesses < numProcesses; continueProcesses++){
             MPI_Send(NULL, 0, MPI_INT, continueProcesses, DIE, MPI_COMM_WORLD);
         }
-    }
-    else
-    {
+    } else {
         slave(id, boardType);
     }
 
