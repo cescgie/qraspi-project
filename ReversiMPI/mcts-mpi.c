@@ -63,11 +63,9 @@ int main()
     MPI_Type_create_struct(4, dataSizes, offsets, dataTypes, &boardType);
     MPI_Type_commit(&boardType);
 
-    if (id == 0)
-    {
+    if (id == 0){
         initBoard(&gameBoard);		//initialize the gameBoard
-        while (gameContinues==true)
-        {	
+        while (gameContinues==true){	
 			printf("\n");
             //picks the move
             printf("Picking move...\n");
@@ -115,37 +113,29 @@ int main()
 
 // Receives simulation work from process 0 & sends back results
 // Process 0 sends an index and then a board struct, this sends back the same index and the number of wins
-void slave(int id, MPI_Datatype boardType)
-{
-    int *outputBuffer = malloc(2 * sizeof(int));
+void slave(int id, MPI_Datatype boardType){
+  	int *outputBuffer = malloc(2 * sizeof(int));
     int i;
     MPI_Status masterStatus;
     struct board gameBoard;
-
-    while(1)
-    {
+    while(1){
         // Wait for a message from process 0
         MPI_Recv(outputBuffer + 1, 1, MPI_INT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &masterStatus);
-
-        if (masterStatus.MPI_TAG == DIE)
-        {
+        if (masterStatus.MPI_TAG == DIE) {
             break;
         }
-
         // Get the current game board
         MPI_Recv(&gameBoard, 1, boardType, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         outputBuffer[0] = 0;
 
         // Simulate
-        for (i = 0; i < TOTALSIMS; i++)
-        {
+        for (i = 0; i < TOTALSIMS; i++){
             outputBuffer[0] += simulate(&gameBoard);
         }
 
         // Send results to master
         MPI_Send(outputBuffer, 2, MPI_INT, 0, 0, MPI_COMM_WORLD);
     }
-
     free(outputBuffer);
 }
 
