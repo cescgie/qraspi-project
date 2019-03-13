@@ -1,9 +1,7 @@
-QTReversi/QTReversi.pro.*
-QTReversi/QTReversi.pro.user
 build-*
 *.o
 *.stash
-QTReversi/Highscores
 moc_*
 qrc_*
-QTReversi/QTReversi
+files
+*.out
